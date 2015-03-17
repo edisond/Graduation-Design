@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>个人中心 - 师生科研互动平台</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%include parts/include.css.html%>
+</head>
+
+<body>
+    <% include parts/nav.ejs %>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-9 col-xs-12 pull-right">
+                    <div role="tabpanel">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#tab-news" aria-controls="tab-news" role="tab" data-toggle="tab"><i class="fa fa-comments"></i>&nbsp;最新动态</a>
+                            </li>
+                            <li role="presentation"><a href="#tab-subject" aria-controls="tab-subject" role="tab" data-toggle="tab"><i class="fa fa-book"></i>&nbsp;我的选题</a>
+                            </li>
+                            <li role="presentation"><a href="#tab-apply" aria-controls="tab-apply" role="tab" data-toggle="tab"><i class="fa fa-edit"></i>&nbsp;项目申请</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="tab-news">
+                                <br/>
+                                <br/>
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="#">
+                                            <img src="/img/teacher-default.jpg" width="50px" height="50px">
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="media-heading"><a href="#">潘冰</a>老师在<a href="#">PHP开放实验</a>中回复了我：</h5>
+                                        <p>赶紧做，绝对不能再拖了！！！&nbsp;<a href="#" data-toggle="tooltip" title="回复"><i class="fa fa-reply"></i></a>
+                                        </p>
+                                        <small class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;12 Jan 2015, 16:33</small>
+                                    </div>
+                                </div>
+                                <hr/>
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="#">
+                                            <img src="/img/teacher-default.jpg" width="50px" height="50px">
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="media-heading"><a href="#">陈双平</a>老师加入了我发布的创新项目<a href="#">基于Web的师生科研互动平台</a></h5>
+                                        <p><a href="#" data-toggle="tooltip" title="查看"><i class="fa fa-external-link"></i></a>
+                                        </p>
+                                        <small class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;11 Jan 2015, 16:33</small>
+                                    </div>
+                                </div>
+                                <hr/>
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="#">
+                                            <img src="/img/student-default.jpg" width="50px" height="50px">
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="media-heading">我发布了一项创新项目<a href="#">基于Web的师生科研互动平台</a></h5>
+                                        <p><a href="#" data-toggle="tooltip" title="查看"><i class="fa fa-external-link"></i></a>
+                                        </p>
+                                        <small class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;9 Jan 2015, 16:33</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="tab-subject">
+                                <br/>
+                                <form class="form-inline " id="tab-subject-filter">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="输入项目名..." aria-describedby="addon-search">
+                                            <span class="input-group-addon" id="addon-search"><i class="fa fa-search"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="hidden-xs ml30"></span>
+                                        <div class="input-group text-center pull-center">
+                                            <label class="checkbox-inline mr10">
+                                                <input type="checkbox" id="inlineCheckbox1" value="option1"><i class="fa fa-flask"></i>&nbsp;开放实验
+                                            </label>
+                                            <label class="checkbox-inline mr10">
+                                                <input type="checkbox" id="inlineCheckbox2" value="option2"><i class="fa fa-trophy"></i>&nbsp;挑战杯
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" id="inlineCheckbox3" value="option3"><i class="fa fa-lightbulb-o"></i>&nbsp;创新项目
+                                            </label>
+                                        </div>
+                                    </div>
+                                </form>
+                                <hr class="hr-dark" />
+                                <div>
+                                    <h4><a href="#">PHP开放实验</a><small class="ml10">指导教师：潘冰<span class="label label-primary ml10">进行中</span></small></h4>
+                                    <small class="text-muted">21天前更新</small>
+                                </div>
+                                <hr/>
+                                <div>
+                                    <h4><a href="#">基于Web的师生互动科研平台</a><small class="ml10">指导教师：潘冰<span class="label label-primary ml10">进行中</span></small></h4>
+                                    <small class="text-muted">今天有更新</small>
+                                </div>
+                                <hr/>
+                                <div>
+                                    <h4><a href="#">HTML5智能马桶系统</a><small class="ml10">指导教师：陈双平<span class="label label-default ml10">已结束</span></small></h4>
+                                    <small class="text-muted">今天有更新</small>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="tab-apply">
+                                <br/>
+                                <form class="form-inline " id="tab-subject-filter">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="输入项目名..." aria-describedby="addon-search">
+                                            <span class="input-group-addon" id="addon-search"><i class="fa fa-search"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="hidden-xs ml30"></span>
+                                        <div class="input-group pull-center">
+                                            <label class="checkbox-inline mr10">
+                                                <input type="checkbox" id="inlineCheckbox1" value="option1"><i class="fa fa-flask"></i>&nbsp;开放实验
+                                            </label>
+                                            <label class="checkbox-inline mr10">
+                                                <input type="checkbox" id="inlineCheckbox2" value="option2"><i class="fa fa-trophy"></i>&nbsp;挑战杯
+                                            </label>
+                                            <label class="checkbox-inline mr10">
+                                                <input type="checkbox" id="inlineCheckbox3" value="option3"><i class="fa fa-lightbulb-o"></i>&nbsp;创新项目
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group pull-center">
+                                            <button type="button" class="btn btn-success pull-right"><i class="fa fa-plus"></i>&nbsp;我有想法</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <hr class="hr-dark" />
+                                <div>
+                                    <h4><a href="#">随便起个名字</a><small><span class="label label-primary ml10">申请中</span></small></h4>
+                                    <small class="text-muted">1小时前更新</small>
+                                </div>
+                                <hr/>
+                                <div>
+                                    <h4><a href="#">随便起个名字</a><small><span class="label label-success ml10">已通过</span></small></h4>
+                                    <small class="text-muted">1天前更新</small>
+                                </div>
+                                <hr/>
+                                <div>
+                                    <h4><a href="#">随便起个名字</a><small><span class="label label-default ml10">已取消</span></small></h4>
+                                    <small class="text-muted">2年前更新</small>
+                                </div>
+                                <hr/>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    <div class="aside">
+                        <img src="/img/student-default.jpg" width="100%" />
+                        <h3><%=student.name%><br/><small><%=student.id%></small></h3>
+                        <hr/>
+                        <h5><i class="fa fa-tag"></i><%=student.major%></h5>
+                        <h5><i class="fa fa-clock-o"></i><%=student.grade%></h5>
+                        <h5><i class="fa fa-graduation-cap"></i><%=student.type%></h5>
+                        <h5><i class="fa fa-envelope"></i><a href="mailto:<%=student.email%>"><%=student.email%></a></h5>
+                        <hr/>
+                        <table class="table table-condensed table-none-bordered text-center">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <h2><a href="#">1</a></h2>
+                                    </td>
+                                    <td>
+                                        <h2><a href="#">0</a></h2>
+                                    </td>
+                                    <td>
+                                        <h2><a href="#">0</a></h2>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5><small>开放实验</small></h5>
+                                    </td>
+                                    <td>
+                                        <h5><small>挑战杯</small></h5>
+                                    </td>
+                                    <td>
+                                        <h5><small>创新项目</small></h5>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <hr/>
+                        <h5><i class="fa fa-users"></i>我的团队</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#">基于Web的师生互动科研平台</a>
+                            </li>
+                            <li><a href="#">HTML5智能马桶系统</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% include parts/include.js.html %>
+</body>
+
+</html>

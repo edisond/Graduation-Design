@@ -1,0 +1,29 @@
+.aside {
+    max-width: 200px;
+    text-align: left;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.aside i.fa {
+    width: 25px;
+}
+
+table.table-none-bordered,
+table.table-none-bordered tr,
+table.table-none-bordered td {
+    border: 0 !important;
+}
+
+table h1,
+table h2,
+table h3,
+table h4,
+table h5,
+table h6 {
+    margin: 0;
+}
+
+.hr-dark {
+    border-color: #ddd;
+}

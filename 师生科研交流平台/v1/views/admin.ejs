@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>管理员 - 师生科研互动平台</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% include parts/include.css.html %>
+</head>
+
+<body>
+    <nav class="navbar navbar-static-top navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-main">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">师生科研交流平台 - 管理员界面</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-main">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" id="nav-sign-out"><i class="fa fa-sign-out"></i>退出</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="col-sm-9 col-xs-12 pull-right">
+            <div role="tabpanel">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#tab-teacher" aria-controls="tab-teacher" role="tab" data-toggle="tab">教师管理</a>
+                    </li>
+                    <li role="presentation"><a href="#tab-student" aria-controls="tab-student" role="tab" data-toggle="tab">学生管理</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active" id="tab-teacher">
+                        <br/>
+                        <button type="button" class="btn btn-default" id="select-all-teacher">全部选择</button>
+                        <button type="button" class="btn btn-default ml10" id="deselect-all-teacher">取消全选</button>
+                        <button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#delete-teacher"><i class="fa fa-trash-o"></i>&nbsp;删除选中记录</button>
+                        <button type="button" class="btn btn-success  pull-right mr10"><i class="fa fa-plus"></i>&nbsp;批量导入</button>
+                        <button type="button" class="btn btn-success pull-right mr10" data-toggle="modal" data-target="#new-teacher"><i class="fa fa-plus"></i>&nbsp;添加教师</button>
+                        <br/>
+                        <br/>
+                        <table class="table table-bordered table-hover" id="table-teacher" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>工号</th>
+                                    <th>姓名</th>
+                                    <th>部门</th>
+                                    <th>职称</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="tab-student">
+                        <br/>
+                        <button type="button" class="btn btn-default" id="select-all-student">全部选择</button>
+                        <button type="button" class="btn btn-default ml10" id="deselect-all-student">取消全选</button>
+                        <button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#delete-student"><i class="fa fa-trash-o"></i>&nbsp;删除选中记录</button>
+                        <button type="button" class="btn btn-success  pull-right mr10"><i class="fa fa-plus"></i>&nbsp;批量导入</button>
+                        <button type="button" class="btn btn-success pull-right mr10" data-toggle="modal" data-target="#new-student"><i class="fa fa-plus"></i>&nbsp;添加学生</button>
+                        <br/>
+                        <br/>
+                        <table class="table table-bordered table-hover" id="table-student" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>学号</th>
+                                    <th>姓名</th>
+                                    <th>年级</th>
+                                    <th>专业</th>
+                                    <th>类型</th>
+                                    <th>激活</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 col-xs-12">
+            <div class="aside">
+                <h5><i class="fa fa-user"></i>用户统计</h5>
+                <table class="table table-condensed table-none-bordered">
+                    <tbody>
+                        <tr>
+                            <td>教师注册</td>
+                            <td id="teacher-reg">-</td>
+                        </tr>
+                        <tr>
+                            <td>学生注册</td>
+                            <td id="student-reg">-</td>
+                        </tr>
+                        <tr>
+                            <td>学生激活</td>
+                            <td id="student-active">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr/>
+                <h5><i class="fa fa-cloud"></i>访问统计</h5>
+                <table class="table table-condensed table-none-bordered">
+                    <tbody>
+                        <tr>
+                            <td>目前在线</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>今日浏览</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>统计浏览</td>
+                            <td>-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="new-teacher" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">添加教师</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-id">工号</label>
+                            <div class="col-xs-12 col-sm-10">
+                                <input class="form-control" type="text" id="input-id" required placeholder="e.g. 20110523">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 control-label control-label" for="input-name">姓名</label>
+                            <div class="col-xs-12 col-sm-10">
+                                <input class="form-control form-control" type="text" id="input-name" placeholder="e.g. 张三">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-passowrd">初始密码</label>
+                            <div class="col-xs-12 col-sm-10">
+                                <input class="form-control" type="text" id="input-passowrd" required placeholder="请输入初始密码" value="123456">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-department">部门</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-department" placeholder="e.g. 电气信息学院" />
+                            </div>
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-title">职称</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-title" placeholder="e.g. 讲师" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="submit">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="delete-teacher" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">删除记录</h4>
+                </div>
+                <div class="modal-body">
+                    将要删除选中的教师记录！（共&nbsp;<span id="delete-teacher-count">0</span>&nbsp;条）
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="submit">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="new-student" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">添加学生</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-id">学号</label>
+                            <div class="col-xs-12 col-sm-10">
+                                <input class="form-control" type="text" id="input-id" required placeholder="e.g. 2011052383">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 control-label control-label" for="input-name">姓名</label>
+                            <div class="col-xs-12 col-sm-10">
+                                <input class="form-control form-control" type="text" id="input-name" placeholder="e.g. 李四">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-passowrd">初始密码</label>
+                            <div class="col-xs-12 col-sm-10">
+                                <input class="form-control" type="text" id="input-passowrd" required placeholder="请输入初始密码" value="123456">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-major">专业</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-major" placeholder="e.g. 软件工程">
+                            </div>
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-grade">年级</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-grade" placeholder="e.g. 2011">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-type">类型</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <select class="form-control" type="text" id="input-type">
+                                    <option>本科生</option>
+                                    <option>硕士研究生</option>
+                                    <option>博士研究生</option>
+                                </select>
+                            </div>
+                            <label class="col-xs-12 col-sm-6 control-label">
+                                <input type="checkbox" checked id="input-active">&nbsp;创建并激活
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="submit">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="delete-student" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">删除记录</h4>
+                </div>
+                <div class="modal-body">
+                    将要删除选中的学生记录！（共&nbsp;<span id="delete-student-count">0</span>&nbsp;条）
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="submit">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% include parts/include.js.html %>
+        <script type="text/javascript" src="/js/admin.js"></script>
+</body>
+
+</html>
