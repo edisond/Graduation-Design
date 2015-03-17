@@ -39,19 +39,23 @@ $(document).ready(function () {
     });
     nav.find('#nav-input-admin').click(function () {
         var pwd = prompt('请输入管理员密码');
-        $.ajax({
-            type: "POST",
-            url: "/api/post/signin?type=admin",
-            data: {
-                pwd: pwd
-            },
-            success: function () {
-                window.location = '/admin';
-            },
-            error: function () {
-                notyFacade('密码错误', 'error')
-            }
-        });
+        if (pwd && pwd !== '') {
+            $.ajax({
+                type: "POST",
+                url: "/api/post/signin?type=admin",
+                data: {
+                    pwd: pwd
+                },
+                success: function () {
+                    window.location = '/admin';
+                },
+                error: function () {
+                    notyFacade('密码错误', 'error')
+                }
+            });
+        } else {
+            return false;
+        }
     });
     $('[data-toggle="tooltip"]').tooltip();
 
