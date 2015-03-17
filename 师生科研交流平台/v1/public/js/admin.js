@@ -1,8 +1,10 @@
 $(document).ready(function () {
     var newTeacherModel = $('#new-teacher'),
-        deleteTeacherModel = $('#delete-teacher'),
         newStudentModel = $('#new-student'),
+        editTeacherModel = $('#edit-teacher'),
+        editStudentModel = $('#edit-student'),
         deleteStudentModel = $('#delete-student'),
+        deleteTeacherModel = $('#delete-teacher'),
         tableTeacher = $('#table-teacher'),
         tableStudent = $('#table-student');
     //init table teacher
@@ -15,6 +17,16 @@ $(document).ready(function () {
         },
         "columns": [
             {
+                "data": "id",
+                "searchable": false,
+                "orderable": false,
+                "width": '1px',
+                'className': "text-center",
+                'render': function (data, type, row) {
+                    return '<input type="checkbox" data-action="select" data-id="' + data + '"/>';
+                }
+            },
+            {
                 "data": "id"
             },
             {
@@ -25,6 +37,16 @@ $(document).ready(function () {
             },
             {
                 "data": "title"
+            },
+            {
+                "data": "id",
+                "searchable": false,
+                "orderable": false,
+                "width": '50px',
+                'className': "text-center",
+                'render': function (data, type, row) {
+                    return '<a href="#" data-id="' + data + '" data-action="edit" data-toggle="modal" data-target="#edit-teacher"><i class="fa fa-edit"></i>&nbsp;编辑</a>';
+                }
             }
         ],
         "language": {
@@ -41,25 +63,27 @@ $(document).ready(function () {
         }
     });
 
-    $('#table-teacher tbody').on('click', 'tr', function () {
-        $(this).toggleClass('active');
+    tableTeacher.delegate('tbody  input[data-action=select]', 'click', function () {
+        $($(this).parents('tr')[0]).toggleClass('active');
     });
+
     $('#select-all-teacher').click(function () {
-        $('#table-teacher tbody>tr').addClass('active');
+        tableTeacher.find('tbody  input[data-action=select]').not(':checked').click();
     });
+
     $('#deselect-all-teacher').click(function () {
-        $('#table-teacher tbody>tr').removeClass('active');
+        tableTeacher.find('tbody  input[data-action=select]:checked').click();
     });
 
     newTeacherModel.find('#submit').click(function () {
         var teacher = {
             id: newTeacherModel.find('#input-id').val(),
             name: newTeacherModel.find('#input-name').val(),
-            pwd: newTeacherModel.find('#input-passowrd').val(),
+            pwd: newTeacherModel.find('#input-password').val(),
             department: newTeacherModel.find('#input-department').val(),
             title: newTeacherModel.find('#input-title').val()
         };
-        if (teacher.id && teacher.pwd) {
+        if (teacher.id !== '' && teacher.pwd !== '') {
             if (!new RegExp("^[0-9]*$").test(teacher.id)) {
                 notyFacade('工号必须由数字组成', 'warning');
                 return false;
@@ -84,14 +108,62 @@ $(document).ready(function () {
         }
     });
 
+    editTeacherModel.on('show.bs.modal', function (e) {
+        var data = tableTeacher.DataTable().row($(e.relatedTarget).parents('tr')[0]).data();
+        editTeacherModel.find('#input-id').val(data.id);
+        editTeacherModel.find('#input-name').val(data.name);
+        editTeacherModel.find('#input-department').val(data.department);
+        editTeacherModel.find('#input-title').val(data.title);
+    });
+
+    editTeacherModel.find('#input-reset-password').click(function () {
+        editTeacherModel.find('#input-password').attr('disabled', !$(this).is(':checked'));
+    });
+
+    editTeacherModel.find('#submit').click(function () {
+        var teacher = {
+                id: editTeacherModel.find('#input-id').val(),
+                name: editTeacherModel.find('#input-name').val(),
+                pwd: editTeacherModel.find('#input-password').val(),
+                department: editTeacherModel.find('#input-department').val(),
+                title: editTeacherModel.find('#input-title').val()
+            },
+            changePwd = editTeacherModel.find('#input-reset-password').is(':checked');
+        if (teacher.id !== '') {
+            if (changePwd && teacher.pwd === '') {
+                notyFacade('若希望重置密码，则密码为必填项', 'warning');
+                return false;
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "/api/post/update/teacher?changePwd=" + changePwd,
+                    data: teacher,
+                    success: function () {
+                        editTeacherModel.modal('hide');
+                        editTeacherModel.find('form')[0].reset();
+                        tableTeacher.DataTable().ajax.reload(null, false);
+                        notyFacade('编辑成功', 'success');
+                    },
+                    error: function () {
+                        notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
+                    }
+                });
+            }
+        } else {
+            notyFacade('工号为必填项', 'warning');
+            return false;
+        }
+    });
+
     deleteTeacherModel.on('show.bs.modal', function (e) {
         var selectedNum = $('#table-teacher tbody>tr.active').size();
         if (selectedNum !== 0) {
-            $(this).find('#delete-teacher-count').html(selectedNum);
+            $(this).find('#delete-teacher-info').html('删除选中的教师记录？（共&nbsp;' + selectedNum + '&nbsp;条）');
         } else {
-            notyFacade('您没有选中任何记录');
+            notyFacade('您没有选中任何记录', 'information');
             return false;
         }
+
     });
 
     deleteTeacherModel.find('#submit').click(function () {
@@ -116,6 +188,7 @@ $(document).ready(function () {
             }
         });
     });
+
     //init table student
     $('#table-student').on('init.dt', function () {
         var studentReg = $(this).DataTable().data(),
@@ -131,6 +204,16 @@ $(document).ready(function () {
             'dataSrc': '',
         },
         "columns": [
+            {
+                "data": "id",
+                "searchable": false,
+                "orderable": false,
+                "width": '1px',
+                'className': "text-center",
+                'render': function (data, type, row) {
+                    return '<input type="checkbox" data-action="select" data-id="' + data + '"/>';
+                }
+            },
             {
                 "data": "id"
             },
@@ -148,11 +231,24 @@ $(document).ready(function () {
             },
             {
                 "data": "active",
+                "width": '50px',
+                'className': "text-center",
+                "searchable": false,
                 render: function (data, type, row) {
                     if (data)
                         return '<span class="hidden">true</span><i class="fa fa-check text-success"></i>';
                     return '<span class="hidden">false</span><i class="fa fa-times text-muted"></i>';
 
+                }
+            },
+            {
+                "data": "id",
+                "searchable": false,
+                "orderable": false,
+                "width": '50px',
+                'className': "text-center",
+                'render': function (data, type, row) {
+                    return '<a href="#" data-id="' + data + '" data-action="edit" data-toggle="modal" data-target="#edit-student"><i class="fa fa-edit"></i>&nbsp;编辑</a>';
                 }
             }
         ],
@@ -169,27 +265,27 @@ $(document).ready(function () {
             }
         }
     });
-    $('#table-student tbody').on('click', 'tr', function () {
-        $(this).toggleClass('active');
+    tableStudent.delegate('tbody  input[data-action=select]', 'click', function () {
+        $($(this).parents('tr')[0]).toggleClass('active');
     });
     $('#select-all-student').click(function () {
-        $('#table-student tbody>tr').addClass('active');
+        tableStudent.find('tbody  input[data-action=select]').not(':checked').click();
     });
     $('#deselect-all-student').click(function () {
-        $('#table-student tbody>tr').removeClass('active');
+        tableStudent.find('tbody  input[data-action=select]:checked').click();
     });
 
     newStudentModel.find('#submit').click(function () {
         var student = {
             id: newStudentModel.find('#input-id').val(),
             name: newStudentModel.find('#input-name').val(),
-            pwd: newStudentModel.find('#input-passowrd').val(),
+            pwd: newStudentModel.find('#input-password').val(),
             major: newStudentModel.find('#input-major').val(),
             grade: newStudentModel.find('#input-grade').val(),
             type: newStudentModel.find('#input-type').val(),
             active: newStudentModel.find('#input-active').is(':checked')
         };
-        if (student.id && student.pwd) {
+        if (student.id !== '' && student.pwd !== '') {
             if (!new RegExp("^[0-9]*$").test(student.id)) {
                 notyFacade('学号必须由数字组成', 'warning');
                 return false;
@@ -214,12 +310,63 @@ $(document).ready(function () {
         }
     });
 
+    editStudentModel.on('show.bs.modal', function (e) {
+        var data = tableStudent.DataTable().row($(e.relatedTarget).parents('tr')[0]).data();
+        editStudentModel.find('#input-id').val(data.id);
+        editStudentModel.find('#input-name').val(data.name);
+        editStudentModel.find('#input-major').val(data.major);
+        editStudentModel.find('#input-type').val(data.type);
+        editStudentModel.find('#input-grade').val(data.grade);
+        editStudentModel.find('#input-active').attr('checked', data.active);
+    });
+
+    editStudentModel.find('#input-reset-password').click(function () {
+        editStudentModel.find('#input-password').attr('disabled', !$(this).is(':checked'));
+    });
+
+    editStudentModel.find('#submit').click(function () {
+        var sudent = {
+                id: editStudentModel.find('#input-id').val(),
+                name: editStudentModel.find('#input-name').val(),
+                pwd: editStudentModel.find('#input-password').val(),
+                major: editStudentModel.find('#input-major').val(),
+                type: editStudentModel.find('#input-type').val(),
+                grade: editStudentModel.find('#input-grade').val(),
+                active: editStudentModel.find('#input-active').is(':checked')
+            },
+            changePwd = editStudentModel.find('#input-reset-password').is(':checked');
+        if (sudent.id !== '') {
+            if (changePwd && sudent.pwd === '') {
+                notyFacade('若希望重置密码，则密码为必填项', 'warning');
+                return false;
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "/api/post/update/student?changePwd=" + changePwd,
+                    data: sudent,
+                    success: function () {
+                        editStudentModel.modal('hide');
+                        editStudentModel.find('form')[0].reset();
+                        tableStudent.DataTable().ajax.reload(null, false);
+                        notyFacade('编辑成功', 'success');
+                    },
+                    error: function () {
+                        notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
+                    }
+                });
+            }
+        } else {
+            notyFacade('学号为必填项', 'warning');
+            return false;
+        }
+    });
+
     deleteStudentModel.on('show.bs.modal', function (e) {
         var selectedNum = $('#table-student tbody>tr.active').size();
         if (selectedNum !== 0) {
             $(this).find('#delete-student-count').html(selectedNum);
         } else {
-            notyFacade('您没有选中任何记录');
+            notyFacade('您没有选中任何记录', 'information');
             return false;
         }
     });

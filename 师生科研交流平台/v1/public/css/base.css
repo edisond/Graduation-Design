@@ -46,6 +46,10 @@
     padding: 20px
 }
 
+.maxw100 {
+    max-width: 100px !important
+}
+
 .minw250 {
     min-width: 250px !important
 }
