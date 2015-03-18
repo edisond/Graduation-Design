@@ -40,21 +40,14 @@ router.get('/ip', function (req, res) {
 })
 
 
-/* GET student center page. */
-router.get('/student/center', function (req, res) {
+/* GET center page. */
+router.get('/center', function (req, res) {
     if (req.session.student) {
-        res.render('student-center', {
+        res.render('student/center', {
             student: req.session.student
         });
-    } else {
-        res.redirect('/');
-    }
-})
-
-/* GET teacher center page. */
-router.get('/teacher/center', function (req, res) {
-    if (req.session.teacher) {
-        res.render('teacher-center', {
+    } else if (req.session.teacher) {
+        res.render('teacher/center', {
             teacher: req.session.teacher
         });
     } else {
@@ -62,13 +55,18 @@ router.get('/teacher/center', function (req, res) {
     }
 })
 
+
 /* GET student profile page. */
-router.get('/student/profile/:id', function (req, res) {
-    var reg = new RegExp("^[0-9]*$");
-    if (!reg.test(req.params.id)) {
+router.get('/profile/:id', function (req, res) {
+    if (!req.query.type) {
         res.sendStatus(404);
         return;
-    } else {
+    }
+    if (!new RegExp("^[0-9]*$").test(req.params.id)) {
+        res.sendStatus(404);
+        return;
+    }
+    if (req.query.type === "student") {
         Student.findOne({
             'id': req.params.id
         }, function (err, docs) {
@@ -76,7 +74,7 @@ router.get('/student/profile/:id', function (req, res) {
                 res.sendStatus(500);
             } else {
                 if (docs) {
-                    res.render('student-profile', {
+                    res.render('student/profile', {
                         student: docs
                     })
                 } else {
@@ -84,17 +82,7 @@ router.get('/student/profile/:id', function (req, res) {
                 }
             }
         });
-    }
-
-})
-
-/* GET teacher profile page. */
-router.get('/teacher/profile/:id', function (req, res) {
-    var reg = new RegExp("^[0-9]*$");
-    if (!reg.test(req.params.id)) {
-        res.sendStatus(404);
-        return;
-    } else {
+    } else if (req.query.type === "teacher") {
         Teacher.findOne({
             'id': req.params.id
         }, function (err, docs) {
@@ -102,7 +90,7 @@ router.get('/teacher/profile/:id', function (req, res) {
                 res.sendStatus(500);
             } else {
                 if (docs) {
-                    res.render('teacher-profile', {
+                    res.render('teacher/profile', {
                         teacher: docs
                     })
                 } else {
@@ -110,20 +98,18 @@ router.get('/teacher/profile/:id', function (req, res) {
                 }
             }
         });
+    } else {
+        res.sendStatus(404);
     }
 })
 
 /* GET admin page. */
 router.get('/admin', function (req, res) {
-    //    if (req.session.admin) {
-    //        res.render('admin');
-    //    } else {
-    //        res.redirect('/');
-    //    }
-
-    // debug
-    req.session.admin = 'admin';
-    res.render('admin');
+    if (req.session.admin) {
+        res.render('admin');
+    } else {
+        res.redirect('/');
+    }
 })
 
 module.exports = router;

@@ -1,7 +1,7 @@
 $(document).ready(function () {
     var nav = $('nav.navbar-static-top'),
         pathname = window.location.pathname;
-    if (pathname.indexOf('/student/center') === 0) {
+    if (pathname.indexOf('/center') === 0) {
         nav.find('#nav-link-to-center').addClass('active');
     } else if (pathname.indexOf('/oe') === 0) {
         nav.find('#nav-link-to-oe').addClass('active');
@@ -27,7 +27,11 @@ $(document).ready(function () {
             nav.loginType = 'student';
         }
     });
-
+    nav.keypress(function (e) {
+        if (e.which === 13) {
+            nav.find('#nav-input-sub').click();
+        }
+    })
     nav.find('#nav-input-sub').click(function () {
         var post = {
             id: nav.find('#nav-input-id').val(),
@@ -38,7 +42,7 @@ $(document).ready(function () {
             url: "/api/post/signin?type=" + nav.loginType,
             data: post,
             success: function () {
-                window.location = '/' + nav.loginType + '/center';
+                window.location = '/center';
             },
             error: function () {
                 notyFacade('用户名与密码不匹配，或' + (nav.loginType === 'student' ? '学生' : '教师') + '不存在', 'error')

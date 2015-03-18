@@ -11,7 +11,7 @@ router.get('/student', function (req, res) {
         if (err) {
             res.sendStatus(500);
         } else {
-            res.send(200, docs);
+            res.status(200).send(docs);
         }
     })
 })
@@ -22,7 +22,7 @@ router.get('/teacher', function (req, res) {
         if (err) {
             res.sendStatus(500);
         } else {
-            res.send(200, docs);
+            res.status(200).send(docs);
         }
     })
 })
