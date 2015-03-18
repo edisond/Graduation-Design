@@ -11,6 +11,23 @@ $(document).ready(function () {
         nav.find('#nav-link-to-ip').addClass('active');
     }
 
+    nav.loginType = 'student';
+
+    nav.find('#nav-input-exchange').click(function () {
+        var label = nav.find('label[for=nav-input-id]');
+        if (nav.loginType === 'student') {
+            label.fadeOut(250, function () {
+                $(this).html('教师 工号').fadeIn(250);
+            });
+            nav.loginType = 'teacher';
+        } else {
+            label.fadeOut(250, function () {
+                $(this).html('学生 学号').fadeIn(250);
+            });
+            nav.loginType = 'student';
+        }
+    });
+
     nav.find('#nav-input-sub').click(function () {
         var post = {
             id: nav.find('#nav-input-id').val(),
@@ -18,13 +35,13 @@ $(document).ready(function () {
         };
         $.ajax({
             type: "POST",
-            url: "/api/post/signin",
+            url: "/api/post/signin?type=" + nav.loginType,
             data: post,
             success: function () {
-                window.location = '/student/center';
+                window.location = '/' + nav.loginType + '/center';
             },
             error: function () {
-                notyFacade('用户名与密码不匹配', 'error')
+                notyFacade('用户名与密码不匹配，或' + (nav.loginType === 'student' ? '学生' : '教师') + '不存在', 'error')
             }
         });
     });

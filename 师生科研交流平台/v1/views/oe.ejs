@@ -10,8 +10,82 @@
 
 <body>
     <% include parts/nav.ejs %>
-
-        <div class="container-fluid">
+        <div class="header header-oe">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h1 class="m0">开放实验</h1>
+                        <h5 class="mt20"><i class="fa fa-flask"></i>&nbsp;10个开放实验项目<i class="fa fa-street-view ml20"></i>&nbsp;2位指导教师<i class="fa fa-clock-o ml20"></i>&nbsp;最后更新于2014年1月10日</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container mt20">
+            <div class="row">
+                <div class="col-sm-9 col-xs-12 pull-right">
+                    <span>此处应有简介</span>
+                    <div class="btn-group pull-right">
+                        <a class="cursor-pointer" data-toggle="dropdown" aria-expanded="false">
+                            排序&nbsp;<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">发布时间</a>
+                            </li>
+                            <li><a href="#">名称</a>
+                            </li>
+                            <li><a href="#">指导教师</a>
+                            </li>
+                            <li><a href="#">进度</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="#">重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <hr class="hr-dark" />
+                    <div>
+                        <h4><a href="#">PHP开放实验</a><small class="ml10">指导教师：潘冰<span class="label label-primary ml10">进行中</span></small></h4>
+                        <p class="text-muted">本实验是基于PHP的开放实验，2011级同学可选</p>
+                    </div>
+                    <hr/>
+                    <div>
+                        <h4><a href="#">Node.js开放实验</a><small class="ml10">指导教师：潘冰<span class="label label-success ml10">可申请</span></small></h4>
+                        <p class="text-muted">本实验是基于Node.js的开放实验</p>
+                    </div>
+                    <hr/>
+                    <div>
+                        <h4><a href="#">IOS APP开放实验</a><small class="ml10">指导教师：陈双平<span class="label label-default ml10">已结束</span></small></h4>
+                        <p class="text-muted">此处应有描述</p>
+                    </div>
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    <div class="aside">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="aside-input-search" placeholder="搜索项目，教师等">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default" id="aside-input-search-btn"><i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <hr/>
+                        <h5><i class="fa fa-fire"></i>最新项目</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#">基于Web的师生互动科研平台</a>
+                            </li>
+                            <li><a href="#">HTML5智能马桶系统</a>
+                            </li>
+                        </ul>
+                        <hr/>
+                        <h5><i class="fa fa-street-view"></i>热门导师</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#">潘冰</a>
+                            </li>
+                            <li><a href="#">陈双平</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
         <% include parts/include.js.html %>
 </body>

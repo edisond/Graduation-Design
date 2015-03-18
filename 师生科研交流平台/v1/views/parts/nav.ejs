@@ -1,4 +1,4 @@
-<nav class="navbar navbar-static-top navbar-inverse">
+<nav class="navbar navbar-static-top navbar-inverse mb0">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-main">
@@ -57,8 +57,14 @@
                                 <li>
                                     <form class="p20 pb10">
                                         <div class="form-group">
-                                            <label for="nav-input-id">学号/工号</label>
-                                            <input type="text" class="form-control" id="nav-input-id">
+                                            <label for="nav-input-id">学生 学号</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="nav-input-id">
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" id="nav-input-exchange" data-toggle="tooltip" title="切换学生/教师"><i class="fa fa-exchange"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="nav-input-pwd">密码</label>
