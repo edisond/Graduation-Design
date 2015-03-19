@@ -6,7 +6,8 @@ $(document).ready(function () {
         deleteStudentModel = $('#delete-student'),
         deleteTeacherModel = $('#delete-teacher'),
         tableTeacher = $('#table-teacher'),
-        tableStudent = $('#table-student');
+        tableStudent = $('#table-student'),
+        changePasswordForm = $('#form-change-password');
     //init table teacher
     $('#table-teacher').on('init.dt', function () {
         $('#teacher-reg').html($(this).DataTable().data().length);
@@ -79,15 +80,16 @@ $(document).ready(function () {
         var teacher = {
             id: newTeacherModel.find('#input-id').val(),
             name: newTeacherModel.find('#input-name').val(),
-            pwd: newTeacherModel.find('#input-password').val(),
+            password: newTeacherModel.find('#input-password').val(),
             department: newTeacherModel.find('#input-department').val(),
             title: newTeacherModel.find('#input-title').val()
         };
-        if (teacher.id !== '' && teacher.pwd !== '') {
+        if (teacher.id !== '' && teacher.password !== '') {
             if (!new RegExp("^[0-9]*$").test(teacher.id)) {
                 notyFacade('工号必须由数字组成', 'warning');
                 return false;
             } else {
+                teacher.password = md5(teacher.password);
                 $.ajax({
                     type: "POST",
                     url: "/api/post/new/teacher",
@@ -124,19 +126,20 @@ $(document).ready(function () {
         var teacher = {
                 id: editTeacherModel.find('#input-id').val(),
                 name: editTeacherModel.find('#input-name').val(),
-                pwd: editTeacherModel.find('#input-password').val(),
+                password: editTeacherModel.find('#input-password').val(),
                 department: editTeacherModel.find('#input-department').val(),
                 title: editTeacherModel.find('#input-title').val()
             },
             changePwd = editTeacherModel.find('#input-reset-password').is(':checked');
         if (teacher.id !== '') {
-            if (changePwd && teacher.pwd === '') {
+            if (changePwd && teacher.password === '') {
                 notyFacade('若希望重置密码，则密码为必填项', 'warning');
                 return false;
             } else {
+                teacher.password = md5(teacher.password);
                 $.ajax({
                     type: "POST",
-                    url: "/api/post/update/teacher?changePwd=" + changePwd,
+                    url: "/api/post/update/teacher",
                     data: teacher,
                     success: function () {
                         editTeacherModel.modal('hide');
@@ -279,17 +282,18 @@ $(document).ready(function () {
         var student = {
             id: newStudentModel.find('#input-id').val(),
             name: newStudentModel.find('#input-name').val(),
-            pwd: newStudentModel.find('#input-password').val(),
+            password: newStudentModel.find('#input-password').val(),
             major: newStudentModel.find('#input-major').val(),
             grade: newStudentModel.find('#input-grade').val(),
             type: newStudentModel.find('#input-type').val(),
             active: newStudentModel.find('#input-active').is(':checked')
         };
-        if (student.id !== '' && student.pwd !== '') {
+        if (student.id !== '' && student.password !== '') {
             if (!new RegExp("^[0-9]*$").test(student.id)) {
                 notyFacade('学号必须由数字组成', 'warning');
                 return false;
             } else {
+                student.password = md5(student.password);
                 $.ajax({
                     type: "POST",
                     url: "/api/post/new/student",
@@ -325,25 +329,26 @@ $(document).ready(function () {
     });
 
     editStudentModel.find('#submit').click(function () {
-        var sudent = {
+        var student = {
                 id: editStudentModel.find('#input-id').val(),
                 name: editStudentModel.find('#input-name').val(),
-                pwd: editStudentModel.find('#input-password').val(),
+                password: editStudentModel.find('#input-password').val(),
                 major: editStudentModel.find('#input-major').val(),
                 type: editStudentModel.find('#input-type').val(),
                 grade: editStudentModel.find('#input-grade').val(),
                 active: editStudentModel.find('#input-active').is(':checked')
             },
             changePwd = editStudentModel.find('#input-reset-password').is(':checked');
-        if (sudent.id !== '') {
-            if (changePwd && sudent.pwd === '') {
+        if (student.id !== '') {
+            if (changePwd && student.password === '') {
                 notyFacade('若希望重置密码，则密码为必填项', 'warning');
                 return false;
             } else {
+                student.password = md5(student.password);
                 $.ajax({
                     type: "POST",
-                    url: "/api/post/update/student?changePwd=" + changePwd,
-                    data: sudent,
+                    url: "/api/post/update/student",
+                    data: student,
                     success: function () {
                         editStudentModel.modal('hide');
                         editStudentModel.find('form')[0].reset();
@@ -393,4 +398,41 @@ $(document).ready(function () {
             }
         });
     });
+
+    changePasswordForm.find('#button-submit-password').click(function () {
+        var originPassword = changePasswordForm.find('#input-orign-password').val(),
+            newPassword = changePasswordForm.find('#input-new-password').val(),
+            confirmPassword = changePasswordForm.find('#input-confirm-password').val();
+        if (originPassword === '' || newPassword === '') {
+            notyFacade('请输入原密码与新密码', 'warning');
+            return false;
+        } else if (newPassword !== confirmPassword) {
+            notyFacade('输入的新密码与确认密码不匹配', 'warning');
+        } else {
+            var post = {
+                op: md5(originPassword),
+                np: md5(confirmPassword)
+            }
+            $.ajax({
+                type: "POST",
+                url: "/api/post/update/admin",
+                data: post,
+                success: function () {
+                    changePasswordForm[0].reset();
+                    notyFacade('修改成功', 'success');
+                },
+                error: function () {
+                    changePasswordForm[0].reset();
+                    notyFacade('原密码不正确，请重试', 'error');
+                }
+            })
+        }
+    });
+
+    changePasswordForm.keypress(function (e) {
+        if (e.which === 13) {
+            changePasswordForm.find('#button-submit-password').click();
+        }
+    });
+
 });

@@ -37,6 +37,11 @@ $(document).ready(function () {
             id: nav.find('#nav-input-id').val(),
             pwd: nav.find('#nav-input-pwd').val()
         };
+        if (post.id === '' || post.pwd === '') {
+            notyFacade('请输入学号/工号与密码', 'warning');
+            return false;
+        }
+        post.pwd = md5(post.pwd);
         $.ajax({
             type: "POST",
             url: "/api/post/signin?type=" + nav.loginType,
@@ -65,7 +70,7 @@ $(document).ready(function () {
                 type: "POST",
                 url: "/api/post/signin?type=admin",
                 data: {
-                    pwd: pwd
+                    pwd: md5(pwd)
                 },
                 success: function () {
                     window.location = '/admin';

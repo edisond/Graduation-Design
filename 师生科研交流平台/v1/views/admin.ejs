@@ -28,7 +28,7 @@
             </div>
         </div>
     </nav>
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="col-sm-9 col-xs-12 pull-right">
                 <div role="tabpanel">
@@ -37,6 +37,8 @@
                         </li>
                         <li role="presentation"><a href="#tab-student" aria-controls="tab-student" role="tab" data-toggle="tab">学生管理</a>
                         </li>
+                        <li role="presentation"><a href="#tab-password" aria-controls="tab-password" role="tab" data-toggle="tab">更改密码</a>
+                        </li>
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade in active" id="tab-teacher">
@@ -44,7 +46,6 @@
                             <button type="button" class="btn btn-default" id="select-all-teacher">全部选择</button>
                             <button type="button" class="btn btn-default ml10" id="deselect-all-teacher">取消全选</button>
                             <button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#delete-teacher"><i class="fa fa-trash-o"></i>&nbsp;删除选中记录</button>
-                            <button type="button" class="btn btn-success  pull-right mr10"><i class="fa fa-plus"></i>&nbsp;批量导入</button>
                             <button type="button" class="btn btn-success pull-right mr10" data-toggle="modal" data-target="#new-teacher"><i class="fa fa-plus"></i>&nbsp;添加教师</button>
                             <br/>
                             <br/>
@@ -66,7 +67,6 @@
                             <button type="button" class="btn btn-default" id="select-all-student">全部选择</button>
                             <button type="button" class="btn btn-default ml10" id="deselect-all-student">取消全选</button>
                             <button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#delete-student"><i class="fa fa-trash-o"></i>&nbsp;删除选中记录</button>
-                            <button type="button" class="btn btn-success  pull-right mr10"><i class="fa fa-plus"></i>&nbsp;批量导入</button>
                             <button type="button" class="btn btn-success pull-right mr10" data-toggle="modal" data-target="#new-student"><i class="fa fa-plus"></i>&nbsp;添加学生</button>
                             <br/>
                             <br/>
@@ -84,6 +84,24 @@
                                     </tr>
                                 </thead>
                             </table>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="tab-password">
+                            <br/>
+                            <form class="maxw300" id="form-change-password">
+                                <div class="form-group">
+                                    <label for="input-orign-password">原密码</label>
+                                    <input type="password" class="form-control" id="input-orign-password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-new-password">新密码</label>
+                                    <input type="password" class="form-control" id="input-new-password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-confirm-password">确认</label>
+                                    <input type="password" class="form-control" id="input-confirm-password">
+                                </div>
+                                <button type="button" class="btn btn-primary" id="button-submit-password">提交</button>
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -63,11 +63,15 @@
 }
 
 .pb10 {
-    padding-bottom: 10px !important;
+    padding-bottom: 10px !important
 }
 
 .maxw100 {
     max-width: 100px !important
+}
+
+.maxw300 {
+    max-width: 300px !important
 }
 
 .minw250 {

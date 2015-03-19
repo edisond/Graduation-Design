@@ -1,13 +1,11 @@
 var express = require('express');
 var router = express.Router();
-var mongoose = require('mongoose');
-var model = require('../../model/model');
-var Student = model.Student;
-var Teacher = model.Teacher;
+var db = require('../../model/db');
+var Dao = db.Dao;
 
 /* Get student list */
 router.get('/student', function (req, res) {
-    Student.find({}, '-_id id name major grade type active', function (err, docs) {
+    Dao.getStudents(function (err, docs) {
         if (err) {
             res.sendStatus(500);
         } else {
@@ -18,7 +16,7 @@ router.get('/student', function (req, res) {
 
 /* Get teacher list */
 router.get('/teacher', function (req, res) {
-    Teacher.find({}, '-_id id name department title', function (err, docs) {
+    Dao.getTeachers(function (err, docs) {
         if (err) {
             res.sendStatus(500);
         } else {
