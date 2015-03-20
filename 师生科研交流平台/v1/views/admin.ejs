@@ -18,7 +18,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">师生科研交流平台 - 管理员界面</a>
+                <a class="navbar-brand" href="/">师生科研交流平台</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-main">
                 <ul class="nav navbar-nav navbar-right">
@@ -55,8 +55,10 @@
                                         <th></th>
                                         <th>工号</th>
                                         <th>姓名</th>
+                                        <th>性别</th>
                                         <th>部门</th>
                                         <th>职称</th>
+                                        <th>激活</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
@@ -76,8 +78,10 @@
                                         <th></th>
                                         <th>学号</th>
                                         <th>姓名</th>
-                                        <th>年级</th>
+                                        <th>性别</th>
+                                        <th>学院</th>
                                         <th>专业</th>
+                                        <th>年级</th>
                                         <th>类型</th>
                                         <th>激活</th>
                                         <th>操作</th>
@@ -159,31 +163,52 @@
                     <form class="form-horizontal">
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-id">工号</label>
-                            <div class="col-xs-12 col-sm-10">
-                                <input class="form-control" type="text" id="input-id" placeholder="e.g. 20110523">
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-id" maxlength="50">
+                            </div>
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-password">初始密码</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-password" value="123456" maxlength="50">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label control-label" for="input-name">姓名</label>
-                            <div class="col-xs-12 col-sm-10">
-                                <input class="form-control form-control" type="text" id="input-name" placeholder="e.g. 张三">
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control form-control" type="text" id="input-name" maxlength="50">
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-xs-12 col-sm-2 control-label" for="input-password">初始密码</label>
-                            <div class="col-xs-12 col-sm-10">
-                                <input class="form-control" type="text" id="input-password" placeholder="请输入初始密码" value="123456">
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-sex">性别</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <select class="form-control" type="text" id="input-sex">
+                                    <option>男</option>
+                                    <option>女</option>
+                                    <option>其它</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-department">部门</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-department" placeholder="e.g. 电气信息学院" />
+                                <input class="form-control" type="text" id="input-department" maxlength="50" />
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-title">职称</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-title" placeholder="e.g. 讲师" />
+                                <input class="form-control" type="text" id="input-title" maxlength="50" />
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-email">邮箱</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-email" maxlength="50">
+                            </div>
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-phone">电话</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-phone" maxlength="50">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-12 control-label">
+                                <input type="checkbox" checked id="input-active">&nbsp;创建并激活
+                            </label>
                         </div>
                     </form>
                 </div>
@@ -206,35 +231,53 @@
                     <form class="form-horizontal">
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-id">工号</label>
-                            <div class="col-xs-12 col-sm-10">
-                                <input class="form-control" type="text" id="input-id" disabled="disabled" placeholder="e.g. 20110523">
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-id" maxlength="50" disabled="disabled">
+                            </div>
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-password">密码</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-password" value="123456" maxlength="50" disabled="disabled">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label control-label" for="input-name">姓名</label>
-                            <div class="col-xs-12 col-sm-10">
-                                <input class="form-control form-control" type="text" id="input-name" placeholder="e.g. 张三">
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control form-control" type="text" id="input-name" maxlength="50">
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-xs-12 col-sm-2 control-label" for="input-password">密码</label>
-                            <div class="col-xs-12 col-sm-10">
-                                <input class="form-control" type="text" id="input-password" disabled="disabled" placeholder="请输入初始密码">
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-sex">性别</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <select class="form-control" type="text" id="input-sex">
+                                    <option>男</option>
+                                    <option>女</option>
+                                    <option>其它</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-department">部门</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-department" placeholder="e.g. 电气信息学院" />
+                                <input class="form-control" type="text" id="input-department" maxlength="50" />
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-title">职称</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-title" placeholder="e.g. 讲师" />
+                                <input class="form-control" type="text" id="input-title" maxlength="50" />
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label class="col-xs-12 control-label">
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-email">邮箱</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-email" maxlength="50">
+                            </div>
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-phone">电话</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-phone" maxlength="50">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-6 control-label">
+                                <input type="checkbox" id="input-active">&nbsp;激活
+                            </label>
+                            <label class="col-xs-12 col-sm-6 control-label">
                                 <input type="checkbox" id="input-reset-password">&nbsp;重设密码
                             </label>
                         </div>
@@ -277,33 +320,43 @@
                     <form class="form-horizontal">
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-id">学号</label>
-                            <div class="col-xs-12 col-sm-10">
-                                <input class="form-control" type="text" id="input-id" placeholder="e.g. 2011052383">
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-id" maxlength="50">
+                            </div>
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-password">初始密码</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-password" value="123456" maxlength="50">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label control-label" for="input-name">姓名</label>
-                            <div class="col-xs-12 col-sm-10">
-                                <input class="form-control form-control" type="text" id="input-name" placeholder="e.g. 李四">
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control form-control" type="text" id="input-name" maxlength="50">
+                            </div>
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-sex">性别</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <select class="form-control" type="text" id="input-sex">
+                                    <option>男</option>
+                                    <option>女</option>
+                                    <option>其它</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-xs-12 col-sm-2 control-label" for="input-password">初始密码</label>
-                            <div class="col-xs-12 col-sm-10">
-                                <input class="form-control" type="text" id="input-password" placeholder="请输入初始密码" value="123456">
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-college">学院</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-college" maxlength="50">
                             </div>
-                        </div>
-                        <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-major">专业</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-major" placeholder="e.g. 软件工程">
-                            </div>
-                            <label class="col-xs-12 col-sm-2 control-label" for="input-grade">年级</label>
-                            <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-grade" placeholder="e.g. 2011">
+                                <input class="form-control" type="text" id="input-major" maxlength="50">
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-grade">年级</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-grade" maxlength="50">
+                            </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-type">类型</label>
                             <div class="col-xs-12 col-sm-4">
                                 <select class="form-control" type="text" id="input-type">
@@ -311,6 +364,22 @@
                                     <option>硕士研究生</option>
                                     <option>博士研究生</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-email">邮箱</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-email" maxlength="50">
+                            </div>
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-phone">电话</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-phone" maxlength="50">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-address">地址</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-address" maxlength="50">
                             </div>
                             <label class="col-xs-12 col-sm-6 control-label">
                                 <input type="checkbox" checked id="input-active">&nbsp;创建并激活
@@ -337,33 +406,43 @@
                     <form class="form-horizontal">
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-id">学号</label>
-                            <div class="col-xs-12 col-sm-10">
-                                <input class="form-control" type="text" id="input-id" disabled="disabled" placeholder="e.g. 2011052383">
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-id" maxlength="50" disabled="disabled">
+                            </div>
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-password">密码</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-password" value="123456" maxlength="50" disabled="disabled">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label control-label" for="input-name">姓名</label>
-                            <div class="col-xs-12 col-sm-10">
-                                <input class="form-control form-control" type="text" id="input-name" placeholder="e.g. 李四">
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control form-control" type="text" id="input-name" maxlength="50">
+                            </div>
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-sex">性别</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <select class="form-control" type="text" id="input-sex">
+                                    <option>男</option>
+                                    <option>女</option>
+                                    <option>其它</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-xs-12 col-sm-2 control-label" for="input-password">密码</label>
-                            <div class="col-xs-12 col-sm-10">
-                                <input class="form-control" type="text" id="input-password" disabled="disabled" placeholder="请输入初始密码">
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-college">学院</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-college" maxlength="50">
                             </div>
-                        </div>
-                        <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-major">专业</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-major" placeholder="e.g. 软件工程">
-                            </div>
-                            <label class="col-xs-12 col-sm-2 control-label" for="input-grade">年级</label>
-                            <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-grade" placeholder="e.g. 2011">
+                                <input class="form-control" type="text" id="input-major" maxlength="50">
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-grade">年级</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-grade" maxlength="50">
+                            </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-type">类型</label>
                             <div class="col-xs-12 col-sm-4">
                                 <select class="form-control" type="text" id="input-type">
@@ -371,6 +450,22 @@
                                     <option>硕士研究生</option>
                                     <option>博士研究生</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-email">邮箱</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-email" maxlength="50">
+                            </div>
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-phone">电话</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-phone" maxlength="50">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 control-label" for="input-address">地址</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input class="form-control" type="text" id="input-address" maxlength="50">
                             </div>
                             <label class="col-xs-6 col-sm-3 control-label">
                                 <input type="checkbox" id="input-active">&nbsp;激活
