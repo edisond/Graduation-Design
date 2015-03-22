@@ -1,3 +1,15 @@
+Array.prototype.unique = function () {
+    var n = {},
+        r = [];
+    for (var i = 0; i < this.length; i++) {
+        if (!n[this[i]]) {
+            n[this[i]] = true;
+            r.push(this[i]);
+        }
+    }
+    return r;
+}
+
 $(document).ready(function () {
     var nav = $('nav.navbar-static-top'),
         pathname = window.location.pathname;

@@ -1,22 +1,14 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-/* 密钥表 */
-var Key = new Schema({
-    /* 密钥 */
-    key: String,
-    /* 所属用户标志 */
-    for: String,
-    /* 所属用户类型 （学生，教师或管理员）*/
-    type: String
-});
-
 /* 教师表 */
 var Teacher = new Schema({
     /* 工号 */
     id: String,
     /* 密码 */
     password: String,
+    /* 密钥 */
+    key: String,
     /* 姓名 */
     name: String,
     /* 性别 */
@@ -39,6 +31,8 @@ var Student = new Schema({
     id: String,
     /* 密码 */
     password: String,
+    /* 密钥 */
+    key: String,
     /* 姓名 */
     name: String,
     /* 性别 */
@@ -63,10 +57,50 @@ var Student = new Schema({
 
 /* 管理员表 */
 var Admin = new Schema({
-    password: String
+    /* 密码 */
+    password: String,
+    /* 密钥 */
+    key: String
 });
 
-module.exports.Key = mongoose.model('key', Key);
+/* 开放实验项目表 */
+var OpenExperiment = new Schema({
+    /* 项目名 */
+    name: String,
+    /* 描述 */
+    detail: String,
+    /* 学生容量 */
+    capacity: Number,
+    /* 需要学时 */
+    effort: Number,
+    /* 开始时间 */
+    dateStart: Date,
+    /* 结束时间 */
+    dateEnd: Date,
+    /* 状态 */
+    status: String,
+    /* 需求 */
+    requirement: String,
+    /* 学院 */
+    college: String,
+    /* 实验室 */
+    lab: String,
+    /* 来源 */
+    source: String,
+    /* 结题形式 */
+    result: String,
+    /* 对象 */
+    object: String,
+    /* 教师id */
+    teacher: String,
+    /* 选课学生id */
+    select: Array,
+    /* 最后更新日期 */
+    updateDate: Date
+});
+
+
 module.exports.Teacher = mongoose.model('teacher', Teacher);
 module.exports.Student = mongoose.model('student', Student);
 module.exports.Admin = mongoose.model('admin', Admin);
+module.exports.OpenExperiment = mongoose.model('openExperiment', OpenExperiment);

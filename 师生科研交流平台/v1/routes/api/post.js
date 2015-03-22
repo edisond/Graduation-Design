@@ -183,23 +183,8 @@ router.post('/update/student', function (req, res) {
             active: req.body.active
         };
         Dao.updateStudent(student, function (err) {
-            if (err) {
-                res.sendStatus(500);
-            } else {
-                if (student.password) {
-                    Dao.updateStudentPassword(student, function (err) {
-                        if (err) {
-                            res.sendStatus(500);
-                        } else {
-                            res.sendStatus(200);
-                        }
-                    })
-                } else {
-                    res.sendStatus(200);
-                }
-            }
+            res.sendStatus(err ? 500 : 200);
         });
-
     } else {
         res.sendStatus(401);
     }
@@ -257,4 +242,14 @@ router.post('/delete/student', function (req, res) {
     }
 })
 
+/* 添加新开放实验 */
+router.post('/new/open-experiment', function (req, res) {
+    if (req.session.teacher['_id'] === req.body.teacher) {
+        Dao.newOpenExperiment(req.body, function (err) {
+            res.sendStatus(err ? 500 : 200)
+        })
+    } else {
+        res.sendStatus(401);
+    }
+});
 module.exports = router;

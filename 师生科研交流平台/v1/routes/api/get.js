@@ -25,4 +25,15 @@ router.get('/teacher', function (req, res) {
     })
 })
 
+/* Get open expertiment list */
+router.get('/open-experiment', function (req, res) {
+    Dao.getOpenExperiments(function (err, docs) {
+        if (err) {
+            res.sendStatus(500);
+        } else {
+            res.status(200).send(docs);
+        }
+    })
+})
+
 module.exports = router;

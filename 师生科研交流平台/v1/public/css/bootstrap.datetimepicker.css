@@ -377,10 +377,3 @@
 .datetimepicker tfoot tr:first-child th:hover {
     background: #eeeeee;
 }
-
-.input-append.date .add-on i,
-.input-prepend.date .add-on i {
-    cursor: pointer;
-    width: 14px;
-    height: 14px;
-}

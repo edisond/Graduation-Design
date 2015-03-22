@@ -1,16 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var mongoose = require('mongoose');
 var session = require('express-session');
-var model = require('../model/model');
-var Student = model.Student;
-var Teacher = model.Teacher;
-var Admin = model.Admin;
-var md5 = require('../lib/md5');
 var db = require('../model/db');
 var Dao = db.Dao;
 
-/* GET home page. */
+/* 主页 */
 router.get('/', function (req, res) {
     res.render('index', {
         student: req.session.student,
@@ -18,15 +12,26 @@ router.get('/', function (req, res) {
     });
 })
 
-/* GET open experiment page. */
-router.get('/oe', function (req, res) {
-    res.render('oe', {
+/* 开放实验列表页 */
+router.get('/open-experiment', function (req, res) {
+    res.render('openExperiment', {
         student: req.session.student,
         teacher: req.session.teacher
     });
 })
 
-/* GET challenge cup page. */
+/* 开放实验新建页 */
+router.get('/open-experiment/new', function (req, res) {
+    if (req.session.teacher) {
+        res.render('openExperimentNew', {
+            teacher: req.session.teacher
+        });
+    } else {
+        res.redirect('/');
+    }
+})
+
+/* 挑战杯列表页 */
 router.get('/cc', function (req, res) {
     res.render('cc', {
         student: req.session.student,
@@ -34,7 +39,18 @@ router.get('/cc', function (req, res) {
     });
 })
 
-/* GET innovation project page. */
+/* 挑战杯新建页 */
+router.get('/cc/new', function (req, res) {
+    if (req.session.teacher) {
+        res.render('cc/new', {
+            teacher: req.session.teacher
+        });
+    } else {
+        res.redirect('cc');
+    }
+})
+
+/* 创新项目列表页 */
 router.get('/ip', function (req, res) {
     res.render('ip', {
         student: req.session.student,
@@ -43,7 +59,7 @@ router.get('/ip', function (req, res) {
 })
 
 
-/* GET center page. */
+/* 个人中心页 */
 router.get('/center', function (req, res) {
     if (req.session.student) {
         res.render('student/center', {
@@ -59,7 +75,7 @@ router.get('/center', function (req, res) {
 })
 
 
-/* GET student profile page. */
+/* 学生个人资料页 */
 router.get('/profile/:id', function (req, res) {
     if (!req.query.type) {
         res.sendStatus(404);
@@ -106,7 +122,7 @@ router.get('/profile/:id', function (req, res) {
     }
 })
 
-/* GET admin page. */
+/* 管理员页 */
 router.get('/admin', function (req, res) {
     if (req.session.admin) {
         res.render('admin');
