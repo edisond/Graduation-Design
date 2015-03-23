@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>开放实验 - 师生科研互动平台</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% include parts/include.css.html %>
+</head>
+
+<body>
+    <% include parts/nav.ejs %>
+        <div class="header header-oe">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h1 class="m0"><%=openExperiment.name%></h1>
+                        <h5 class="mt20"><i class="fa fa-street-view"></i>指导教师：&nbsp;<%=openExperiment.teacher.name%><i class="fa fa-clock-o ml20"></i>&nbsp;最后更新于<%=new Date(openExperiment.updateDate).toLocaleDateString()%></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container mt20">
+            <div class="row">
+                <div class="col-sm-9 col-xs-12 pull-right">
+                    info
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    <div class="aside">
+                        <h4>教师信息</h4>
+                        <hr/>
+                        <h5><i class="fa fa-street-view"></i><%=openExperiment.teacher.name%></h5>
+                        <h5><i class="fa fa-institution"></i><%=openExperiment.teacher.department%></h5>
+                        <h5><i class="fa fa-envelope"></i><a href="mailto:<%=openExperiment.teacher.email%>"><%=openExperiment.teacher.email%></a></h5>
+                        <h5><i class="fa fa-phone"></i><%=openExperiment.teacher.phone%></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% include parts/include.js.html %>
+            <script type="text/javascript" src="/js/openExperimentView.js"></script>
+</body>
+
+</html>

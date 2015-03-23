@@ -15,7 +15,7 @@ $(document).ready(function () {
         pathname = window.location.pathname;
     if (pathname.indexOf('/center') === 0) {
         nav.find('#nav-link-to-center').addClass('active');
-    } else if (pathname.indexOf('/oe') === 0) {
+    } else if (pathname.indexOf('/open-experiment') === 0) {
         nav.find('#nav-link-to-oe').addClass('active');
     } else if (pathname.indexOf('/cc') === 0) {
         nav.find('#nav-link-to-cc').addClass('active');

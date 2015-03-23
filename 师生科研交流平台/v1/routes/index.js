@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var session = require('express-session');
+var moment = require('moment');
 var db = require('../model/db');
 var Dao = db.Dao;
 
@@ -18,6 +19,18 @@ router.get('/open-experiment', function (req, res) {
         student: req.session.student,
         teacher: req.session.teacher
     });
+})
+
+/* 开放实验页 */
+router.get('/open-experiment/:id', function (req, res) {
+    console.log(moment)
+    Dao.getOpenExperiment(req.params.id, function (err, docs) {
+        if (docs) {
+            res.render('openExperimentView', {
+                openExperiment: docs
+            })
+        } else res.sendStatus(404);
+    })
 })
 
 /* 开放实验新建页 */

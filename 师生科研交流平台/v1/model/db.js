@@ -9,12 +9,8 @@ var md5 = require('../lib/md5');
 var Dao = {
 
     /* 获取所有学生 */
-    /* 参数：callback(err, docs) */
-    /* @err-将要返回的错误，@docs-将要返回的文档 */
     getStudents: function (callback) {
-        Student.find({}, '-_id -__v -password -key', function (err, docs) {
-            callback(err, docs);
-        });
+        Student.find({}, '-_id -__v -password -key', callback);
     },
 
     /* 新建一个学生 */
@@ -24,17 +20,7 @@ var Dao = {
         var s = new Student(student);
         s.key = md5.md5(new Date());
         s.password = md5.md5(s.password + s.key);
-        Student.findOne({
-            'id': s.id
-        }, function (err, docs) {
-            if (docs) {
-                callback('Already Exist')
-            } else {
-                s.save(function (err) {
-                    callback(err);
-                })
-            }
-        })
+        s.save(callback)
     },
 
     /* 更新一个学生 */
@@ -83,18 +69,14 @@ var Dao = {
             'id': {
                 $in: idList
             }
-        }, function (err, docs) {
-            callback(err)
-        });
+        }, callback);
     },
 
     /* 获取所有教师 */
     /* 参数：callback(err, docs) */
     /* @err-将要返回的错误，@docs-将要返回的文档 */
     getTeachers: function (callback) {
-        Teacher.find({}, '-_id -__v -password', function (err, docs) {
-            callback(err, docs);
-        });
+        Teacher.find({}, '-_id -__v -password', callback);
     },
 
     /* 新建一个教师 */
@@ -104,17 +86,7 @@ var Dao = {
         var s = new Teacher(teacher);
         s.key = md5.md5(new Date());
         s.password = md5.md5(s.password + s.key);
-        Teacher.findOne({
-            'id': s.id
-        }, function (err, docs) {
-            if (docs) {
-                callback('Already Exist')
-            } else {
-                s.save(function (err) {
-                    callback(err);
-                })
-            }
-        })
+        s.save(callback)
     },
 
     /* 更新一个教师 */
@@ -163,9 +135,7 @@ var Dao = {
             'id': {
                 $in: idList
             }
-        }, function (err, docs) {
-            callback(err)
-        });
+        }, callback);
     },
 
     /* 验证管理员密码 */
@@ -194,27 +164,26 @@ var Dao = {
             password: md5.md5(password + key),
             key: key
         }
-        Admin.findOneAndUpdate({}, admin, function (err, docs) {
-            callback(err);
-        })
+        Admin.findOneAndUpdate({}, admin, callback)
     },
 
     /* 新建开放实验 */
     newOpenExperiment: function (openExperiment, callback) {
         var oe = new OpenExperiment(openExperiment);
-        oe.updateDate = new Date();
-        oe.save(function (err) {
-            callback(err);
-        })
+        oe.save(callback)
     },
 
     /* 获取所有开放实验 */
     getOpenExperiments: function (callback) {
-        OpenExperiment.find(function (err, docs) {
-            callback(err, docs);
-        })
-    }
+        OpenExperiment.find().populate('teacher', 'name').exec(callback);
+    },
 
+    /* 获取一个开放实验 */
+    getOpenExperiment: function (id, callback) {
+        OpenExperiment.findOne({
+            _id: id
+        }).populate('teacher', 'name department email phone').exec(callback);
+    }
 }
 
 module.exports.Dao = Dao;

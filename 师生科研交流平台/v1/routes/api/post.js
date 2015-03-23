@@ -1,11 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var mongoose = require('mongoose');
 var session = require('express-session');
-var model = require('../../model/model');
-var Student = model.Student;
-var Teacher = model.Teacher;
-var Admin = model.Admin;
 var db = require('../../model/db');
 var Dao = db.Dao;
 
@@ -83,17 +78,7 @@ router.post('/signout', function (req, res) {
 
 /* 添加新教师 */
 router.post('/new/teacher', function (req, res) {
-    var teacher = {
-        id: req.body.id,
-        password: req.body.password,
-        name: req.body.name,
-        sex: req.body.sex,
-        department: req.body.department,
-        title: req.body.title,
-        email: req.body.email,
-        phone: req.body.phone,
-        active: req.body.active
-    };
+    var teacher = req.body;
     Dao.newTeacher(teacher, function (err) {
         if (err) {
             res.sendStatus(500)
@@ -105,20 +90,7 @@ router.post('/new/teacher', function (req, res) {
 
 /* 添加新学生 */
 router.post('/new/student', function (req, res) {
-    var student = {
-        id: req.body.id,
-        password: req.body.password,
-        name: req.body.name,
-        sex: req.body.sex,
-        college: req.body.college,
-        major: req.body.major,
-        grade: req.body.grade,
-        type: req.body.type,
-        email: req.body.email,
-        phone: req.body.phone,
-        address: req.body.address,
-        active: req.body.active
-    };
+    var student = req.body;
     Dao.newStudent(student, function (err) {
         if (err) {
             res.sendStatus(500)
@@ -131,33 +103,9 @@ router.post('/new/student', function (req, res) {
 /* 更新一个教师 */
 router.post('/update/teacher', function (req, res) {
     if (req.session.admin) {
-        var teacher = {
-            id: req.body.id,
-            password: req.body.password,
-            name: req.body.name,
-            sex: req.body.sex,
-            department: req.body.department,
-            title: req.body.title,
-            email: req.body.email,
-            phone: req.body.phone,
-            active: req.body.active
-        };
+        var teacher = req.body;
         Dao.updateTeacher(teacher, function (err) {
-            if (err) {
-                res.sendStatus(500);
-            } else {
-                if (teacher.password) {
-                    Dao.updateTeacherPassword(teacher, function (err) {
-                        if (err) {
-                            res.sendStatus(500);
-                        } else {
-                            res.sendStatus(200);
-                        }
-                    })
-                } else {
-                    res.sendStatus(200);
-                }
-            }
+            res.sendStatus(err ? 500 : 200);
         });
 
     } else {
@@ -168,20 +116,7 @@ router.post('/update/teacher', function (req, res) {
 /* 更新一个学生 */
 router.post('/update/student', function (req, res) {
     if (req.session.admin) {
-        var student = {
-            id: req.body.id,
-            password: req.body.password,
-            name: req.body.name,
-            sex: req.body.sex,
-            college: req.body.college,
-            major: req.body.major,
-            type: req.body.type,
-            grade: req.body.grade,
-            email: req.body.email,
-            phone: req.body.phone,
-            address: req.body.address,
-            active: req.body.active
-        };
+        var student = req.body;
         Dao.updateStudent(student, function (err) {
             res.sendStatus(err ? 500 : 200);
         });

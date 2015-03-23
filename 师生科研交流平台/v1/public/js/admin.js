@@ -91,6 +91,12 @@ $(document).ready(function () {
         tableTeacher.find('tbody  input[data-action=select]:checked').click();
     });
 
+    newTeacherModel.keypress(function (e) {
+        if (e.which === 13) {
+            newTeacherModel.find('#submit').click();
+        }
+    });
+
     newTeacherModel.find('#submit').click(function () {
         var teacher = {
             id: newTeacherModel.find('#input-id').val(),
@@ -103,7 +109,7 @@ $(document).ready(function () {
             phone: newTeacherModel.find('#input-phone').val(),
             active: newTeacherModel.find('#input-active').is(':checked')
         };
-        if (teacher.id !== '' && teacher.password !== '') {
+        if (teacher.id !== '' && teacher.password !== '' && teacher.name !== '') {
             if (!new RegExp("^[0-9]*$").test(teacher.id)) {
                 notyFacade('工号必须由数字组成', 'warning');
                 return false;
@@ -125,7 +131,7 @@ $(document).ready(function () {
                 });
             }
         } else {
-            notyFacade('工号与初始密码为必填项', 'warning');
+            notyFacade('请至少填写工号，姓名，初始密码', 'warning');
         }
     });
 
@@ -143,6 +149,12 @@ $(document).ready(function () {
 
     editTeacherModel.find('#input-reset-password').click(function () {
         editTeacherModel.find('#input-password').attr('disabled', !$(this).is(':checked'));
+    });
+
+    editTeacherModel.keypress(function (e) {
+        if (e.which === 13) {
+            editTeacherModel.find('#submit').click();
+        }
     });
 
     editTeacherModel.find('#submit').click(function () {
@@ -195,6 +207,12 @@ $(document).ready(function () {
             return false;
         }
 
+    });
+
+    deleteTeacherModel.keypress(function (e) {
+        if (e.which === 13) {
+            deleteTeacherModel.find('#submit').click();
+        }
     });
 
     deleteTeacherModel.find('#submit').click(function () {
@@ -312,6 +330,12 @@ $(document).ready(function () {
         tableStudent.find('tbody  input[data-action=select]:checked').click();
     });
 
+    newStudentModel.keypress(function (e) {
+        if (e.which === 13) {
+            newStudentModel.find('#submit').click();
+        }
+    });
+
     newStudentModel.find('#submit').click(function () {
         var student = {
             id: newStudentModel.find('#input-id').val(),
@@ -327,7 +351,7 @@ $(document).ready(function () {
             address: newStudentModel.find('#input-address').val(),
             active: newStudentModel.find('#input-active').is(':checked')
         };
-        if (student.id !== '' && student.password !== '') {
+        if (student.id !== '' && student.password !== '' && student.name !== '') {
             if (!new RegExp("^[0-9]*$").test(student.id)) {
                 notyFacade('学号必须由数字组成', 'warning');
                 return false;
@@ -349,7 +373,7 @@ $(document).ready(function () {
                 });
             }
         } else {
-            notyFacade('学号与初始密码为必填项', 'warning');
+            notyFacade('请至少填写学号，姓名，初始密码', 'warning');
         }
     });
 
@@ -370,6 +394,12 @@ $(document).ready(function () {
 
     editStudentModel.find('#input-reset-password').click(function () {
         editStudentModel.find('#input-password').attr('disabled', !$(this).is(':checked'));
+    });
+
+    editStudentModel.keypress(function (e) {
+        if (e.which === 13) {
+            editStudentModel.find('#submit').click();
+        }
     });
 
     editStudentModel.find('#submit').click(function () {
@@ -422,6 +452,12 @@ $(document).ready(function () {
         } else {
             notyFacade('您没有选中任何记录', 'information');
             return false;
+        }
+    });
+
+    deleteStudentModel.keypress(function (e) {
+        if (e.which === 13) {
+            deleteStudentModel.find('#submit').click();
         }
     });
 

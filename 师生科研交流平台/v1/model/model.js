@@ -4,15 +4,31 @@ var Schema = mongoose.Schema;
 /* 教师表 */
 var Teacher = new Schema({
     /* 工号 */
-    id: String,
+    id: {
+        type: 'String',
+        required: true,
+        unique: true
+    },
     /* 密码 */
-    password: String,
+    password: {
+        type: 'String',
+        required: true
+    },
     /* 密钥 */
-    key: String,
+    key: {
+        type: 'String',
+        required: true
+    },
     /* 姓名 */
-    name: String,
+    name: {
+        type: 'String',
+        required: true
+    },
     /* 性别 */
-    sex: String,
+    sex: {
+        type: 'String',
+        enum: ['男', '女', '其它']
+    },
     /* 所属部门 */
     department: String,
     /* 职称 */
@@ -22,21 +38,41 @@ var Teacher = new Schema({
     /* 联系电话 */
     phone: String,
     /* 激活 */
-    active: Boolean
+    active: {
+        type: 'Boolean',
+        required: true,
+        default: false
+    }
 });
 
 /* 学生表 */
 var Student = new Schema({
     /* 学号 */
-    id: String,
+    id: {
+        type: 'String',
+        required: true,
+        unique: true
+    },
     /* 密码 */
-    password: String,
+    password: {
+        type: 'String',
+        required: true
+    },
     /* 密钥 */
-    key: String,
+    key: {
+        type: 'String',
+        required: true
+    },
     /* 姓名 */
-    name: String,
+    name: {
+        type: 'String',
+        required: true
+    },
     /* 性别 */
-    sex: String,
+    sex: {
+        type: 'String',
+        enum: ['男', '女', '其它']
+    },
     /* 学院 */
     college: String,
     /* 专业 */
@@ -52,53 +88,116 @@ var Student = new Schema({
     /* 宿舍地址 */
     address: String,
     /* 激活 */
-    active: Boolean
+    active: {
+        type: 'Boolean',
+        required: true,
+        default: false
+    }
 });
 
 /* 管理员表 */
 var Admin = new Schema({
     /* 密码 */
-    password: String,
+    password: {
+        type: 'String',
+        required: true
+    },
     /* 密钥 */
-    key: String
+    key: {
+        type: 'String',
+        required: true
+    }
 });
 
 /* 开放实验项目表 */
 var OpenExperiment = new Schema({
     /* 项目名 */
-    name: String,
+    name: {
+        type: 'String',
+        required: true
+    },
     /* 描述 */
-    detail: String,
+    detail: {
+        type: 'String',
+        required: true
+    },
     /* 学生容量 */
-    capacity: Number,
+    capacity: {
+        type: 'Number',
+        required: true,
+        min: 1
+    },
     /* 需要学时 */
-    effort: Number,
+    effort: {
+        type: 'Number',
+        required: true,
+        min: 1
+    },
     /* 开始时间 */
-    dateStart: Date,
+    dateStart: {
+        type: 'Date',
+        required: true
+    },
     /* 结束时间 */
-    dateEnd: Date,
+    dateEnd: {
+        type: 'Date',
+        required: true
+    },
     /* 状态 */
-    status: String,
+    status: {
+        type: 'String',
+        required: true
+    },
     /* 需求 */
-    requirement: String,
+    requirement: {
+        type: 'String',
+        required: true
+    },
     /* 学院 */
-    college: String,
+    college: {
+        type: 'String',
+        required: true
+    },
     /* 实验室 */
-    lab: String,
+    lab: {
+        type: 'String',
+        required: true
+    },
     /* 来源 */
-    source: String,
+    source: {
+        type: 'String',
+        required: true
+    },
     /* 结题形式 */
-    result: String,
+    result: {
+        type: 'String',
+        required: true
+    },
     /* 对象 */
-    object: String,
+    object: {
+        type: 'String',
+        required: true
+    },
     /* 教师id */
-    teacher: String,
+    teacher: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'teacher'
+    },
     /* 选课学生id */
-    select: Array,
+    select: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'student'
+        }
+    ],
     /* 最后更新日期 */
-    updateDate: Date
+    updateDate: {
+        type: 'Date',
+        required: true,
+        default: new Date()
+    }
 });
-
 
 module.exports.Teacher = mongoose.model('teacher', Teacher);
 module.exports.Student = mongoose.model('student', Student);
