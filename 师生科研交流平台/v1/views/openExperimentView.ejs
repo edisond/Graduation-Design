@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <h1 class="m0"><%=openExperiment.name%></h1>
-                        <h5 class="mt20"><i class="fa fa-street-view"></i>指导教师：&nbsp;<%=openExperiment.teacher.name%><i class="fa fa-clock-o ml20"></i>&nbsp;最后更新于<%=new Date(openExperiment.updateDate).toLocaleDateString()%></h5>
+                        <h5 class="mt20"><i class="fa fa-street-view"></i>指导教师：&nbsp;<%=openExperiment.teacher.name%><i class="fa fa-clock-o ml20"></i>&nbsp;最后更新于<%=openExperiment.dateUpdate%></h5>
                     </div>
                 </div>
             </div>
@@ -27,12 +27,26 @@
                 </div>
                 <div class="col-sm-3 col-xs-12">
                     <div class="aside">
-                        <h4>教师信息</h4>
+
+                        <div class="text-muted">所属学院：</div>
+                        <h4><%=openExperiment.college%></h4>
+                        <div class="text-muted">实验室：</div>
+                        <h4><%=openExperiment.lab%></h4>
                         <hr/>
                         <h5><i class="fa fa-street-view"></i><%=openExperiment.teacher.name%></h5>
                         <h5><i class="fa fa-institution"></i><%=openExperiment.teacher.department%></h5>
                         <h5><i class="fa fa-envelope"></i><a href="mailto:<%=openExperiment.teacher.email%>"><%=openExperiment.teacher.email%></a></h5>
                         <h5><i class="fa fa-phone"></i><%=openExperiment.teacher.phone%></h5>
+                        <hr/>
+                        <h5><i class="fa fa-graduation-cap"></i>面向<%=openExperiment.object%>同学</h5>
+                        <h5><i class="fa fa-users"></i>选课人数&nbsp;<%=openExperiment.select.length%>/<%=openExperiment.capacity%></h5>
+                        <hr/>
+                        <h5><i class="fa fa-calendar"></i>开始于<%=openExperiment.dateStart%></h5>
+                        <h5><i class="fa fa-calendar"></i>结束于<%=openExperiment.dateEnd%></h5>
+                        <h5><i class="fa fa-clock-o"></i>预计需要<%=openExperiment.effort%>学时</h5>
+                        <hr/>
+
+
                     </div>
                 </div>
             </div>

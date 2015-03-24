@@ -21,18 +21,6 @@ router.get('/open-experiment', function (req, res) {
     });
 })
 
-/* 开放实验页 */
-router.get('/open-experiment/:id', function (req, res) {
-    console.log(moment)
-    Dao.getOpenExperiment(req.params.id, function (err, docs) {
-        if (docs) {
-            res.render('openExperimentView', {
-                openExperiment: docs
-            })
-        } else res.sendStatus(404);
-    })
-})
-
 /* 开放实验新建页 */
 router.get('/open-experiment/new', function (req, res) {
     if (req.session.teacher) {
@@ -43,6 +31,22 @@ router.get('/open-experiment/new', function (req, res) {
         res.redirect('/');
     }
 })
+
+/* 开放实验页 */
+router.get('/open-experiment/:id', function (req, res) {
+    Dao.getOpenExperiment(req.params.id, function (err, docs) {
+        if (docs) {
+            docs.dateUpdate = moment(docs.dateUpdate).fromNow();
+            docs.dateStart = moment(docs.dateStart).calendar();
+            docs.dateEnd = moment(docs.dateEnd).calendar();
+            res.render('openExperimentView', {
+                openExperiment: docs
+            })
+        } else res.sendStatus(404);
+    })
+})
+
+
 
 /* 挑战杯列表页 */
 router.get('/cc', function (req, res) {

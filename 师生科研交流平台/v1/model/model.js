@@ -144,9 +144,10 @@ var OpenExperiment = new Schema({
         required: true
     },
     /* 状态 */
-    status: {
-        type: 'String',
-        required: true
+    active: {
+        type: 'Boolean',
+        required: true,
+        default: true
     },
     /* 需求 */
     requirement: {
@@ -185,14 +186,17 @@ var OpenExperiment = new Schema({
         ref: 'teacher'
     },
     /* 选课学生id */
-    select: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'student'
-        }
-    ],
+    select: [{
+        type: Schema.Types.ObjectId,
+        ref: 'student'
+    }],
+    /* 申请学生id */
+    apply: [{
+        type: Schema.Types.ObjectId,
+        ref: 'student'
+    }],
     /* 最后更新日期 */
-    updateDate: {
+    dateUpdate: {
         type: 'Date',
         required: true,
         default: new Date()

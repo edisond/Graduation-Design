@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $.get('/api/get/open-experiment', function (data) {
         var teachers = [],
-            lastUpdate = new Date(data[0].updateDate),
+            lastUpdate = new Date(data[0].dateUpdate),
             list = $('#list');
         for (var i = 0, j = data.length; i < j; i++) {
             var node = $('<div>');
@@ -24,14 +24,15 @@ $(document).ready(function () {
 
 
             teachers.push(data[i].teacher['_id']);
-            var temp = new Date(data[i].updateDate);
+            var temp = new Date(data[i].dateUpdate);
             if (temp > lastUpdate) {
                 lastUpdate = temp;
             }
         }
         $('#header-oe-num').html(data.length);
         $('#header-teacher-num').html(teachers.unique().length);
-        $('#header-oe-date').html(lastUpdate.toLocaleDateString());
+        lastUpdate = moment(lastUpdate);
+        $('#header-oe-date').html(lastUpdate.fromNow());
     })
 
 })

@@ -175,14 +175,14 @@ var Dao = {
 
     /* 获取所有开放实验 */
     getOpenExperiments: function (callback) {
-        OpenExperiment.find().populate('teacher', 'name').exec(callback);
+        OpenExperiment.find().lean().populate('teacher', 'name').exec(callback);
     },
 
     /* 获取一个开放实验 */
     getOpenExperiment: function (id, callback) {
         OpenExperiment.findOne({
             _id: id
-        }).populate('teacher', 'name department email phone').exec(callback);
+        }).lean().populate('teacher', 'name department email phone').exec(callback);
     }
 }
 

@@ -3,7 +3,6 @@
 }
 
 .aside {
-    max-width: 200px;
     text-align: left;
     margin: 0 auto;
     overflow: hidden;
@@ -14,7 +13,7 @@
 }
 
 .aside ul>li {
-    margin-top: 5px;
+    margin-top: 10px;
 }
 
 table.table-none-bordered,

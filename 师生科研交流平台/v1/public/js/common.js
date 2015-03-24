@@ -1,3 +1,5 @@
+moment.locale('zh-cn');
+
 Array.prototype.unique = function () {
     var n = {},
         r = [];
