@@ -61,7 +61,7 @@ $(document).ready(function () {
             url: "/api/post/signin?type=" + nav.loginType,
             data: post,
             success: function () {
-                window.location = '/center';
+                location.reload();
             },
             error: function () {
                 notyFacade('用户名与密码不匹配，或' + (nav.loginType === 'student' ? '学生' : '教师') + '不存在', 'error')
@@ -73,7 +73,7 @@ $(document).ready(function () {
             type: "POST",
             url: "/api/post/signout",
             success: function () {
-                window.location = '/';
+                location.reload();
             }
         });
     });

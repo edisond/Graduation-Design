@@ -198,9 +198,22 @@ var OpenExperiment = new Schema({
     /* 最后更新日期 */
     dateUpdate: {
         type: 'Date',
-        required: true,
-        default: new Date()
+        required: true
     }
+});
+
+/* 讨论表 */
+var Comment = new Schema({
+    /* 来自学生 */
+    fromStudent: {
+        type: Schema.Types.ObjectId,
+        ref: 'student'
+    },
+    /* 来自教师 */
+    fromTeacher: {
+        type: Schema.Types.ObjectId,
+        ref: 'teacher'
+    },
 });
 
 module.exports.Teacher = mongoose.model('teacher', Teacher);

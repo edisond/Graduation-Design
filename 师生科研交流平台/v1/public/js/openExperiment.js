@@ -3,6 +3,9 @@ $(document).ready(function () {
         var teachers = [],
             lastUpdate = new Date(data[0].dateUpdate),
             list = $('#list');
+        data.sort(function (a, b) {
+            return new Date(a.dateUpdate) < new Date(b.dateUpdate);
+        });
         for (var i = 0, j = data.length; i < j; i++) {
             var node = $('<div>');
             var title = $('<h4>').appendTo(node);

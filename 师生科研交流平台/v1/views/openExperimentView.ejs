@@ -14,8 +14,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12">
-                        <h1 class="m0"><%=openExperiment.name%></h1>
-                        <h5 class="mt20"><i class="fa fa-street-view"></i>指导教师：&nbsp;<%=openExperiment.teacher.name%><i class="fa fa-clock-o ml20"></i>&nbsp;最后更新于<%=openExperiment.dateUpdate%></h5>
+                        <h1 class="m0"><%=openExperiment.name%><% %></h1>
+                        <h5 class="mt20"><i class="fa fa-street-view"></i>指导教师：&nbsp;<%=openExperiment.teacher.name%><i class="fa fa-clock-o ml20"></i>&nbsp;更新于<%=openExperiment.dateUpdate%></h5>
                     </div>
                 </div>
             </div>
@@ -23,11 +23,40 @@
         <div class="container mt20">
             <div class="row">
                 <div class="col-sm-9 col-xs-12 pull-right">
-                    info
+                    <fieldset>
+                        <legend>项目简介&nbsp;<small class="text-muted">思路，目的，涉及的内容或知识点，考察点</small>
+                        </legend>
+                        <p>
+                            <%=openExperiment.detail%>
+                        </p>
+                    </fieldset>
+                    <fieldset>
+                        <legend>需要的主要仪器设备及实验材料
+                        </legend>
+                        <p>
+                            <%=openExperiment.requirement%>
+                        </p>
+                    </fieldset>
+                    <fieldset>
+                        <legend>讨论</legend>
+                        <p>暂无讨论</p>
+                        <form class="well">
+                            <div class="form-group">
+                                <textarea class="form-control" rows="5" id="input-comment" placeholder="说点什么"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <%if(typeof student !=='undefined' ){%>
+                                    <span><%=student.name%>&nbsp;同学</span>
+                                    <%} else if(typeof teacher !=='undefined' ){%>
+                                        <span><%=teacher.name%>&nbsp;老师</span>
+                                        <%}%>
+                                            <button type="button" class="pull-right btn btn-primary" id="input-submit">发表讨论</button>
+                            </div>
+                        </form>
+                    </fieldset>
                 </div>
                 <div class="col-sm-3 col-xs-12">
                     <div class="aside">
-
                         <div class="text-muted">所属学院：</div>
                         <h4><%=openExperiment.college%></h4>
                         <div class="text-muted">实验室：</div>
@@ -45,8 +74,6 @@
                         <h5><i class="fa fa-calendar"></i>结束于<%=openExperiment.dateEnd%></h5>
                         <h5><i class="fa fa-clock-o"></i>预计需要<%=openExperiment.effort%>学时</h5>
                         <hr/>
-
-
                     </div>
                 </div>
             </div>

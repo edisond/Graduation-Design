@@ -34,16 +34,22 @@ router.get('/open-experiment/new', function (req, res) {
 
 /* 开放实验页 */
 router.get('/open-experiment/:id', function (req, res) {
-    Dao.getOpenExperiment(req.params.id, function (err, docs) {
-        if (docs) {
-            docs.dateUpdate = moment(docs.dateUpdate).fromNow();
-            docs.dateStart = moment(docs.dateStart).calendar();
-            docs.dateEnd = moment(docs.dateEnd).calendar();
-            res.render('openExperimentView', {
-                openExperiment: docs
-            })
-        } else res.sendStatus(404);
-    })
+    if (req.session.student || req.session.teacher) {
+        Dao.getOpenExperiment(req.params.id, function (err, docs) {
+            if (docs) {
+                docs.dateUpdate = moment(docs.dateUpdate).fromNow();
+                docs.dateStart = moment(docs.dateStart).calendar();
+                docs.dateEnd = moment(docs.dateEnd).calendar();
+                res.render('openExperimentView', {
+                    openExperiment: docs,
+                    student: req.session.student,
+                    teacher: req.session.teacher
+                })
+            } else res.sendStatus(404);
+        })
+    } else {
+        res.redirect('/open-experiment');
+    }
 })
 
 

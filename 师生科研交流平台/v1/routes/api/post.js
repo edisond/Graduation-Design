@@ -181,6 +181,7 @@ router.post('/delete/student', function (req, res) {
 router.post('/new/open-experiment', function (req, res) {
     if (req.session.teacher['_id'] === req.body.teacher) {
         Dao.newOpenExperiment(req.body, function (err) {
+            console.log(err);
             res.sendStatus(err ? 500 : 200)
         })
     } else {

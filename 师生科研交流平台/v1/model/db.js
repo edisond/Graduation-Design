@@ -170,6 +170,7 @@ var Dao = {
     /* 新建开放实验 */
     newOpenExperiment: function (openExperiment, callback) {
         var oe = new OpenExperiment(openExperiment);
+        oe.dateUpdate = new Date();
         oe.save(callback)
     },
 
