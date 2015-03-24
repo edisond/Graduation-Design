@@ -5,7 +5,7 @@ var Dao = db.Dao;
 
 /* Get student list */
 router.get('/student', function (req, res) {
-    Dao.getStudents(function (err, docs) {
+    Dao.getUsers('student', function (err, docs) {
         if (err) {
             res.sendStatus(500);
         } else {
@@ -16,7 +16,7 @@ router.get('/student', function (req, res) {
 
 /* Get teacher list */
 router.get('/teacher', function (req, res) {
-    Dao.getTeachers(function (err, docs) {
+    Dao.getUsers('teacher', function (err, docs) {
         if (err) {
             res.sendStatus(500);
         } else {

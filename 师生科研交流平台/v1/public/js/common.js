@@ -24,23 +24,6 @@ $(document).ready(function () {
     } else if (pathname.indexOf('/ip') === 0) {
         nav.find('#nav-link-to-ip').addClass('active');
     }
-
-    nav.loginType = 'student';
-
-    nav.find('#nav-input-exchange').click(function () {
-        var label = nav.find('label[for=nav-input-id]');
-        if (nav.loginType === 'student') {
-            label.fadeOut(250, function () {
-                $(this).html('教师 工号').fadeIn(250);
-            });
-            nav.loginType = 'teacher';
-        } else {
-            label.fadeOut(250, function () {
-                $(this).html('学生 学号').fadeIn(250);
-            });
-            nav.loginType = 'student';
-        }
-    });
     nav.keypress(function (e) {
         if (e.which === 13) {
             nav.find('#nav-input-sub').click();
@@ -49,16 +32,16 @@ $(document).ready(function () {
     nav.find('#nav-input-sub').click(function () {
         var post = {
             id: nav.find('#nav-input-id').val(),
-            pwd: nav.find('#nav-input-pwd').val()
+            password: nav.find('#nav-input-pwd').val()
         };
         if (post.id === '' || post.pwd === '') {
             notyFacade('请输入学号/工号与密码', 'warning');
             return false;
         }
-        post.pwd = md5(post.pwd);
+        post.password = md5(post.password);
         $.ajax({
             type: "POST",
-            url: "/api/post/signin?type=" + nav.loginType,
+            url: "/api/post/signin",
             data: post,
             success: function () {
                 location.reload();
@@ -78,13 +61,13 @@ $(document).ready(function () {
         });
     });
     nav.find('#nav-input-admin').click(function () {
-        var pwd = prompt('请输入管理员密码');
-        if (pwd && pwd !== '') {
+        var password = prompt('请输入管理员密码');
+        if (password && password !== '') {
             $.ajax({
                 type: "POST",
                 url: "/api/post/signin?type=admin",
                 data: {
-                    pwd: md5(pwd)
+                    password: md5(password)
                 },
                 success: function () {
                     window.location = '/admin';

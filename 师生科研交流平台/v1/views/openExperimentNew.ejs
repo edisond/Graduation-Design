@@ -159,24 +159,24 @@
                             <tr>
                                 <td>指导教师</td>
                                 <td>
-                                    <%=teacher.name%>
+                                    <%=user.name%>
                                 </td>
                             </tr>
                             <tr>
                                 <td>所在单位</td>
                                 <td>
-                                    <%=teacher.department%>
+                                    <%=user.teacherAttr?user.teacherAttr.department: ''%>
                                 </td>
                             </tr>
                             <tr>
                                 <td>职称</td>
                                 <td>
-                                    <%=teacher.title%>
+                                    <%=user.teacherAttr?user.teacherAttr.title: ''%>
                                 </td>
                             </tr>
                         </table>
                     </div>
-                    <input type="hidden" value="<%=teacher._id%>" id="input-teacher-id" />
+                    <input type="hidden" value="<%=user._id%>" id="input-teacher-id" />
                 </div>
             </div>
         </div>

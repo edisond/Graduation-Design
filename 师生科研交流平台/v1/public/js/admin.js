@@ -37,10 +37,16 @@ $(document).ready(function () {
                 "data": "sex"
             },
             {
-                "data": "department"
+                "data": "teacherAttr.department",
+                'render': function (data, type, row) {
+                    return data ? data : '';
+                }
             },
             {
-                "data": "title"
+                "data": "teacherAttr.title",
+                'render': function (data, type, row) {
+                    return data ? data : '';
+                }
             },
             {
                 "data": "active",
@@ -99,16 +105,20 @@ $(document).ready(function () {
 
     newTeacherModel.find('#submit').click(function () {
         var teacher = {
+            type: 'teacher',
             id: newTeacherModel.find('#input-id').val(),
             name: newTeacherModel.find('#input-name').val(),
             password: newTeacherModel.find('#input-password').val(),
-            department: newTeacherModel.find('#input-department').val(),
-            title: newTeacherModel.find('#input-title').val(),
+            teacherAttr: {
+                department: newTeacherModel.find('#input-department').val(),
+                title: newTeacherModel.find('#input-title').val()
+            },
             sex: newTeacherModel.find('#input-sex').val(),
             email: newTeacherModel.find('#input-email').val(),
             phone: newTeacherModel.find('#input-phone').val(),
             active: newTeacherModel.find('#input-active').is(':checked')
         };
+        console.log(teacher);
         if (teacher.id !== '' && teacher.password !== '' && teacher.name !== '') {
             if (!new RegExp("^[0-9]*$").test(teacher.id)) {
                 notyFacade('工号必须由数字组成', 'warning');
@@ -117,7 +127,7 @@ $(document).ready(function () {
                 teacher.password = md5(teacher.password);
                 $.ajax({
                     type: "POST",
-                    url: "/api/post/new/teacher",
+                    url: "/api/post/user?action=new",
                     data: teacher,
                     success: function () {
                         newTeacherModel.modal('hide');
@@ -139,8 +149,8 @@ $(document).ready(function () {
         var data = tableTeacher.DataTable().row($(e.relatedTarget).parents('tr')[0]).data();
         editTeacherModel.find('#input-id').val(data.id);
         editTeacherModel.find('#input-name').val(data.name);
-        editTeacherModel.find('#input-department').val(data.department);
-        editTeacherModel.find('#input-title').val(data.title);
+        editTeacherModel.find('#input-department').val(data.teacherAttr ? data.teacherAttr.department : '');
+        editTeacherModel.find('#input-title').val(data.teacherAttr ? data.teacherAttr.title : '');
         editTeacherModel.find('#input-sex').val(data.sex);
         editTeacherModel.find('#input-email').val(data.email);
         editTeacherModel.find('#input-phone').val(data.phone);
@@ -159,18 +169,20 @@ $(document).ready(function () {
 
     editTeacherModel.find('#submit').click(function () {
         var teacher = {
+                type: 'teacher',
                 id: editTeacherModel.find('#input-id').val(),
                 name: editTeacherModel.find('#input-name').val(),
                 password: editTeacherModel.find('#input-password').val(),
-                department: editTeacherModel.find('#input-department').val(),
-                title: editTeacherModel.find('#input-title').val(),
+                teacherAttr: {
+                    department: editTeacherModel.find('#input-department').val(),
+                    title: editTeacherModel.find('#input-title').val()
+                },
                 sex: editTeacherModel.find('#input-sex').val(),
                 email: editTeacherModel.find('#input-email').val(),
                 phone: editTeacherModel.find('#input-phone').val(),
                 active: editTeacherModel.find('#input-active').is(':checked')
             },
             changePwd = editTeacherModel.find('#input-reset-password').is(':checked');
-        console.log(teacher);
         if (teacher.id !== '') {
             if (changePwd && teacher.password === '') {
                 notyFacade('若希望重置密码，则密码为必填项', 'warning');
@@ -179,7 +191,7 @@ $(document).ready(function () {
                 teacher.password = md5(teacher.password);
                 $.ajax({
                     type: "POST",
-                    url: "/api/post/update/teacher",
+                    url: "/api/post/user?action=update",
                     data: teacher,
                     success: function () {
                         editTeacherModel.modal('hide');
@@ -225,7 +237,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: "POST",
-            url: "/api/post/delete/teacher",
+            url: "/api/post/user?action=delete",
             data: post,
             success: function () {
                 deleteTeacherModel.modal('hide');
@@ -273,16 +285,28 @@ $(document).ready(function () {
                 "data": "sex"
             },
             {
-                "data": "college"
+                "data": "studentAttr.college",
+                'render': function (data, type, row) {
+                    return data ? data : '';
+                }
             },
             {
-                "data": "major"
+                "data": "studentAttr.major",
+                'render': function (data, type, row) {
+                    return data ? data : '';
+                }
             },
             {
-                "data": "grade"
+                "data": "studentAttr.grade",
+                'render': function (data, type, row) {
+                    return data ? data : '';
+                }
             },
             {
-                "data": "type"
+                "data": "studentAttr.studentType",
+                'render': function (data, type, row) {
+                    return data ? data : '';
+                }
             },
             {
                 "data": "active",
@@ -338,19 +362,23 @@ $(document).ready(function () {
 
     newStudentModel.find('#submit').click(function () {
         var student = {
+            type: 'student',
             id: newStudentModel.find('#input-id').val(),
             name: newStudentModel.find('#input-name').val(),
             password: newStudentModel.find('#input-password').val(),
-            major: newStudentModel.find('#input-major').val(),
-            grade: newStudentModel.find('#input-grade').val(),
-            type: newStudentModel.find('#input-type').val(),
-            college: newStudentModel.find('#input-college').val(),
+            studentAttr: {
+                major: newStudentModel.find('#input-major').val(),
+                grade: newStudentModel.find('#input-grade').val(),
+                studentType: newStudentModel.find('#input-type').val(),
+                college: newStudentModel.find('#input-college').val(),
+                address: newStudentModel.find('#input-address').val()
+            },
             sex: newStudentModel.find('#input-sex').val(),
             email: newStudentModel.find('#input-email').val(),
             phone: newStudentModel.find('#input-phone').val(),
-            address: newStudentModel.find('#input-address').val(),
             active: newStudentModel.find('#input-active').is(':checked')
         };
+        console.log(student);
         if (student.id !== '' && student.password !== '' && student.name !== '') {
             if (!new RegExp("^[0-9]*$").test(student.id)) {
                 notyFacade('学号必须由数字组成', 'warning');
@@ -359,7 +387,7 @@ $(document).ready(function () {
                 student.password = md5(student.password);
                 $.ajax({
                     type: "POST",
-                    url: "/api/post/new/student",
+                    url: "/api/post/user?action=new",
                     data: student,
                     success: function () {
                         newStudentModel.modal('hide');
@@ -381,14 +409,14 @@ $(document).ready(function () {
         var data = tableStudent.DataTable().row($(e.relatedTarget).parents('tr')[0]).data();
         editStudentModel.find('#input-id').val(data.id);
         editStudentModel.find('#input-name').val(data.name);
-        editStudentModel.find('#input-major').val(data.major);
-        editStudentModel.find('#input-type').val(data.type);
+        editStudentModel.find('#input-major').val(data.studentAttr ? data.studentAttr.major : '');
+        editStudentModel.find('#input-type').val(data.studentAttr ? data.studentAttr.studentType : '');
         editStudentModel.find('#input-sex').val(data.sex);
-        editStudentModel.find('#input-college').val(data.college);
-        editStudentModel.find('#input-grade').val(data.grade);
+        editStudentModel.find('#input-college').val(data.studentAttr ? data.studentAttr.college : '');
+        editStudentModel.find('#input-grade').val(data.studentAttr ? data.studentAttr.grade : '');
         editStudentModel.find('#input-email').val(data.email);
         editStudentModel.find('#input-phone').val(data.phone);
-        editStudentModel.find('#input-address').val(data.address);
+        editStudentModel.find('#input-address').val(data.studentAttr ? data.studentAttr.address : '');
         editStudentModel.find('#input-active').attr('checked', data.active);
     });
 
@@ -404,17 +432,20 @@ $(document).ready(function () {
 
     editStudentModel.find('#submit').click(function () {
         var student = {
+                type: 'student',
                 id: editStudentModel.find('#input-id').val(),
                 name: editStudentModel.find('#input-name').val(),
                 password: editStudentModel.find('#input-password').val(),
-                major: editStudentModel.find('#input-major').val(),
-                grade: editStudentModel.find('#input-grade').val(),
-                type: editStudentModel.find('#input-type').val(),
-                college: editStudentModel.find('#input-college').val(),
+                studentAttr: {
+                    major: editStudentModel.find('#input-major').val(),
+                    grade: editStudentModel.find('#input-grade').val(),
+                    studentType: editStudentModel.find('#input-type').val(),
+                    college: editStudentModel.find('#input-college').val(),
+                    address: editStudentModel.find('#input-address').val()
+                },
                 sex: editStudentModel.find('#input-sex').val(),
                 email: editStudentModel.find('#input-email').val(),
                 phone: editStudentModel.find('#input-phone').val(),
-                address: editStudentModel.find('#input-address').val(),
                 active: editStudentModel.find('#input-active').is(':checked')
             },
             changePwd = editStudentModel.find('#input-reset-password').is(':checked');
@@ -426,7 +457,7 @@ $(document).ready(function () {
                 student.password = md5(student.password);
                 $.ajax({
                     type: "POST",
-                    url: "/api/post/update/student",
+                    url: "/api/post/user?action=update",
                     data: student,
                     success: function () {
                         editStudentModel.modal('hide');
@@ -471,7 +502,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: "POST",
-            url: "/api/post/delete/student",
+            url: "/api/post/user?action=delete",
             data: post,
             success: function () {
                 deleteStudentModel.modal('hide');

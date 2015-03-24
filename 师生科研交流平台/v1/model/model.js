@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 /* 教师表 */
-var Teacher = new Schema({
-    /* 工号 */
+var User = new Schema({
+    /* 学号或工号 */
     id: {
         type: 'String',
         required: true,
@@ -29,69 +29,40 @@ var Teacher = new Schema({
         type: 'String',
         enum: ['男', '女', '其它']
     },
-    /* 所属部门 */
-    department: String,
-    /* 职称 */
-    title: String,
-    /* 邮箱 */
-    email: String,
-    /* 联系电话 */
-    phone: String,
-    /* 激活 */
+    /* 用户种类 */
+    type: {
+        type: 'String',
+        required: true,
+        enum: ['student', 'teacher']
+    },
     active: {
         type: 'Boolean',
         required: true,
         default: false
-    }
-});
-
-/* 学生表 */
-var Student = new Schema({
-    /* 学号 */
-    id: {
-        type: 'String',
-        required: true,
-        unique: true
     },
-    /* 密码 */
-    password: {
-        type: 'String',
-        required: true
-    },
-    /* 密钥 */
-    key: {
-        type: 'String',
-        required: true
-    },
-    /* 姓名 */
-    name: {
-        type: 'String',
-        required: true
-    },
-    /* 性别 */
-    sex: {
-        type: 'String',
-        enum: ['男', '女', '其它']
-    },
-    /* 学院 */
-    college: String,
-    /* 专业 */
-    major: String,
-    /* 年级 */
-    grade: String,
-    /* 类型（本科，研究生等） */
-    type: String,
     /* 邮箱 */
     email: String,
     /* 联系电话 */
     phone: String,
-    /* 宿舍地址 */
-    address: String,
-    /* 激活 */
-    active: {
-        type: 'Boolean',
-        required: true,
-        default: false
+    /* 学生属性 */
+    studentAttr: {
+        /* 学院 */
+        college: String,
+        /* 专业 */
+        major: String,
+        /* 年级 */
+        grade: String,
+        /* 类型（本科，研究生等） */
+        studentType: String,
+        /* 宿舍地址 */
+        address: String
+    },
+    /* 教师属性 */
+    teacherAttr: {
+        /* 部门 */
+        department: String,
+        /* 职称 */
+        title: String
     }
 });
 
@@ -183,17 +154,17 @@ var OpenExperiment = new Schema({
     teacher: {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: 'teacher'
+        ref: 'user'
     },
     /* 选课学生id */
     select: [{
         type: Schema.Types.ObjectId,
-        ref: 'student'
+        ref: 'user'
     }],
     /* 申请学生id */
     apply: [{
         type: Schema.Types.ObjectId,
-        ref: 'student'
+        ref: 'user'
     }],
     /* 最后更新日期 */
     dateUpdate: {
@@ -216,7 +187,6 @@ var Comment = new Schema({
     },
 });
 
-module.exports.Teacher = mongoose.model('teacher', Teacher);
-module.exports.Student = mongoose.model('student', Student);
+module.exports.User = mongoose.model('user', User);
 module.exports.Admin = mongoose.model('admin', Admin);
 module.exports.OpenExperiment = mongoose.model('openExperiment', OpenExperiment);

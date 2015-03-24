@@ -8,24 +8,22 @@ var Dao = db.Dao;
 /* 主页 */
 router.get('/', function (req, res) {
     res.render('index', {
-        student: req.session.student,
-        teacher: req.session.teacher
+        user: req.session.user
     });
 })
 
 /* 开放实验列表页 */
 router.get('/open-experiment', function (req, res) {
     res.render('openExperiment', {
-        student: req.session.student,
-        teacher: req.session.teacher
+        user: req.session.user
     });
 })
 
 /* 开放实验新建页 */
 router.get('/open-experiment/new', function (req, res) {
-    if (req.session.teacher) {
+    if (req.session.user && req.session.user.type === 'teacher') {
         res.render('openExperimentNew', {
-            teacher: req.session.teacher
+            user: req.session.user
         });
     } else {
         res.redirect('/');
@@ -34,7 +32,7 @@ router.get('/open-experiment/new', function (req, res) {
 
 /* 开放实验页 */
 router.get('/open-experiment/:id', function (req, res) {
-    if (req.session.student || req.session.teacher) {
+    if (req.session.user) {
         Dao.getOpenExperiment(req.params.id, function (err, docs) {
             if (docs) {
                 docs.dateUpdate = moment(docs.dateUpdate).fromNow();
@@ -42,8 +40,7 @@ router.get('/open-experiment/:id', function (req, res) {
                 docs.dateEnd = moment(docs.dateEnd).calendar();
                 res.render('openExperimentView', {
                     openExperiment: docs,
-                    student: req.session.student,
-                    teacher: req.session.teacher
+                    user: req.session.user
                 })
             } else res.sendStatus(404);
         })
@@ -57,16 +54,15 @@ router.get('/open-experiment/:id', function (req, res) {
 /* 挑战杯列表页 */
 router.get('/cc', function (req, res) {
     res.render('cc', {
-        student: req.session.student,
-        teacher: req.session.teacher
+        user: req.session.user
     });
 })
 
 /* 挑战杯新建页 */
 router.get('/cc/new', function (req, res) {
-    if (req.session.teacher) {
+    if (req.session.user) {
         res.render('cc/new', {
-            teacher: req.session.teacher
+            user: req.session.user
         });
     } else {
         res.redirect('cc');
@@ -76,74 +72,26 @@ router.get('/cc/new', function (req, res) {
 /* 创新项目列表页 */
 router.get('/ip', function (req, res) {
     res.render('ip', {
-        student: req.session.student,
-        teacher: req.session.teacher
+        user: req.session.user
     });
 })
 
 
 /* 个人中心页 */
 router.get('/center', function (req, res) {
-    if (req.session.student) {
+    if (req.session.user && req.session.user.type === 'student') {
         res.render('student/center', {
-            student: req.session.student
+            user: req.session.user
         });
-    } else if (req.session.teacher) {
+    } else if (req.session.user && req.session.user.type === 'teacher') {
         res.render('teacher/center', {
-            teacher: req.session.teacher
+            user: req.session.user
         });
     } else {
         res.redirect('/');
     }
 })
 
-
-/* 学生个人资料页 */
-router.get('/profile/:id', function (req, res) {
-    if (!req.query.type) {
-        res.sendStatus(404);
-        return;
-    }
-    if (!new RegExp("^[0-9]*$").test(req.params.id)) {
-        res.sendStatus(404);
-        return;
-    }
-    if (req.query.type === "student") {
-        Student.findOne({
-            'id': req.params.id
-        }, function (err, docs) {
-            if (err) {
-                res.sendStatus(500);
-            } else {
-                if (docs) {
-                    res.render('student/profile', {
-                        student: docs
-                    })
-                } else {
-                    res.sendStatus(404);
-                }
-            }
-        });
-    } else if (req.query.type === "teacher") {
-        Teacher.findOne({
-            'id': req.params.id
-        }, function (err, docs) {
-            if (err) {
-                res.sendStatus(500);
-            } else {
-                if (docs) {
-                    res.render('teacher/profile', {
-                        teacher: docs
-                    })
-                } else {
-                    res.sendStatus(404);
-                }
-            }
-        });
-    } else {
-        res.sendStatus(404);
-    }
-})
 
 /* 管理员页 */
 router.get('/admin', function (req, res) {
