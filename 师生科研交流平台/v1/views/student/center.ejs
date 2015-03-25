@@ -26,47 +26,8 @@
                             <div role="tabpanel" class="tab-pane fade in active" id="tab-news">
                                 <br/>
                                 <br/>
-                                <div class="media">
-                                    <div class="media-left">
-                                        <a href="#">
-                                            <img src="/img/teacher-default.jpg" width="50px" height="50px">
-                                        </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <h5 class="media-heading"><a href="#">潘冰</a>老师在<a href="#">PHP开放实验</a>中回复了我：</h5>
-                                        <p>赶紧做，绝对不能再拖了！！！&nbsp;<a href="#" data-toggle="tooltip" title="回复"><i class="fa fa-reply"></i></a>
-                                        </p>
-                                        <small class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;12 Jan 2015, 16:33</small>
-                                    </div>
-                                </div>
-                                <hr/>
-                                <div class="media">
-                                    <div class="media-left">
-                                        <a href="#">
-                                            <img src="/img/teacher-default.jpg" width="50px" height="50px">
-                                        </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <h5 class="media-heading"><a href="#">陈双平</a>老师加入了我发布的创新项目<a href="#">基于Web的师生科研互动平台</a></h5>
-                                        <p><a href="#" data-toggle="tooltip" title="查看"><i class="fa fa-external-link"></i></a>
-                                        </p>
-                                        <small class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;11 Jan 2015, 16:33</small>
-                                    </div>
-                                </div>
-                                <hr/>
-                                <div class="media">
-                                    <div class="media-left">
-                                        <a href="#">
-                                            <img src="/img/student-default.jpg" width="50px" height="50px">
-                                        </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <h5 class="media-heading">我发布了一项创新项目<a href="#">基于Web的师生科研互动平台</a></h5>
-                                        <p><a href="#" data-toggle="tooltip" title="查看"><i class="fa fa-external-link"></i></a>
-                                        </p>
-                                        <small class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;9 Jan 2015, 16:33</small>
-                                    </div>
-                                </div>
+                                <div id="comments"></div>
+                                <p class="text-muted" id="comments-state">加载中</p>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="tab-subject">
                                 <br/>
@@ -161,7 +122,7 @@
                 </div>
                 <div class="col-sm-3 col-xs-12">
                     <div class="aside">
-                        <img src="/img/student-default.jpg" width="100%" />
+                        <img src="<%=user.img%>" width="100%" class="maxw200" />
                         <h3><%=user.name%><br/><small><%=user.id%></small></h3>
                         <hr/>
                         <h5><i class="fa fa-tag"></i><%=user.studentAttr?user.studentAttr.major:''%></h5>
@@ -208,6 +169,7 @@
             </div>
         </div>
         <% include ../parts/include.js.html %>
+            <script type="text/javascript" src="/js/studentCenter.js"></script>
 </body>
 
 </html>
