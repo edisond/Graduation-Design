@@ -36,4 +36,21 @@ router.get('/open-experiment', function (req, res) {
     })
 })
 
+/* Get comment */
+router.get('/comment', function (req, res) {
+    if (req.session.user) {
+        var condiction = req.query;
+        Dao.getComments(condiction, function (err, docs) {
+            if (err) {
+                res.sendStatus(500);
+            } else {
+                res.status(200).send(docs);
+            }
+        })
+    } else {
+        res.sendStatus(401);
+    }
+
+})
+
 module.exports = router;

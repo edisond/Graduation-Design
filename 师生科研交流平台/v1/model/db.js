@@ -3,6 +3,7 @@ var model = require('./model');
 var User = model.User;
 var Admin = model.Admin;
 var OpenExperiment = model.OpenExperiment;
+var Comment = model.Comment;
 var md5 = require('../lib/md5');
 
 var Dao = {
@@ -92,9 +93,8 @@ var Dao = {
 
     /* 新建开放实验 */
     newOpenExperiment: function (openExperiment, callback) {
-        var oe = new OpenExperiment(openExperiment);
-        oe.dateUpdate = new Date();
-        oe.save(callback)
+        openExperiment = new OpenExperiment(openExperiment);
+        openExperiment.save(callback)
     },
 
     /* 获取所有开放实验 */
@@ -107,7 +107,33 @@ var Dao = {
         OpenExperiment.findOne({
             _id: id
         }).lean().populate('teacher', 'name department email phone').exec(callback);
+    },
+
+    /* 更新开放实验 */
+    updateOpenExperiment: function (openExperiment, callback) {
+        OpenExperiment.findOneAndUpdate({
+            '_id': openExperiment._id
+        }, user, callback)
+    },
+
+    /* 删除开放实验 */
+    deleteOpenExperiment: function (_id, callback) {
+        OpenExperiment.findOneAndRemove({
+            '_id': _id
+        }, callback)
+    },
+
+    /* 新建讨论 */
+    newComment: function (comment, callback) {
+        comment = new Comment(comment);
+        comment.save(callback)
+    },
+
+    /* 获取讨论 */
+    getComments: function (condiction, callback) {
+        Comment.find(condiction).lean().populate('from to', 'name type').populate('openExperiment', 'name').exec(callback);
     }
+
 }
 
 module.exports.Dao = Dao;

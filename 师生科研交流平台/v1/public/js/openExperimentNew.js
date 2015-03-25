@@ -44,7 +44,7 @@ $(document).ready(function () {
         } else {
             $.ajax({
                 type: "POST",
-                url: "/api/post/new/open-experiment",
+                url: "/api/post/open-experiment?action=new",
                 data: post,
                 success: function () {
                     setTimeout(function () {

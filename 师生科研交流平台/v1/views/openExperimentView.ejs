@@ -15,6 +15,8 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <h1 class="m0"><%=openExperiment.name%><% %></h1>
+                        <input type="hidden" value="<%=openExperiment._id%>" id="input-oe-id">
+                        <input type="hidden" value="<%=openExperiment.teacher._id%>" id="input-user-id">
                         <h5 class="mt20"><i class="fa fa-street-view"></i>指导教师：&nbsp;<%=openExperiment.teacher.name%><i class="fa fa-clock-o ml20"></i>&nbsp;更新于<%=openExperiment.dateUpdate%></h5>
                     </div>
                 </div>
@@ -39,7 +41,8 @@
                     </fieldset>
                     <fieldset>
                         <legend>讨论</legend>
-                        <p>暂无讨论</p>
+                        <div id="comments">
+                        </div>
                         <form class="well">
                             <div class="form-group">
                                 <textarea class="form-control" rows="5" id="input-comment" placeholder="说点什么"></textarea>

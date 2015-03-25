@@ -169,24 +169,44 @@ var OpenExperiment = new Schema({
     /* 最后更新日期 */
     dateUpdate: {
         type: 'Date',
-        required: true
+        required: true,
+        default: Date.now()
     }
 });
 
 /* 讨论表 */
 var Comment = new Schema({
-    /* 来自学生 */
-    fromStudent: {
+    /* 来自 */
+    from: {
         type: Schema.Types.ObjectId,
-        ref: 'student'
+        ref: 'user',
+        required: true
     },
-    /* 来自教师 */
-    fromTeacher: {
+    /* 回复 */
+    to: {
         type: Schema.Types.ObjectId,
-        ref: 'teacher'
+        ref: 'user'
     },
+    /* 内容 */
+    body: {
+        type: 'String',
+        required: true,
+    },
+    /* 开放实验 */
+    openExperiment: {
+        type: Schema.Types.ObjectId,
+        ref: 'openExperiment'
+    },
+    /* 日期 */
+    date: {
+        type: 'Date',
+        required: true,
+        default: Date.now()
+    }
+
 });
 
 module.exports.User = mongoose.model('user', User);
 module.exports.Admin = mongoose.model('admin', Admin);
 module.exports.OpenExperiment = mongoose.model('openExperiment', OpenExperiment);
+module.exports.Comment = mongoose.model('comment', Comment);

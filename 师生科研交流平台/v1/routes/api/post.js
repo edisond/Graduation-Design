@@ -86,6 +86,8 @@ router.post('/user', function (req, res) {
                     res.sendStatus(200);
                 }
             })
+        } else {
+            res.sendStatus(500);
         }
     } else {
         res.sendStatus(401);
@@ -94,14 +96,37 @@ router.post('/user', function (req, res) {
 });
 
 /* 添加新开放实验 */
-router.post('/new/open-experiment', function (req, res) {
+router.post('/open-experiment', function (req, res) {
     if (req.session.user._id === req.body.teacher) {
-        Dao.newOpenExperiment(req.body, function (err) {
-            console.log(err);
-            res.sendStatus(err ? 500 : 200)
-        })
+        if (req.query.action === "new") {
+            Dao.newOpenExperiment(req.body, function (err) {
+                console.log(err);
+                res.sendStatus(err ? 500 : 200)
+            })
+        } else {
+            res.sendStatus(500);
+        }
     } else {
         res.sendStatus(401);
     }
 });
+
+/* 添加新讨论 */
+router.post('/comment', function (req, res) {
+    console.log(req.session.user._id);
+    console.log(req.body.from)
+    if (req.session.user._id === req.body.from) {
+        if (req.query.action === "new") {
+            Dao.newComment(req.body, function (err) {
+                console.log(err);
+                res.sendStatus(err ? 500 : 200)
+            })
+        } else {
+            res.sendStatus(500);
+        }
+    } else {
+        res.sendStatus(401);
+    }
+});
+
 module.exports = router;

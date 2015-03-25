@@ -12,6 +12,10 @@ Array.prototype.unique = function () {
     return r;
 }
 
+if ($('#USER')) {
+    var USER = $('#USER').val();
+}
+
 $(document).ready(function () {
     var nav = $('nav.navbar-static-top'),
         pathname = window.location.pathname;
@@ -47,7 +51,7 @@ $(document).ready(function () {
                 location.reload();
             },
             error: function () {
-                notyFacade('用户名与密码不匹配，或' + (nav.loginType === 'student' ? '学生' : '教师') + '不存在', 'error')
+                notyFacade('用户名与密码不匹配', 'error')
             }
         });
     });
