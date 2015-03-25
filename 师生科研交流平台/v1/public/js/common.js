@@ -16,8 +16,18 @@ if ($('#USER')) {
     var USER = {
         _id: $('#USERID').val(),
         name: $('#USERNAME').val(),
-        type: $('#USERTYPE').val()
+        type: $('#USERTYPE').val(),
+        img: $('#USERIMG').val(),
     }
+}
+
+Array.prototype.contains = function (element) {
+    for (var i = 0, j = this.length; i < j; i++) {
+        if (this[i] === element) {
+            return true;
+        }
+    }
+    return false;
 }
 
 $(document).ready(function () {

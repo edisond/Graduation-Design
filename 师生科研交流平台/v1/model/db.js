@@ -19,6 +19,7 @@ var Dao = {
 
     /* 新建一个用户 */
     newUser: function (user, callback) {
+        user.img = user.img || '/img/heads/' + user.type + '-default.jpg';
         user = new User(user);
         user.key = md5.md5(new Date());
         user.password = md5.md5(user.password + user.key);
@@ -106,7 +107,7 @@ var Dao = {
     getOpenExperiment: function (id, callback) {
         OpenExperiment.findOne({
             _id: id
-        }).lean().populate('teacher', 'name department email phone').exec(callback);
+        }).lean().populate('teacher', 'name department email phone img').exec(callback);
     },
 
     /* 更新开放实验 */
@@ -131,7 +132,7 @@ var Dao = {
 
     /* 获取讨论 */
     getComments: function (condiction, callback) {
-        Comment.find(condiction).lean().populate('from to', 'name type').populate('openExperiment', 'name').exec(callback);
+        Comment.find(condiction).lean().populate('from to', 'name type img').populate('openExperiment', 'name').exec(callback);
     }
 
 }

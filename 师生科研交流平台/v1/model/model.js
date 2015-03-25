@@ -35,11 +35,14 @@ var User = new Schema({
         required: true,
         enum: ['student', 'teacher']
     },
+    /* 是否激活 */
     active: {
         type: 'Boolean',
         required: true,
         default: false
     },
+    /* 头像 */
+    img: String,
     /* 邮箱 */
     email: String,
     /* 联系电话 */
