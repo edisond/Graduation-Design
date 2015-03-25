@@ -23,7 +23,9 @@
                     <% } %>
             </ul>
             <% if(typeof user!=='undefined' ){ %>
-                <input type="hidden" value="<%=user._id%>" id="USER" />
+                <input type="hidden" value="<%=user._id%>" id="USERID" />
+                <input type="hidden" value="<%=user.name%>" id="USERNAME" />
+                <input type="hidden" value="<%=user.type%>" id="USERTYPE" />
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">欢迎，<%=user.name%>&nbsp;<%=user.type==='teacher'?'教师':'同学'%><span class="caret"></span></a>

@@ -13,7 +13,11 @@ Array.prototype.unique = function () {
 }
 
 if ($('#USER')) {
-    var USER = $('#USER').val();
+    var USER = {
+        _id: $('#USERID').val(),
+        name: $('#USERNAME').val(),
+        type: $('#USERTYPE').val()
+    }
 }
 
 $(document).ready(function () {
