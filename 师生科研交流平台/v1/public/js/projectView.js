@@ -1,7 +1,15 @@
 $(document).ready(function () {
-    var oe = $('#input-oe-id').val(),
+    var projectId = $('#input-project-id').val(),
+        projectType = $('#input-project-type').val(),
         commentList = $('#comments'),
         commentBox = $('#input-comment');
+    if (projectType === '开放实验项目') {
+        $('#nav-link-to-oe').addClass('active');
+    } else if (projectType === '挑战杯项目') {
+        $('#nav-link-to-cc').addClass('active');
+    } else if (projectType === '科技创新工程项目') {
+        $('#nav-link-to-ip').addClass('active');
+    }
 
     function newComment(comment) {
         var media = $('<div class="media">'),
@@ -9,9 +17,9 @@ $(document).ready(function () {
             mediaBody = $('<div class="media-body">').appendTo(media);
         $('<a href="/profile/' + comment.from._id + '"><img src="' + comment.from.img + '" width="50px" height="50px"></a>').appendTo(mediaLeft);
         if (comment.to) {
-            $('<h5 class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + '</a>' + (comment.from.type === 'teacher' ? '老师' : '同学') + '回复了<a href="/profile/' + comment.to._id + '">' + comment.to.name + '</a>' + (comment.to.type === 'teacher' ? '老师' : '同学') + '：</h5>').appendTo(mediaBody);
+            $('<h5 class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + '</a>' + comment.from.type + '回复了<a href="/profile/' + comment.to._id + '">' + comment.to.name + '</a>' + comment.to.type + '：</h5>').appendTo(mediaBody);
         } else {
-            $('<h5 class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + '</a>' + (comment.from.type === 'teacher' ? '老师' : '同学') + '说：</h5>').appendTo(mediaBody);
+            $('<h5 class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + '</a>' + comment.from.type + '说：</h5>').appendTo(mediaBody);
         }
         $('<p>' + comment.body + '&nbsp;<a href="#input-comment" data-toggle="tooltip" title="回复" class="ml10" data-id="' + comment.from._id + '" data-name="' + comment.from.name + '" data-type="' + comment.from.type + '"><i class="fa fa-reply"></i></a></p>').appendTo(mediaBody);
         $('<small class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;' + moment(comment.date).fromNow() + '</small>').appendTo(mediaBody);
@@ -19,7 +27,7 @@ $(document).ready(function () {
         return media;
     }
 
-    $.get('/api/get/comment?openExperiment=' + oe, function (data) {
+    $.get('/api/get/comment?project=' + projectId, function (data) {
         if (data.length === 0) {
             $('#comments-state').html('暂无讨论')
         } else {
@@ -37,7 +45,7 @@ $(document).ready(function () {
     commentList.delegate('a[href="#input-comment"]', 'click', function () {
         var $this = $(this);
         commentBox.attr({
-            'placeholder': '正在回复' + $this.attr('data-name') + ($this.attr('data-type') === 'teacher' ? '老师' : '同学'),
+            'placeholder': '正在回复' + $this.attr('data-name') + $this.attr('data-type'),
             'data-id': $this.attr('data-id'),
             'data-name': $this.attr('data-name'),
             'data-type': $this.attr('data-type')
@@ -70,7 +78,7 @@ $(document).ready(function () {
         var comment = {
             body: commentBox.val(),
             from: USER._id,
-            openExperiment: oe,
+            project: projectId,
             date: Date.now()
         };
         if (commentBox.attr('data-id')) {

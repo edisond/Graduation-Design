@@ -13,9 +13,9 @@
             <ul class="nav navbar-nav">
                 <li id="nav-link-to-oe"><a href="/open-experiment">开放实验</a>
                 </li>
-                <li id="nav-link-to-cc"><a href="/cc">挑战杯</a>
+                <li id="nav-link-to-cc"><a href="/challenge-cup">挑战杯</a>
                 </li>
-                <li id="nav-link-to-ip"><a href="/ip">创新项目</a>
+                <li id="nav-link-to-ip"><a href="/innovation-project">创新项目</a>
                 </li>
                 <% if(typeof user!=='undefined' ){ %>
                     <li id="nav-link-to-center"><a href="/center">个人中心</a>
@@ -29,7 +29,7 @@
                 <input type="hidden" value="<%=user.img%>" id="USERIMG" />
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">欢迎，<%=user.name%>&nbsp;<%=user.type==='teacher'?'教师':'同学'%><span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">欢迎，<%=user.name%>&nbsp;<%=user.type%><span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="/center"><i class="fa fa-user"></i>个人中心</a>
                             </li>
@@ -38,7 +38,7 @@
                             <li><a href="#"><i class="fa fa-at"></i>我&nbsp;&nbsp;<span class="badge">42</span></a>
                             </li>
                             <li class="divider"></li>
-                            <% if(user.type==='student' ) { %>
+                            <% if(user.type==='学生' ) { %>
                                 <li><a href="#"><i class="fa fa-book"></i>我的选题</a>
                                 </li>
                                 <li><a href="#"><i class="fa fa-edit"></i>项目申请</a>

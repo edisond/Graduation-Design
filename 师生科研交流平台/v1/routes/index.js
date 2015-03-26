@@ -14,93 +14,88 @@ router.get('/', function (req, res) {
 
 /* 开放实验列表页 */
 router.get('/open-experiment', function (req, res) {
-    res.render('openExperiment', {
-        user: req.session.user
+    res.render('project', {
+        user: req.session.user,
+        projectType: '开放实验项目',
+        projectFix: 'open-experiment'
     });
 })
 
-/* 开放实验新建页 */
-router.get('/open-experiment/new', function (req, res) {
-    if (req.session.user && req.session.user.type === 'teacher') {
-        res.render('openExperimentNew', {
-            user: req.session.user
-        });
-    } else {
-        res.redirect('/');
-    }
+/* 挑战杯列表页 */
+router.get('/challenge-cup', function (req, res) {
+    res.render('project', {
+        user: req.session.user,
+        projectType: '挑战杯项目',
+        projectFix: 'challenge-cup'
+    });
 })
 
-/* 开放实验页 */
-router.get('/open-experiment/:id', function (req, res) {
+/* 创新项目列表页 */
+router.get('/innovation-project', function (req, res) {
+    res.render('project', {
+        user: req.session.user,
+        projectType: '科技创新工程项目',
+        projectFix: 'innovation-project'
+    });
+})
+
+/* 项目具体页 */
+router.get('/project/:id', function (req, res) {
     if (req.session.user) {
-        Dao.getOpenExperiment(req.params.id, function (err, docs) {
+        Dao.getProject(req.params.id, function (err, docs) {
             if (docs) {
                 docs.dateUpdate = moment(docs.dateUpdate).fromNow();
                 docs.dateStart = moment(docs.dateStart).format('l');
                 docs.dateEnd = moment(docs.dateEnd).format('l');
                 var isSelected = false,
-                    isApplied = false;
-                for (var i = 0, j = docs.select.length; i < j; i++) {
-                    if (docs.select[i]._id.toString() === req.session.user._id) {
-                        isSelected = true;
-                        break;
-                    }
+                    isApplied = false,
+                    projectFix,
+                    condition = {
+                        student: req.session.user._id,
+                        project: docs._id
+                    };
+                if (docs.type === '开放实验项目') {
+                    projectFix = 'open-experiment'
+                } else if (docs.type === '挑战杯项目') {
+                    projectFix = 'challenge-cup'
+                } else if (docs.type === '科技创新工程项目') {
+                    projectFix = 'innovation-project'
                 }
-                for (var i = 0, j = docs.apply.length; i < j; i++) {
-                    if (docs.apply[i]._id.toString() === req.session.user._id) {
-                        isApplied = true;
-                        break;
+                Dao.getSelect(condition, function (err, doc) {
+                    if (err) {
+                        res.sendStatus(500);
+                    } else {
+                        if (doc && doc.active) {
+                            isSelected = true
+                        } else if (doc && !doc.active) {
+                            isApplied = true
+                        }
+                        res.render('projectView', {
+                            project: docs,
+                            user: req.session.user,
+                            isSelected: isSelected,
+                            isApplied: isApplied,
+                            projectFix: projectFix
+                        })
                     }
-                }
-
-                res.render('openExperimentView', {
-                    openExperiment: docs,
-                    user: req.session.user,
-                    isSelected: isSelected,
-                    isApplied: isApplied
                 })
-            } else res.sendStatus(404);
+            } else {
+                res.sendStatus(404);
+            }
         })
     } else {
-        res.redirect('/open-experiment');
+        res.redirect('/');
     }
-})
-
-
-
-/* 挑战杯列表页 */
-router.get('/cc', function (req, res) {
-    res.render('cc', {
-        user: req.session.user
-    });
-})
-
-/* 挑战杯新建页 */
-router.get('/cc/new', function (req, res) {
-    if (req.session.user) {
-        res.render('cc/new', {
-            user: req.session.user
-        });
-    } else {
-        res.redirect('cc');
-    }
-})
-
-/* 创新项目列表页 */
-router.get('/ip', function (req, res) {
-    res.render('ip', {
-        user: req.session.user
-    });
 })
 
 
 /* 个人中心页 */
 router.get('/center', function (req, res) {
-    if (req.session.user && req.session.user.type === 'student') {
+    if (req.session.user && req.session.user.type === '同学') {
         res.render('student/center', {
             user: req.session.user
         });
-    } else if (req.session.user && req.session.user.type === 'teacher') {
+    } else if (req.session.user && req.session.user.type === '老师') {
         res.render('teacher/center', {
             user: req.session.user
         });

@@ -95,47 +95,27 @@ router.post('/user', function (req, res) {
 
 });
 
-/* 开放实验 */
-router.post('/open-experiment', function (req, res) {
-    if (req.query.action) {
-        if (req.query.action === 'new' || req.query.action === 'update' || req.query.action === 'delete') {
-            if (req.session.user._id === req.body.teacher) {
-                if (req.query.action === "new") {
-                    Dao.newOpenExperiment(req.body, function (err) {
-                        console.log(err);
-                        res.sendStatus(err ? 500 : 200)
-                    })
-                } else {
-                    res.sendStatus(500);
-                }
-            } else {
-                res.sendStatus(401);
-            }
+/* 项目 */
+router.post('/project', function (req, res) {
+    if (req.query.action && req.session.user._id === req.body.teacher) {
+        if (req.query.action === 'new') {
+            Dao.newProject(req.body, function (err) {
+                console.log(err);
+                res.sendStatus(err ? 500 : 200)
+            })
         } else {
-            if (req.query.action === 'apply') {
-                Dao.selectOpenExperiment(req.query.action, req.body._id, req.session.user._id, function (done) {
-                    if (done) {
-                        res.sendStatus(200);
-                    } else {
-                        res.sendStatus(500);
-                    }
-                })
-            }
+            res.sendStatus(404);
         }
     } else {
-        res.sendStatus(404)
+        res.sendStatus(401)
     }
-
 });
 
 /* 讨论 */
 router.post('/comment', function (req, res) {
-    console.log(req.session.user._id);
-    console.log(req.body.from)
     if (req.session.user._id === req.body.from) {
         if (req.query.action === "new") {
             Dao.newComment(req.body, function (err) {
-                console.log(err);
                 res.sendStatus(err ? 500 : 200)
             })
         } else {

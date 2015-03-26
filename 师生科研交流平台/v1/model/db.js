@@ -3,18 +3,15 @@ var model = require('./model');
 var User = model.User;
 var Admin = model.Admin;
 var Project = model.Project;
+var Select = model.Select;
 var Comment = model.Comment;
 var md5 = require('../lib/md5');
 
 var Dao = {
 
     /* 获取所有用户 */
-    getUsers: function (type, callback) {
-        var options = {};
-        if (type) {
-            options.type = type;
-        }
-        User.find(options, '-_id -__v -password -key').lean().exec(callback);
+    getUsers: function (condition, callback) {
+        User.find(condition, '-_id -__v -password -key').lean().exec(callback);
     },
 
     /* 新建一个用户 */
@@ -94,8 +91,8 @@ var Dao = {
 
     /* 新建项目 */
     newProject: function (project, callback) {
-        Project = new Project(project);
-        Project.save(callback)
+        project = new Project(project);
+        project.save(callback)
     },
 
     /* 获取项目 */
@@ -107,7 +104,7 @@ var Dao = {
     getProject: function (id, callback) {
         Project.findOne({
             _id: id
-        }).populate('teacher', 'name department email phone img').populate('selected applied', 'name img').lean().exec(callback);
+        }).populate('teacher', 'name department email phone img').lean().exec(callback);
     },
 
     /* 更新开放实验 */
@@ -124,6 +121,9 @@ var Dao = {
         }, callback)
     },
 
+    getSelect: function (condition, callback) {
+        Select.find(condition).populate('student', 'name img').lean().exec(callback);
+    },
 
     /* 新建讨论 */
     newComment: function (comment, callback) {

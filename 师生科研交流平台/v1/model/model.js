@@ -33,7 +33,7 @@ var User = new Schema({
     type: {
         type: 'String',
         required: true,
-        enum: ['教师', '学生']
+        enum: ['老师', '同学']
     },
     /* 是否激活 */
     active: {
@@ -157,21 +157,7 @@ var Project = new Schema({
         /* 结题形式 */
         result: String,
         /* 对象 */
-        object: String,
-        /* 选课 */
-        selected: [{
-            _id: {
-                type: Schema.Types.ObjectId,
-                ref: 'user'
-            }
-        }],
-        /* 申请 */
-        applied: [{
-            _id: {
-                type: Schema.Types.ObjectId,
-                ref: 'user'
-            }
-        }]
+        object: String
     }
 });
 
@@ -204,10 +190,27 @@ var Comment = new Schema({
         required: true,
         default: Date.now()
     }
+});
 
+var Select = new Schema({
+    student: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+    },
+    team: String,
+    project: {
+        type: Schema.Types.ObjectId,
+        ref: 'project'
+    },
+    active: {
+        type: 'Boolean',
+        required: true,
+        default: false
+    }
 });
 
 module.exports.User = mongoose.model('user', User);
 module.exports.Admin = mongoose.model('admin', Admin);
 module.exports.Project = mongoose.model('project', Project);
 module.exports.Comment = mongoose.model('comment', Comment);
+module.exports.Select = mongoose.model('select', Select);

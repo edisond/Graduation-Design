@@ -13,7 +13,7 @@ $(document).ready(function () {
         $('#teacher-reg').html($(this).DataTable().data().length);
     }).dataTable({
         "ajax": {
-            'url': '/api/get/teacher',
+            'url': '/api/get/user?type=老师',
             'dataSrc': '',
         },
         "columns": [
@@ -105,7 +105,7 @@ $(document).ready(function () {
 
     newTeacherModel.find('#submit').click(function () {
         var teacher = {
-            type: 'teacher',
+            type: '老师',
             id: newTeacherModel.find('#input-id').val(),
             name: newTeacherModel.find('#input-name').val(),
             password: newTeacherModel.find('#input-password').val(),
@@ -118,7 +118,6 @@ $(document).ready(function () {
             phone: newTeacherModel.find('#input-phone').val(),
             active: newTeacherModel.find('#input-active').is(':checked')
         };
-        console.log(teacher);
         if (teacher.id !== '' && teacher.password !== '' && teacher.name !== '') {
             if (!new RegExp("^[0-9]*$").test(teacher.id)) {
                 notyFacade('工号必须由数字组成', 'warning');
@@ -169,7 +168,7 @@ $(document).ready(function () {
 
     editTeacherModel.find('#submit').click(function () {
         var teacher = {
-                type: 'teacher',
+                type: '老师',
                 id: editTeacherModel.find('#input-id').val(),
                 name: editTeacherModel.find('#input-name').val(),
                 password: editTeacherModel.find('#input-password').val(),
@@ -261,7 +260,7 @@ $(document).ready(function () {
         $('#student-active').html(studentActive);
     }).dataTable({
         "ajax": {
-            'url': '/api/get/student',
+            'url': '/api/get/user?type=同学',
             'dataSrc': '',
         },
         "columns": [
@@ -362,7 +361,7 @@ $(document).ready(function () {
 
     newStudentModel.find('#submit').click(function () {
         var student = {
-            type: 'student',
+            type: '同学',
             id: newStudentModel.find('#input-id').val(),
             name: newStudentModel.find('#input-name').val(),
             password: newStudentModel.find('#input-password').val(),
@@ -378,7 +377,6 @@ $(document).ready(function () {
             phone: newStudentModel.find('#input-phone').val(),
             active: newStudentModel.find('#input-active').is(':checked')
         };
-        console.log(student);
         if (student.id !== '' && student.password !== '' && student.name !== '') {
             if (!new RegExp("^[0-9]*$").test(student.id)) {
                 notyFacade('学号必须由数字组成', 'warning');
@@ -432,7 +430,7 @@ $(document).ready(function () {
 
     editStudentModel.find('#submit').click(function () {
         var student = {
-                type: 'student',
+                type: '同学',
                 id: editStudentModel.find('#input-id').val(),
                 name: editStudentModel.find('#input-name').val(),
                 password: editStudentModel.find('#input-password').val(),

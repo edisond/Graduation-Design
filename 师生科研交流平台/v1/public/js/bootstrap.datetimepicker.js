@@ -305,7 +305,7 @@
             }
             var i = parseInt(this.element.parents().filter(function () {
                 return c(this).css("z-index") != "auto"
-            }).first().css("z-index")) + 10;
+            }).first().css("z-index")) + 9999;
             var h, g;
             if (this.component) {
                 h = this.component.offset();

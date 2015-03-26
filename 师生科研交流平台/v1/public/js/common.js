@@ -37,9 +37,9 @@ $(document).ready(function () {
         nav.find('#nav-link-to-center').addClass('active');
     } else if (pathname.indexOf('/open-experiment') === 0) {
         nav.find('#nav-link-to-oe').addClass('active');
-    } else if (pathname.indexOf('/cc') === 0) {
+    } else if (pathname.indexOf('/challenge-cup') === 0) {
         nav.find('#nav-link-to-cc').addClass('active');
-    } else if (pathname.indexOf('/ip') === 0) {
+    } else if (pathname.indexOf('/innovation-project') === 0) {
         nav.find('#nav-link-to-ip').addClass('active');
     }
     nav.keypress(function (e) {
