@@ -39,14 +39,18 @@ router.get('/open-experiment', function (req, res) {
 /* Get comment */
 router.get('/comment', function (req, res) {
     if (req.session.user) {
-        var condiction = req.query;
-        Dao.getComments(condiction, function (err, docs) {
-            if (err) {
-                res.sendStatus(500);
-            } else {
-                res.status(200).send(docs);
-            }
-        })
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(401);
+    }
+
+})
+
+/* Get project */
+router.get('/project', function (req, res) {
+    if (req.session.user) {
+        console.log(req.query);
+        res.sendStatus(200);
     } else {
         res.sendStatus(401);
     }

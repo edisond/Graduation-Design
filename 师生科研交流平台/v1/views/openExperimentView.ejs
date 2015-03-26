@@ -59,27 +59,44 @@
                 </div>
                 <div class="col-sm-3 col-xs-12">
                     <div class="aside">
+                        <%if(user.type==='student' ){ %>
 
-                        <button type="button" class="btn btn-primary" id="btn-select">选课</button>
-                        <button type="button" class="ml20 btn btn-default" id="btn-ask">我有疑问</button>
-                        <hr/>
-                        <div class="text-muted">所属学院：</div>
-                        <h4><%=openExperiment.college%></h4>
-                        <div class="text-muted">实验室：</div>
-                        <h4><%=openExperiment.lab%></h4>
-                        <hr/>
-                        <h5><i class="fa fa-street-view"></i><%=openExperiment.teacher.name%></h5>
-                        <h5><i class="fa fa-institution"></i><%=openExperiment.teacher.department%></h5>
-                        <h5><i class="fa fa-envelope"></i><a href="mailto:<%=openExperiment.teacher.email%>"><%=openExperiment.teacher.email%></a></h5>
-                        <h5><i class="fa fa-phone"></i><%=openExperiment.teacher.phone%></h5>
-                        <hr/>
-                        <h5><i class="fa fa-graduation-cap"></i>面向<%=openExperiment.object%>同学</h5>
-                        <h5><i class="fa fa-users"></i>选课人数&nbsp;<%=openExperiment.select.length%>/<%=openExperiment.capacity%></h5>
-                        <hr/>
-                        <h5><i class="fa fa-calendar"></i>开始于<%=openExperiment.dateStart%></h5>
-                        <h5><i class="fa fa-calendar"></i>结束于<%=openExperiment.dateEnd%></h5>
-                        <h5><i class="fa fa-clock-o"></i>预计需要<%=openExperiment.effort%>学时</h5>
-                        <hr/>
+                            <button type="button" class="btn btn-primary <%=isSelected?'':'dhidden'%>" id="btn-submit-report">提交实验报告</button>
+                            <button type="button" class="ml20 btn btn-default <%=isSelected?'':'dhidden'%>" id="btn-ask">我有疑问</button>
+
+                            <button type="button" class="btn btn-warning <%=isApplied?'':'dhidden'%>" id="btn-cancel-select">取消申请</button>
+                            <button type="button" class="ml20 btn btn-default <%=isApplied?'':'dhidden'%>" id="btn-ask">我有疑问</button>
+
+                            <button type="button" class="btn btn-primary <%=(isApplied||isSelected)?'dhidden':''%>" id="btn-apply">选课</button>
+                            <button type="button" class="ml20 btn btn-default <%=(isApplied||isSelected)?'dhidden':''%>" id="btn-ask">我有疑问</button>
+
+                            <% } else if(user.type==='teacher' ){%>
+
+                                <button type="button" class="btn btn-primary" id="btn-update-content">更新实验</button>
+                                <button type="button" class="ml20 btn btn-default" id="btn-ask">查看讨论</button>
+
+                                <%}%>
+
+                                    <hr/>
+                                    <div class="text-muted">所属学院：</div>
+                                    <h4><%=openExperiment.college%></h4>
+                                    <div class="text-muted">实验室：</div>
+                                    <h4><%=openExperiment.lab%></h4>
+                                    <hr/>
+                                    <div class="text-muted">教师信息：</div>
+                                    <h5><i class="fa fa-street-view"></i><%=openExperiment.teacher.name%></h5>
+                                    <h5><i class="fa fa-institution"></i><%=openExperiment.teacher.department%></h5>
+                                    <h5><i class="fa fa-envelope"></i><a href="mailto:<%=openExperiment.teacher.email%>"><%=openExperiment.teacher.email%></a></h5>
+                                    <h5><i class="fa fa-phone"></i><%=openExperiment.teacher.phone%></h5>
+                                    <hr/>
+                                    <div class="text-muted">选课情况：</div>
+                                    <h5><i class="fa fa-graduation-cap"></i>面向专业：<%=openExperiment.object%></h5>
+                                    <h5><i class="fa fa-users"></i>选课人数：<%=openExperiment.select.length%>/<%=openExperiment.capacity%></h5>
+                                    <hr/>
+                                    <div class="text-muted">起始时间：</div>
+                                    <h5><i class="fa fa-calendar"></i><%=openExperiment.dateStart%>&nbsp;至&nbsp;<%=openExperiment.dateEnd%></h5>
+                                    <h5><i class="fa fa-clock-o"></i>需要学时：<%=openExperiment.effort%></h5>
+                                    <hr/>
                     </div>
                 </div>
             </div>

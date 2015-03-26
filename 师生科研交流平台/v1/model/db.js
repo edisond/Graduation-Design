@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var model = require('./model');
 var User = model.User;
 var Admin = model.Admin;
-var OpenExperiment = model.OpenExperiment;
+var Project = model.Project;
 var Comment = model.Comment;
 var md5 = require('../lib/md5');
 
@@ -92,37 +92,38 @@ var Dao = {
         Admin.findOneAndUpdate({}, admin, callback)
     },
 
-    /* 新建开放实验 */
-    newOpenExperiment: function (openExperiment, callback) {
-        openExperiment = new OpenExperiment(openExperiment);
-        openExperiment.save(callback)
+    /* 新建项目 */
+    newProject: function (project, callback) {
+        Project = new Project(project);
+        Project.save(callback)
     },
 
-    /* 获取所有开放实验 */
-    getOpenExperiments: function (callback) {
-        OpenExperiment.find().lean().populate('teacher', 'name').exec(callback);
+    /* 获取项目 */
+    getProjects: function (condition, callback) {
+        Project.find(condition).lean().populate('teacher', 'name').exec(callback);
     },
 
     /* 获取一个开放实验 */
-    getOpenExperiment: function (id, callback) {
-        OpenExperiment.findOne({
+    getProject: function (id, callback) {
+        Project.findOne({
             _id: id
-        }).lean().populate('teacher', 'name department email phone img').exec(callback);
+        }).populate('teacher', 'name department email phone img').populate('selected applied', 'name img').lean().exec(callback);
     },
 
     /* 更新开放实验 */
-    updateOpenExperiment: function (openExperiment, callback) {
-        OpenExperiment.findOneAndUpdate({
-            '_id': openExperiment._id
-        }, user, callback)
+    updateProject: function (project, callback) {
+        Project.findOneAndUpdate({
+            '_id': project._id
+        }, project, callback)
     },
 
     /* 删除开放实验 */
-    deleteOpenExperiment: function (_id, callback) {
-        OpenExperiment.findOneAndRemove({
+    deleteProject: function (_id, callback) {
+        Project.findOneAndRemove({
             '_id': _id
         }, callback)
     },
+
 
     /* 新建讨论 */
     newComment: function (comment, callback) {
@@ -132,7 +133,7 @@ var Dao = {
 
     /* 获取讨论 */
     getComments: function (condiction, callback) {
-        Comment.find(condiction).lean().populate('from to', 'name type img').populate('openExperiment', 'name').exec(callback);
+        Comment.find(condiction).lean().populate('from to', 'name type img').populate('project', 'name').exec(callback);
     }
 
 }

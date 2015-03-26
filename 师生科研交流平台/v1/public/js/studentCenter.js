@@ -1,5 +1,7 @@
 $(document).ready(function () {
-    var commentList = $('#comments');
+    var commentList = $('#comments'),
+        applyList = $('#applies'),
+        selectList = $('#selects');
 
     function newComment(comment) {
         var media = $('<div class="media">'),
@@ -28,11 +30,39 @@ $(document).ready(function () {
         return media;
     }
 
+    function newSelect(select) {
+        var div = $('<div>');
+        var title = $('<h4><a href="/' + select.projectType + '/' + select._id + '">' + select.name + '</a><small class="ml10">指导教师：' + select.teacher.name + '</h4>').appendTo(div);
+        var tag = $('<span class="label ml10">').appendTo(title);
+        if (new Date(select.dateStart) > Date.now()) {
+            tag.addClass('label-success').html('未开始');
+        } else if (new Date(select.dateStart) < Date.now() && new Date(select.dateEnd) > Date.now()) {
+            tag.addClass('label-primary').html('进行中');
+        } else if (new Date(select.dateEnd) < Date.now()) {
+            tag.addClass('label-default').html('已结束');
+        }
+        $('<small class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;更新于' + moment(select.dateUpdate).fromNow() + '</small>').appendTo(div);
+        return div
+    }
+
+    function newApply(apply) {
+        var div = $('<div>');
+        var title = $('<h4><a href="/' + apply.projectType + '/' + apply._id + '">' + apply.name + '</a><small class="ml10">指导教师：' + apply.teacher.name + '</h4>').appendTo(div);
+        var tag = $('<span class="label ml10">').appendTo(title);
+        if (apply.active) {
+            tag.addClass('label-success').html('已通过');
+        } else {
+            tag.addClass('label-primary').html('申请中');
+        }
+        $('<small class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;更新于' + moment(apply.dateUpdate).fromNow() + '</small>').appendTo(div);
+        return div
+    }
+
     $.get('/api/get/comment?to=' + USER._id, function (data) {
         if (data.length === 0) {
-            $('#comments-state').html('暂无动态')
+            commentList.find('#load-state').html('暂无动态')
         } else {
-            $('#comments-state').hide();
+            commentList.find('#load-state').hide();
             data.sort(function (a, b) {
                 return a.date < b.date
             });
@@ -45,4 +75,38 @@ $(document).ready(function () {
         }
 
     })
-});
+
+    $.get('/api/get/project?select=' + USER._id, function (data) {
+        if (data.length === 0) {
+            selectList.find('#load-state').html('暂无选课')
+        } else {
+            selectList.find('#load-state').hide();
+            data.sort(function (a, b) {
+                return a.dateUpdate < b.dateUpdate
+            });
+            for (var i = 0, j = data.length; i < j; i++) {
+                newSelect(data[i]).appendTo(selectList);
+                if (i < j - 1) {
+                    $('<hr>').appendTo(selectList);
+                }
+            }
+        }
+    });
+
+    $.get('/api/get/project?apply=' + USER._id, function (data) {
+        if (data.length === 0) {
+            applyList.find('#load-state').html('暂无申请')
+        } else {
+            applyList.find('#load-state').hide();
+            data.sort(function (a, b) {
+                return a.dateUpdate < b.dateUpdate
+            });
+            for (var i = 0, j = data.length; i < j; i++) {
+                newApply(data[i]).appendTo(applyList);
+                if (i < j - 1) {
+                    $('<hr>').appendTo(applyList);
+                }
+            }
+        }
+    });
+})

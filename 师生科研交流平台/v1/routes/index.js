@@ -36,11 +36,28 @@ router.get('/open-experiment/:id', function (req, res) {
         Dao.getOpenExperiment(req.params.id, function (err, docs) {
             if (docs) {
                 docs.dateUpdate = moment(docs.dateUpdate).fromNow();
-                docs.dateStart = moment(docs.dateStart).calendar();
-                docs.dateEnd = moment(docs.dateEnd).calendar();
+                docs.dateStart = moment(docs.dateStart).format('l');
+                docs.dateEnd = moment(docs.dateEnd).format('l');
+                var isSelected = false,
+                    isApplied = false;
+                for (var i = 0, j = docs.select.length; i < j; i++) {
+                    if (docs.select[i]._id.toString() === req.session.user._id) {
+                        isSelected = true;
+                        break;
+                    }
+                }
+                for (var i = 0, j = docs.apply.length; i < j; i++) {
+                    if (docs.apply[i]._id.toString() === req.session.user._id) {
+                        isApplied = true;
+                        break;
+                    }
+                }
+
                 res.render('openExperimentView', {
                     openExperiment: docs,
-                    user: req.session.user
+                    user: req.session.user,
+                    isSelected: isSelected,
+                    isApplied: isApplied
                 })
             } else res.sendStatus(404);
         })

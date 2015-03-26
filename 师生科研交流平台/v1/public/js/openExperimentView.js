@@ -44,12 +44,13 @@ $(document).ready(function () {
         }).focus()
     })
 
-    $('#btn-select').click(function () {
+    $('#btn-apply').click(function () {
+        var post = {
+            _id: oe
+        };
         $.ajax({
-            url: '/api/post/open-experiment?action=select',
-            post: {
-                id: USER._id
-            },
+            url: '/api/post/open-experiment?action=apply',
+            data: post,
             type: 'POST',
             success: function () {
                 notyFacade('申请成功，请等待教师确认', 'success');

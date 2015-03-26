@@ -33,7 +33,7 @@ var User = new Schema({
     type: {
         type: 'String',
         required: true,
-        enum: ['student', 'teacher']
+        enum: ['教师', '学生']
     },
     /* 是否激活 */
     active: {
@@ -84,28 +84,27 @@ var Admin = new Schema({
 });
 
 /* 开放实验项目表 */
-var OpenExperiment = new Schema({
+var Project = new Schema({
     /* 项目名 */
     name: {
         type: 'String',
         required: true
     },
-    /* 描述 */
-    detail: {
+    /* 项目种类 */
+    type: {
+        type: 'String',
+        required: true,
+        enum: ['开放实验项目', '挑战杯项目', '科技创新工程项目']
+    },
+    /* 简短描述 */
+    description: {
         type: 'String',
         required: true
     },
-    /* 学生容量 */
-    capacity: {
-        type: 'Number',
-        required: true,
-        min: 1
-    },
-    /* 需要学时 */
-    effort: {
-        type: 'Number',
-        required: true,
-        min: 1
+    /* 学院 */
+    college: {
+        type: 'String',
+        required: true
     },
     /* 开始时间 */
     dateStart: {
@@ -117,41 +116,17 @@ var OpenExperiment = new Schema({
         type: 'Date',
         required: true
     },
+    /* 最后更新日期 */
+    dateUpdate: {
+        type: 'Date',
+        required: true,
+        default: Date.now()
+    },
     /* 状态 */
     active: {
         type: 'Boolean',
         required: true,
         default: true
-    },
-    /* 需求 */
-    requirement: {
-        type: 'String',
-        required: true
-    },
-    /* 学院 */
-    college: {
-        type: 'String',
-        required: true
-    },
-    /* 实验室 */
-    lab: {
-        type: 'String',
-        required: true
-    },
-    /* 来源 */
-    source: {
-        type: 'String',
-        required: true
-    },
-    /* 结题形式 */
-    result: {
-        type: 'String',
-        required: true
-    },
-    /* 对象 */
-    object: {
-        type: 'String',
-        required: true
     },
     /* 教师id */
     teacher: {
@@ -159,21 +134,44 @@ var OpenExperiment = new Schema({
         required: true,
         ref: 'user'
     },
-    /* 选课学生id */
-    select: [{
-        type: Schema.Types.ObjectId,
-        ref: 'user'
-    }],
-    /* 申请学生id */
-    apply: [{
-        type: Schema.Types.ObjectId,
-        ref: 'user'
-    }],
-    /* 最后更新日期 */
-    dateUpdate: {
-        type: 'Date',
-        required: true,
-        default: Date.now()
+    /* 开放实验属性 */
+    openExperimentAttr: {
+        /* 详细 */
+        detail: String,
+        /* 学生容量 */
+        capacity: {
+            type: 'Number',
+            min: 1
+        },
+        /* 需要学时 */
+        effort: {
+            type: 'Number',
+            min: 1
+        },
+        /* 需求 */
+        requirement: String,
+        /* 实验室 */
+        lab: String,
+        /* 来源 */
+        source: String,
+        /* 结题形式 */
+        result: String,
+        /* 对象 */
+        object: String,
+        /* 选课 */
+        selected: [{
+            _id: {
+                type: Schema.Types.ObjectId,
+                ref: 'user'
+            }
+        }],
+        /* 申请 */
+        applied: [{
+            _id: {
+                type: Schema.Types.ObjectId,
+                ref: 'user'
+            }
+        }]
     }
 });
 
@@ -195,10 +193,10 @@ var Comment = new Schema({
         type: 'String',
         required: true,
     },
-    /* 开放实验 */
-    openExperiment: {
+    /* 项目 */
+    project: {
         type: Schema.Types.ObjectId,
-        ref: 'openExperiment'
+        ref: 'project'
     },
     /* 日期 */
     date: {
@@ -211,5 +209,5 @@ var Comment = new Schema({
 
 module.exports.User = mongoose.model('user', User);
 module.exports.Admin = mongoose.model('admin', Admin);
-module.exports.OpenExperiment = mongoose.model('openExperiment', OpenExperiment);
+module.exports.Project = mongoose.model('project', Project);
 module.exports.Comment = mongoose.model('comment', Comment);
