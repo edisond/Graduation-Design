@@ -2,9 +2,8 @@
 <html>
 
 <head>
-    <title>开放实验 - 师生科研互动平台</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        <%=project.name%> - 师生科研互动平台</title>
     <% include parts/include.css.html %>
 </head>
 
@@ -66,25 +65,28 @@
                             </fieldset>
                 </div>
                 <div class="col-sm-3 col-xs-12">
-                    <div class="aside">
-                        <%if(user.type==='student' ){ %>
+                    <div class="aside aside-right">
+                        <%if(user.type==='同学' ){%>
 
-                            <button type="button" class="btn btn-primary <%=isSelected?'':'dhidden'%>" id="btn-submit-report">提交实验报告</button>
-                            <button type="button" class="ml20 btn btn-default <%=isSelected?'':'dhidden'%>" id="btn-ask">我有疑问</button>
+                            <button type="button" class="mr20 mb10 btn btn-primary <%=isSelected?'':'dhidden'%>" id="btn-submit-report">提交实验报告</button>
+                            <button type="button" class="mr20 mb10 btn btn-warning <%=isApplied?'':'dhidden'%>" id="btn-cancel-select">取消申请</button>
+                            <button type="button" class="mr20 mb10 btn btn-primary <%=(isApplied||isSelected)?'dhidden':''%>" id="btn-apply">选课</button>
+                            <button type="button" class="btn mb10 btn-default" data-action="ask">我有疑问</button>
 
-                            <button type="button" class="btn btn-warning <%=isApplied?'':'dhidden'%>" id="btn-cancel-select">取消申请</button>
-                            <button type="button" class="ml20 btn btn-default <%=isApplied?'':'dhidden'%>" id="btn-ask">我有疑问</button>
+                            <% } else if(user.type==='老师' ){%>
 
-                            <button type="button" class="btn btn-primary <%=(isApplied||isSelected)?'dhidden':''%>" id="btn-apply">选课</button>
-                            <button type="button" class="ml20 btn btn-default <%=(isApplied||isSelected)?'dhidden':''%>" id="btn-ask">我有疑问</button>
-
-                            <% } else if(user.type==='teacher' ){%>
-
-                                <button type="button" class="btn btn-primary" id="btn-update-content">更新实验</button>
-                                <button type="button" class="ml20 btn btn-default" id="btn-ask">查看讨论</button>
+                                <button type="button" class="mr20 mb10 btn btn-primary <%=(user._id.toString()===project.teacher._id.toString())?'':'dhidden'%>" id="btn-update-content">更新实验</button>
+                                <button type="button" class="mb10 btn btn-default" data-action="ask">参与讨论</button>
 
                                 <%} if(project.type==='开放实验项目' ){%>
 
+                                    <hr/>
+                                    <div class="text-muted">选课情况：
+                                        <span class="pull-right"><span id="project-selects-num">-</span>/
+                                        <%=project.openExperimentAttr.capacity%>
+                                            </span>
+                                    </div>
+                                    <div id="project-selects" class="mt10"></div>
                                     <hr/>
                                     <div class="text-muted">所属学院：</div>
                                     <h4><%=project.college%></h4>

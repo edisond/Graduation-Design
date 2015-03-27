@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>个人中心 - 师生科研互动平台</title>
+    <%include parts/include.css.html%>
+</head>
+
+<body>
+    <% include parts/nav.ejs %>
+        <div class="container mt20">
+            <div class="row">
+                <div class="col-sm-9 col-xs-12 pull-right">
+                    <div role="tabpanel">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#tab-news" aria-controls="tab-news" role="tab" data-toggle="tab"><i class="fa fa-comments"></i>&nbsp;最新动态</a>
+                            </li>
+                            <li role="presentation"><a href="#tab-project" aria-controls="tab-project" role="tab" data-toggle="tab"><i class="fa fa-book"></i>&nbsp;<%=user.type==='同学'?'我的选题':'我的项目'%></a>
+                            </li>
+                            <li role="presentation"><a href="#tab-apply" aria-controls="tab-apply" role="tab" data-toggle="tab"><i class="fa fa-edit"></i>&nbsp;<%=user.type==='同学'?'项目申请':'学生申请'%></a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="tab-news">
+                                <br/>
+                                <div id="comments">
+                                    <p class="text-muted" id="load-state">加载中</p>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="tab-project">
+                                <br/>
+                                <form class="form-inline " id="tab-project-filter">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="输入项目名..." aria-describedby="addon-search">
+                                            <span class="input-group-addon" id="addon-search"><i class="fa fa-search"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="hidden-xs ml30"></span>
+                                        <div class="input-group text-center pull-center">
+                                            <label class="checkbox-inline mr10">
+                                                <input type="checkbox" id="inlineCheckbox1" value="option1"><i class="fa fa-flask"></i>&nbsp;开放实验
+                                            </label>
+                                            <label class="checkbox-inline mr10">
+                                                <input type="checkbox" id="inlineCheckbox2" value="option2"><i class="fa fa-trophy"></i>&nbsp;挑战杯
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" id="inlineCheckbox3" value="option3"><i class="fa fa-lightbulb-o"></i>&nbsp;创新项目
+                                            </label>
+                                        </div>
+                                    </div>
+                                </form>
+                                <hr class="hr-dark" />
+                                <div id="projects">
+                                    <p class="text-muted" id="load-state">加载中</p>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="tab-apply">
+                                <br/>
+                                <%if(user.type==='同学' ){%>
+                                    <form class="form-inline " id="tab-project-filter">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="输入项目名..." aria-describedby="addon-search">
+                                                <span class="input-group-addon" id="addon-search"><i class="fa fa-search"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <span class="hidden-xs ml30"></span>
+                                            <div class="input-group pull-center">
+                                                <label class="checkbox-inline mr10">
+                                                    <input type="checkbox" id="inlineCheckbox1" value="option1"><i class="fa fa-flask"></i>&nbsp;开放实验
+                                                </label>
+                                                <label class="checkbox-inline mr10">
+                                                    <input type="checkbox" id="inlineCheckbox2" value="option2"><i class="fa fa-trophy"></i>&nbsp;挑战杯
+                                                </label>
+                                                <label class="checkbox-inline mr10">
+                                                    <input type="checkbox" id="inlineCheckbox3" value="option3"><i class="fa fa-lightbulb-o"></i>&nbsp;创新项目
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group pull-center">
+                                                <button type="button" class="btn btn-success pull-right"><i class="fa fa-plus"></i>&nbsp;我有想法</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <hr class="hr-dark" />
+                                    <div id="applies">
+                                        <p class="text-muted" id="load-state">加载中</p>
+                                    </div>
+                                    <%} else if (user.type==='老师' ){%>
+                                        <table class="table table-bordered table-hover" id="table-apply" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>学号</th>
+                                                    <th>姓名</th>
+                                                    <th>项目名称</th>
+                                                    <th>项目类型</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                        <%}%>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    <div class="aside aside-left">
+                        <img src="<%=user.img%>" width="100%" class="maxw200" />
+                        <h3><%=user.name%><br/><small><%=user.id%></small></h3>
+                        <hr/>
+                        <%if(user.type==='同学' ){%>
+                            <h5><i class="fa fa-tag"></i><%=user.studentAttr?user.studentAttr.major:''%></h5>
+                            <h5><i class="fa fa-clock-o"></i><%=user.studentAttr?user.studentAttr.grade:''%></h5>
+                            <h5><i class="fa fa-graduation-cap"></i><%=user.studentAttr?user.studentAttr.studentType:''%></h5>
+                            <h5><i class="fa fa-envelope"></i><a href="mailto:<%=user.email%>"><%=user.email%></a></h5>
+                            <%} else if (user.type==='老师' ){%>
+                                <h5><i class="fa fa-institution"></i><%=user.teacherAttr?user.teacherAttr.department:''%></h5>
+                                <h5><i class="fa fa-tag"></i><%=user.teacherAttr?user.teacherAttr.title:''%></h5>
+                                <%}%>
+                                    <hr/>
+                                    <table class="table table-condensed table-none-bordered text-center">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <h2 id="oe-num">-</h2>
+                                                </td>
+                                                <td>
+                                                    <h2 id="cc-num">-</h2>
+                                                </td>
+                                                <td>
+                                                    <h2 id="ip-num">-</h2>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <h5><small>开放实验</small></h5>
+                                                </td>
+                                                <td>
+                                                    <h5><small>挑战杯</small></h5>
+                                                </td>
+                                                <td>
+                                                    <h5><small>创新项目</small></h5>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <hr/>
+                                    <h5><i class="fa fa-users"></i>我的团队</h5>
+                                    <ul class="list-unstyled">
+                                        <li><a href="#">基于Web的师生互动科研平台</a>
+                                        </li>
+                                        <li><a href="#">HTML5智能马桶系统</a>
+                                        </li>
+                                    </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%if(user.type==='老师' ){%>
+            <div class="modal fade" id="view-select" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title">查看学生</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h4 id="name" class="ml20"><small id="id"></small></h4>
+                            <table class="table table-none-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td>性别：</td>
+                                        <td id="sex"></td>
+                                        <td>住址：</td>
+                                        <td id="address"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>学院：</td>
+                                        <td id="college"></td>
+                                        <td>专业：</td>
+                                        <td id="major"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>年级：</td>
+                                        <td id="grade"></td>
+                                        <td>类型：</td>
+                                        <td id="studentType"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>邮箱：</td>
+                                        <td id="email"></td>
+                                        <td>电话：</td>
+                                        <td id="phone"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%}%>
+                <% include parts/include.js.html %>
+                    <script type="text/javascript" src="/js/center.js"></script>
+</body>
+
+</html>

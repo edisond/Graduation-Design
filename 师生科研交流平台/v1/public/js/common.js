@@ -12,7 +12,8 @@ Array.prototype.unique = function () {
     return r;
 }
 
-if ($('#USER')) {
+
+if ($('#USERID').size() === 1) {
     var USER = {
         _id: $('#USERID').val(),
         name: $('#USERNAME').val(),
@@ -28,6 +29,26 @@ Array.prototype.contains = function (element) {
         }
     }
     return false;
+}
+
+notyFacade = function (text, type) {
+    noty({
+        text: text,
+        type: type,
+        theme: 'relax',
+        timeout: 3000,
+        layout: 'topLeft',
+        animation: {
+            open: {
+                opacity: 'toggle'
+            },
+            close: {
+                opacity: 'toggle'
+            },
+            easing: 'swing',
+            speed: 300
+        }
+    });
 }
 
 $(document).ready(function () {
@@ -59,7 +80,7 @@ $(document).ready(function () {
         post.password = md5(post.password);
         $.ajax({
             type: "POST",
-            url: "/api/post/signin",
+            url: encodeURI("/api/post/signin"),
             data: post,
             success: function () {
                 location.reload();
@@ -72,7 +93,7 @@ $(document).ready(function () {
     nav.find('#nav-sign-out').click(function () {
         $.ajax({
             type: "POST",
-            url: "/api/post/signout",
+            url: encodeURI("/api/post/signout"),
             success: function () {
                 location.reload();
             }
@@ -83,7 +104,7 @@ $(document).ready(function () {
         if (password && password !== '') {
             $.ajax({
                 type: "POST",
-                url: "/api/post/signin?type=admin",
+                url: encodeURI("/api/post/signin?type=admin"),
                 data: {
                     password: md5(password)
                 },
@@ -99,23 +120,4 @@ $(document).ready(function () {
         }
     });
     $('[data-toggle="tooltip"]').tooltip();
-
-    window.notyFacade = function (text, type) {
-        noty({
-            text: text,
-            type: type,
-            theme: 'relax',
-            timeout: 3000,
-            animation: {
-                open: {
-                    height: 'toggle'
-                },
-                close: {
-                    height: 'toggle'
-                },
-                easing: 'swing',
-                speed: 300
-            }
-        });
-    }
 })

@@ -97,7 +97,7 @@ var Dao = {
 
     /* 获取项目 */
     getProjects: function (condition, callback) {
-        Project.find(condition).lean().populate('teacher', 'name').exec(callback);
+        Project.find(condition).populate('teacher', 'name').lean().exec(callback);
     },
 
     /* 获取一个开放实验 */
@@ -121,8 +121,55 @@ var Dao = {
         }, callback)
     },
 
-    getSelect: function (condition, callback) {
-        Select.find(condition).populate('student', 'name img').lean().exec(callback);
+    newSelect: function (select, callback) {
+        Select.find({
+            student: select.student,
+            project: select.project
+        }, function (err, docs) {
+            if (err) {
+                callback(err);
+            } else if (docs.length > 0) {
+                callback('重复选课');
+            } else {
+                select = new Select(select);
+                select.save(callback);
+            }
+        })
+    },
+
+    getSelects: function (condition, callback) {
+        Select.find(condition).populate('project', '_id name type dateStart dateEnd dateUpdate').populate('student', '_id name img').lean().exec(callback);
+    },
+
+    getSelectsByTeacher: function (condition, callback) {
+        Project.find({
+            teacher: condition.teacher
+        }, function (err, docs) {
+            if (err) {
+                callback(err)
+            } else {
+                var IdList = [];
+                for (var i = 0, j = docs.length; i < j; i++) {
+                    IdList.push(docs[i]._id);
+                }
+                Select.find({
+                    project: {
+                        $in: IdList
+                    },
+                    active: condition.active
+                }).populate('student', '-__v -password -key').populate('project', 'name type').lean().exec(callback);
+            }
+        })
+    },
+
+    updateSelect: function (select, callback) {
+        Select.findOneAndUpdate({
+            _id: select._id
+        }, select, callback)
+    },
+
+    deleteSelect: function (condition, callback) {
+        Select.findOneAndRemove(condition, callback);
     },
 
     /* 新建讨论 */

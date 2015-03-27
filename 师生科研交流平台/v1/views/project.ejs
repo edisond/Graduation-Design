@@ -4,8 +4,6 @@
 <head>
     <title>
         <%=projectType%> - 师生科研互动平台</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <% include parts/include.css.html %>
 </head>
 
@@ -48,7 +46,7 @@
                     </div>
                 </div>
                 <div class="col-sm-3 col-xs-12">
-                    <div class="aside">
+                    <div class="aside aside-right">
                         <div class="input-group">
                             <input type="text" class="form-control" id="aside-input-search" placeholder="搜索项目，教师等">
                             <div class="input-group-btn">
@@ -63,7 +61,7 @@
         </div>
         <% include parts/include.js.html %>
             <script type="text/javascript" src="/js/project.js"></script>
-            <%if(projectType==='开放实验项目' ){%>
+            <%if(typeof user !=='undefined' && user.type==='老师' &&projectType==='开放实验项目' ){%>
                 <div class="modal fade" id="new-project" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">

@@ -18,8 +18,24 @@
     margin-bottom: 5px
 }
 
+.mb10 {
+    margin-bottom: 10px
+}
+
+.mt5 {
+    margin-top: 5px
+}
+
+.mt10 {
+    margin-top: 10px
+}
+
 .mt20 {
     margin-top: 20px
+}
+
+.ml5 {
+    margin-left: 5px
 }
 
 .ml10 {
@@ -36,6 +52,10 @@
 
 .ml50 {
     margin-left: 50px
+}
+
+.mr5 {
+    margin-right: 5px
 }
 
 .mr10 {
@@ -96,4 +116,8 @@
 
 .vhidden {
     visibility: hidden
+}
+
+.dinlineblock {
+    display: inline-block
 }

@@ -2,11 +2,18 @@ $(document).ready(function () {
 
     var projectType = $('#projectType').val(),
         list = $('#list');
+    list.delegate('a[data-link="project"]', 'click', function (e) {
+        if (!USER) {
+            notyFacade('请先登录', 'information')
+            return false
+        }
+
+    })
 
     function createProject(project) {
         var node = $('<div class="project">');
         var title = $('<h4>').appendTo(node);
-        $('<a>').attr('href', '/project/' + project._id).html(project.name).appendTo(title);
+        $('<a data-link="project">').attr('href', '/project/' + project._id).html(project.name).appendTo(title);
         var subtitle = $('<small class="ml10">').html('指导教师：' + project.teacher.name).appendTo(title);
         var tag = $('<span class="label ml10">').appendTo(title);
         if (new Date(project.dateStart) > Date.now()) {
@@ -20,7 +27,7 @@ $(document).ready(function () {
         return node;
     };
 
-    $.get('/api/get/project?type=' + projectType, function (data) {
+    $.get(encodeURI('/api/get/project?type=' + projectType), function (data) {
         if (data.length === 0) {
             $('#load-state').html('暂无项目')
         } else {
@@ -100,11 +107,12 @@ $(document).ready(function () {
             } else {
                 $.ajax({
                     type: "POST",
-                    url: "/api/post/project?action=new",
+                    url: encodeURI("/api/post/project?action=new"),
                     data: post,
-                    success: function () {
+                    success: function (data) {
                         notyFacade('成功创建开放实验项目', 'success');
                         model.modal('hide');
+                        post._id = data;
                         post.teacher = {
                             _id: USER._id,
                             name: USER.name

@@ -99,9 +99,12 @@ router.post('/user', function (req, res) {
 router.post('/project', function (req, res) {
     if (req.query.action && req.session.user._id === req.body.teacher) {
         if (req.query.action === 'new') {
-            Dao.newProject(req.body, function (err) {
-                console.log(err);
-                res.sendStatus(err ? 500 : 200)
+            Dao.newProject(req.body, function (err, doc) {
+                if (err) {
+                    res.sendStatus(500)
+                } else {
+                    res.status(200).send(doc._id)
+                }
             })
         } else {
             res.sendStatus(404);
@@ -120,6 +123,55 @@ router.post('/comment', function (req, res) {
             })
         } else {
             res.sendStatus(500);
+        }
+    } else {
+        res.sendStatus(401);
+    }
+});
+
+router.post('/select', function (req, res) {
+
+    if (req.session.user) {
+        var action = req.query.action;
+
+        if (action === 'apply' && req.session.user.type === "同学") {
+            var select = {
+                student: req.session.user._id,
+                project: req.body._id
+            };
+            Dao.newSelect(select, function (err) {
+                if (err) {
+                    res.sendStatus(500)
+                } else {
+                    res.sendStatus(200);
+                }
+            })
+        } else if (action === 'cancel' && req.session.user.type === "同学") {
+            var select = {
+                student: req.session.user._id,
+                project: req.body._id
+            };
+            Dao.deleteSelect(select, function (err) {
+                if (err) {
+                    res.sendStatus(500)
+                } else {
+                    res.sendStatus(200);
+                }
+            })
+        } else if (action === 'approve' && req.session.user.type === "老师") {
+            var select = req.body;
+            select.active = true;
+            console.log(select);
+            Dao.updateSelect(select, function (err) {
+                if (err) {
+                    console.log(err)
+                    res.sendStatus(500)
+                } else {
+                    res.sendStatus(200);
+                }
+            })
+        } else {
+            res.sendStatus(401);
         }
     } else {
         res.sendStatus(401);

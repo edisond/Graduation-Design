@@ -1,6 +1,7 @@
 $(document).ready(function () {
     var projectId = $('#input-project-id').val(),
         projectType = $('#input-project-type').val(),
+        projectSelects = $('#project-selects'),
         commentList = $('#comments'),
         commentBox = $('#input-comment');
     if (projectType === '开放实验项目') {
@@ -27,7 +28,13 @@ $(document).ready(function () {
         return media;
     }
 
-    $.get('/api/get/comment?project=' + projectId, function (data) {
+    function newHead(user) {
+        var head = $('<a class="dinlineblock mr5 mt5" data-toggle="tooltip" data-placement="bottom" title="' + user.name + '" href="/profile/' + user._id + '"></a>');
+        $('<img height="50px" width="50px" src="' + user.img + '"/>').appendTo(head);
+        return head.tooltip();
+    }
+
+    $.get(encodeURI('/api/get/comment?project=' + projectId), function (data) {
         if (data.length === 0) {
             $('#comments-state').html('暂无讨论')
         } else {
@@ -39,6 +46,19 @@ $(document).ready(function () {
                 }
             }
         }
+
+    })
+
+    $.get(encodeURI('/api/get/select?project=' + projectId), function (data) {
+        $('#project-selects-num').html(data.length);
+        if (data.length === 0) {
+            $('<span class="text-muted">暂无同学选课</span>').appendTo(projectSelects);
+        } else {
+            for (var i = 0, j = data.length; i < j; i++) {
+                newHead(data[i].student).appendTo(projectSelects);
+            }
+        }
+
 
     })
 
@@ -54,13 +74,15 @@ $(document).ready(function () {
 
     $('#btn-apply').click(function () {
         var post = {
-            _id: oe
+            _id: projectId
         };
         $.ajax({
-            url: '/api/post/open-experiment?action=apply',
+            url: encodeURI('/api/post/select?action=apply'),
             data: post,
             type: 'POST',
             success: function () {
+                $('#btn-cancel-select').show();
+                $('#btn-apply').hide();
                 notyFacade('申请成功，请等待教师确认', 'success');
             },
             error: function () {
@@ -70,7 +92,27 @@ $(document).ready(function () {
         });
     });
 
-    $('#btn-ask').click(function () {
+    $('#btn-cancel-select').click(function () {
+        var post = {
+            _id: projectId
+        };
+        $.ajax({
+            url: encodeURI('/api/post/select?action=cancel'),
+            data: post,
+            type: 'POST',
+            success: function () {
+                $('#btn-apply').show();
+                $('#btn-cancel-select').hide();
+                notyFacade('已取消选课申请', 'success');
+            },
+            error: function () {
+                notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
+            }
+
+        });
+    });
+
+    $('button[data-action=ask]').click(function () {
         commentBox.focus();
     });
 
@@ -81,11 +123,17 @@ $(document).ready(function () {
             project: projectId,
             date: Date.now()
         };
+
+        if (comment.body === '') {
+            notyFacade('请填写讨论内容', 'information');
+            return false;
+        }
+
         if (commentBox.attr('data-id')) {
             comment.to = commentBox.attr('data-id')
         }
         $.ajax({
-            url: '/api/post/comment?action=new',
+            url: encodeURI('/api/post/comment?action=new'),
             data: comment,
             type: 'POST',
             success: function () {

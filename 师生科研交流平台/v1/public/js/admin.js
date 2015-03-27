@@ -13,7 +13,7 @@ $(document).ready(function () {
         $('#teacher-reg').html($(this).DataTable().data().length);
     }).dataTable({
         "ajax": {
-            'url': '/api/get/user?type=老师',
+            'url': encodeURI('/api/get/user?type=老师'),
             'dataSrc': '',
         },
         "columns": [
@@ -126,7 +126,7 @@ $(document).ready(function () {
                 teacher.password = md5(teacher.password);
                 $.ajax({
                     type: "POST",
-                    url: "/api/post/user?action=new",
+                    url: encodeURI("/api/post/user?action=new"),
                     data: teacher,
                     success: function () {
                         newTeacherModel.modal('hide');
@@ -190,7 +190,7 @@ $(document).ready(function () {
                 teacher.password = md5(teacher.password);
                 $.ajax({
                     type: "POST",
-                    url: "/api/post/user?action=update",
+                    url: encodeURI("/api/post/user?action=update"),
                     data: teacher,
                     success: function () {
                         editTeacherModel.modal('hide');
@@ -236,7 +236,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: "POST",
-            url: "/api/post/user?action=delete",
+            url: encodeURI("/api/post/user?action=delete"),
             data: post,
             success: function () {
                 deleteTeacherModel.modal('hide');
@@ -260,7 +260,7 @@ $(document).ready(function () {
         $('#student-active').html(studentActive);
     }).dataTable({
         "ajax": {
-            'url': '/api/get/user?type=同学',
+            'url': encodeURI('/api/get/user?type=同学'),
             'dataSrc': '',
         },
         "columns": [
@@ -385,7 +385,7 @@ $(document).ready(function () {
                 student.password = md5(student.password);
                 $.ajax({
                     type: "POST",
-                    url: "/api/post/user?action=new",
+                    url: encodeURI("/api/post/user?action=new"),
                     data: student,
                     success: function () {
                         newStudentModel.modal('hide');
@@ -455,7 +455,7 @@ $(document).ready(function () {
                 student.password = md5(student.password);
                 $.ajax({
                     type: "POST",
-                    url: "/api/post/user?action=update",
+                    url: encodeURI("/api/post/user?action=update"),
                     data: student,
                     success: function () {
                         editStudentModel.modal('hide');
@@ -500,7 +500,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: "POST",
-            url: "/api/post/user?action=delete",
+            url: encodeURI("/api/post/user?action=delete"),
             data: post,
             success: function () {
                 deleteStudentModel.modal('hide');
@@ -529,7 +529,7 @@ $(document).ready(function () {
             }
             $.ajax({
                 type: "POST",
-                url: "/api/post/update/admin",
+                url: encodeURI("/api/post/update/admin"),
                 data: post,
                 success: function () {
                     changePasswordForm[0].reset();

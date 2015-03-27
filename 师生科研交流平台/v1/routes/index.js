@@ -61,15 +61,16 @@ router.get('/project/:id', function (req, res) {
                 } else if (docs.type === '科技创新工程项目') {
                     projectFix = 'innovation-project'
                 }
-                Dao.getSelect(condition, function (err, doc) {
+                Dao.getSelects(condition, function (err, doc) {
                     if (err) {
                         res.sendStatus(500);
                     } else {
-                        if (doc && doc.active) {
+                        if (doc.length === 1 && doc[0].active) {
                             isSelected = true
-                        } else if (doc && !doc.active) {
+                        } else if (doc.length === 1 && doc[0].active === false) {
                             isApplied = true
                         }
+                        console.log(isApplied);
                         res.render('projectView', {
                             project: docs,
                             user: req.session.user,
@@ -91,12 +92,8 @@ router.get('/project/:id', function (req, res) {
 
 /* 个人中心页 */
 router.get('/center', function (req, res) {
-    if (req.session.user && req.session.user.type === '同学') {
-        res.render('student/center', {
-            user: req.session.user
-        });
-    } else if (req.session.user && req.session.user.type === '老师') {
-        res.render('teacher/center', {
+    if (req.session.user) {
+        res.render('center', {
             user: req.session.user
         });
     } else {

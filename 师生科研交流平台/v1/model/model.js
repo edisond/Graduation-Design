@@ -83,7 +83,7 @@ var Admin = new Schema({
     }
 });
 
-/* 开放实验项目表 */
+/* 项目表 */
 var Project = new Schema({
     /* 项目名 */
     name: {
@@ -206,6 +206,11 @@ var Select = new Schema({
         type: 'Boolean',
         required: true,
         default: false
+    },
+    date: {
+        type: 'Date',
+        required: true,
+        default: Date.now()
     }
 });
 
