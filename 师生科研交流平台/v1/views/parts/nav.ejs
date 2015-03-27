@@ -39,18 +39,18 @@
                             </li>
                             <li class="divider"></li>
                             <% if(user.type==='学生' ) { %>
-                                <li><a href="#"><i class="fa fa-book"></i>我的选题</a>
+                                <li><a href="/center#project"><i class="fa fa-book"></i>我的选题</a>
                                 </li>
-                                <li><a href="#"><i class="fa fa-edit"></i>项目申请</a>
+                                <li><a href="/center#apply"><i class="fa fa-edit"></i>项目申请</a>
                                 </li>
                                 <% } else { %>
-                                    <li><a href="#"><i class="fa fa-book"></i>我的项目</a>
+                                    <li><a href="/center#project"><i class="fa fa-book"></i>我的项目</a>
                                     </li>
-                                    <li><a href="#"><i class="fa fa-edit"></i>学生申请</a>
+                                    <li><a href="/center#apply"><i class="fa fa-edit"></i>学生申请</a>
                                     </li>
                                     <% } %>
                                         <li class="divider"></li>
-                                        <li><a href="#"><i class="fa fa-cog"></i>设置</a>
+                                        <li><a href="/center#settings"><i class="fa fa-cog"></i>设置</a>
                                         </li>
                                         <li><a href="#" id="nav-sign-out"><i class="fa fa-sign-out"></i>注销</a>
                                         </li>
@@ -74,7 +74,7 @@
                                             <h6 class="text-muted">忘记密码？</h6>
                                         </div>
                                         <button type="button" class="btn btn-primary" id="nav-input-sub">登录</button>
-                                        <button type="button" class="btn btn-default ml10" id="nav-input-reg">注册</button>
+                                        <a href="/register" class="btn btn-default ml10">注册</a>
                                         <label class="checkbox-inline pull-right">
                                             <input type="checkbox" id="nav-input-rem">记住我
                                         </label>

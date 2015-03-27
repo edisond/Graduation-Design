@@ -34,7 +34,10 @@ $(document).ready(function () {
                 "data": "name"
             },
             {
-                "data": "sex"
+                "data": "sex",
+                'render': function (data, type, row) {
+                    return data ? data : '';
+                }
             },
             {
                 "data": "teacherAttr.department",
@@ -281,7 +284,10 @@ $(document).ready(function () {
                 "data": "name"
             },
             {
-                "data": "sex"
+                "data": "sex",
+                'render': function (data, type, row) {
+                    return data ? data : '';
+                }
             },
             {
                 "data": "studentAttr.college",
@@ -521,7 +527,7 @@ $(document).ready(function () {
             notyFacade('请输入原密码与新密码', 'warning');
             return false;
         } else if (newPassword !== confirmPassword) {
-            notyFacade('输入的新密码与确认密码不匹配', 'warning');
+            notyFacade('新密码与确认密码不一致', 'warning');
         } else {
             var post = {
                 op: md5(originPassword),

@@ -29,20 +29,25 @@ var Dao = {
             user.key = md5.md5(new Date());
             user.password = md5.md5(user.password + user.key);
         }
-        User.findOneAndUpdate({
-            'id': user.id
-        }, user, callback)
+        var condition = {};
+        if (user.id) condition.id = user.id;
+        if (user._id) condition._id = user._id;
+        User.findOneAndUpdate(condition, user, callback)
     },
 
     /* 验证用户密码 */
     checkUserPassword: function (user, callback) {
-        User.findOne({
-            'id': user.id
-        }, function (err, docs) {
+        var condition = {};
+        if (user.id) condition.id = user.id;
+        if (user._id) condition._id = user._id;
+        User.findOne(condition).lean().exec(function (err, docs) {
             if (err || !docs) {
                 callback(false);
             } else {
                 if (md5.md5(user.password + docs.key) === docs.password) {
+                    delete docs.password;
+                    delete docs.key;
+                    delete docs.__v;
                     callback(true, docs);
                 } else {
                     callback(false);

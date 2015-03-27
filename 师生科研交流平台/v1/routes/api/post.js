@@ -61,6 +61,7 @@ router.post('/signout', function (req, res) {
 router.post('/user', function (req, res) {
     var user = req.body;
     if (req.session.admin) {
+        console.log(req.query.action)
         if (req.query.action === "new") {
             Dao.newUser(user, function (err) {
                 if (err) {
@@ -74,10 +75,6 @@ router.post('/user', function (req, res) {
             Dao.updateUser(user, function (err) {
                 res.sendStatus(err ? 500 : 200);
             });
-        } else if (req.query.action === "update") {
-            Dao.updateUser(user, function (err) {
-                res.sendStatus(err ? 500 : 200);
-            });
         } else if (req.query.action === "delete") {
             Dao.deleteUsers(user.id, function (err) {
                 if (err) {
@@ -87,10 +84,55 @@ router.post('/user', function (req, res) {
                 }
             })
         } else {
-            res.sendStatus(500);
+            res.sendStatus(404);
+        }
+    } else if (req.session.user) {
+        if (req.query.action === "pwd") {
+            var user = {
+                id: req.session.user.id,
+                password: req.body.op
+            };
+            Dao.checkUserPassword(user, function (match) {
+                if (match) {
+                    user.password = req.body.np;
+                    Dao.updateUser(user, function (err) {
+                        if (err) {
+                            res.sendStatus(500)
+                        } else {
+                            res.sendStatus(200)
+                        }
+                    })
+                } else {
+                    res.sendStatus(401)
+                }
+            })
+        } else if (req.query.action === "update") {
+            var user = req.body;
+            user._id = req.session.user._id;
+            console.log(user);
+            Dao.updateUser(user, function (err) {
+                if (err) {
+                    res.sendStatus(500)
+                } else {
+                    res.sendStatus(200)
+                }
+            })
+        } else {
+            res.sendStatus(404)
         }
     } else {
-        res.sendStatus(401);
+        if (req.query.action && req.query.action === 'new') {
+            user.active = false;
+            Dao.newUser(user, function (err) {
+                if (err) {
+                    res.sendStatus(500)
+                } else {
+                    res.sendStatus(200)
+                }
+            })
+        } else {
+            res.sendStatus(404)
+        }
     }
 
 });

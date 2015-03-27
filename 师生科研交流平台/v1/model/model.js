@@ -197,7 +197,6 @@ var Select = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'user'
     },
-    team: String,
     project: {
         type: Schema.Types.ObjectId,
         ref: 'project'

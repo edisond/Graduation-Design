@@ -5,15 +5,26 @@ var Dao = db.Dao;
 
 /* Get user list */
 router.get('/user', function (req, res) {
-    var condition = {};
-    if (req.query.type) condition.type = req.query.type;
-    Dao.getUsers(condition, function (err, docs) {
-        if (err) {
-            res.sendStatus(500);
-        } else {
-            res.status(200).send(docs);
+    if (req.session.admin) {
+        var condition = {};
+        if (req.query.type) condition.type = req.query.type;
+        Dao.getUsers(condition, function (err, docs) {
+            if (err) {
+                res.sendStatus(500);
+            } else {
+                res.status(200).send(docs);
+            }
+        })
+    } else if (req.session.user) {
+        if (req.query && req.query.self) {
+            var user = req.session.user;
+            res.status(200).send(user)
         }
-    })
+
+    } else {
+        res.sendStatus(401)
+    }
+
 })
 
 /* Get comment */

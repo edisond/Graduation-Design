@@ -1,5 +1,27 @@
 $(document).ready(function () {
 
+    var commentList = $('#comments'),
+        projectList = $('#projects'),
+        setProfileForm = $('#account-setting').find('form'),
+        setPasswordForm = $('#password-setting').find('form');
+
+    switch (window.location.hash) {
+    case '#news':
+        $('#news').tab('show');
+        break;
+    case '#settings':
+        $('#settings').tab('show');
+        break;
+    case '#project':
+        $('#project').tab('show');
+        break;
+    case '#apply':
+        $('#apply').tab('show');
+        break;
+
+
+    }
+
     function newComment(comment) {
         var media = $('<div class="media">'),
             mediaLeft = $('<div class="media-left">').appendTo(media),
@@ -27,9 +49,6 @@ $(document).ready(function () {
         return div
     }
 
-    var commentList = $('#comments'),
-        projectList = $('#projects');
-
     $.get(encodeURI('/api/get/comment?to=' + USER._id), function (data) {
         if (data.length === 0) {
             commentList.find('#load-state').html('暂无动态')
@@ -51,6 +70,7 @@ $(document).ready(function () {
     if (USER.type === '老师') {
         var viewStudentModel = $('#view-select'),
             tableApply = $('#table-apply');
+
 
         $.get(encodeURI('/api/get/project?teacher=' + USER._id), function (data) {
             if (data.length === 0) {
@@ -93,6 +113,8 @@ $(document).ready(function () {
             },
                 {
                     "data": "student.name"
+            }, {
+                    "data": "student.type"
             },
                 {
                     "data": "project.name"
@@ -161,6 +183,13 @@ $(document).ready(function () {
             $this.find('#email').html(data.student.email);
             $this.find('#sex').html(data.student.sex);
         });
+
+
+        setProfileForm.find('#input-submit').click(function () {
+
+
+        })
+
     } else {
         var applyList = $('#applies');
 
@@ -225,4 +254,122 @@ $(document).ready(function () {
         });
     }
 
+    setPasswordForm.find('#input-submit').click(function () {
+        var post = {
+            op: setPasswordForm.find('#input-orign-password').val(),
+            np: setPasswordForm.find('#input-new-password').val(),
+            cp: setPasswordForm.find('#input-confirm-password').val()
+        };
+        if (post.op === '' || post.np === '') {
+            notyFacade('请输入原密码与新密码', 'warning')
+        } else if (post.np !== post.cp) {
+            notyFacade('新密码与确认密码不一致', 'warning')
+        } else {
+            delete post.cp;
+            post.op = md5(post.op);
+            post.np = md5(post.np);
+            $.ajax({
+                url: encodeURI('/api/post/user?action=pwd'),
+                data: post,
+                type: 'POST',
+                success: function () {
+                    $('a[href=#password-setting]').click();
+                    setPasswordForm[0].reset();
+                    notyFacade('修改成功', 'success')
+                },
+                error: function (XMLHttpRequest) {
+                    if (XMLHttpRequest.status === 401) {
+                        notyFacade('原密码错误', 'error')
+                    } else {
+                        notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error')
+                    }
+                }
+            })
+        }
+    })
+
+    $.get(encodeURI('/api/get/user?self=true'), function (data) {
+        if (data.type === '老师') {
+            setProfileForm.find('#input-id').val(data.id);
+            setProfileForm.find('#input-email').val(data.email);
+            setProfileForm.find('#input-phone').val(data.phone);
+            setProfileForm.find('#input-sex').val(data.sex);
+            setProfileForm.find('#input-name').val(data.name);
+            setProfileForm.find('#input-department').val(data.teacherAttr.department);
+            setProfileForm.find('#input-title').val(data.teacherAttr.title);
+        } else if (data.type === '同学') {
+            setProfileForm.find('#input-id').val(data.id);
+            setProfileForm.find('#input-email').val(data.email);
+            setProfileForm.find('#input-phone').val(data.phone);
+            setProfileForm.find('#input-sex').val(data.sex);
+            setProfileForm.find('#input-name').val(data.name);
+            setProfileForm.find('#input-college').val(data.studentAttr.college);
+            setProfileForm.find('#input-major').val(data.studentAttr.major);
+            setProfileForm.find('#input-grade').val(data.studentAttr.grade);
+            setProfileForm.find('#input-studentType').val(data.studentAttr.studentType);
+            setProfileForm.find('#input-address').val(data.studentAttr.address);
+        }
+    })
+
+    setProfileForm.find('#input-submit').click(function () {
+        if (USER.type === '同学') {
+            var post = {
+                email: setProfileForm.find('#input-email').val(),
+                phone: setProfileForm.find('#input-phone').val(),
+                sex: setProfileForm.find('#input-sex').val(),
+                name: setProfileForm.find('#input-name').val(),
+                studentAttr: {
+                    college: setProfileForm.find('#input-college').val(),
+                    major: setProfileForm.find('#input-major').val(),
+                    grade: setProfileForm.find('#input-grade').val(),
+                    studentType: setProfileForm.find('#input-studentType').val(),
+                    address: setProfileForm.find('#input-address').val()
+                }
+            }
+            if (post.name === '') {
+                notyFacade('请填写姓名', 'warning')
+            } else {
+                $.ajax({
+                    url: encodeURI('/api/post/user?action=update'),
+                    data: post,
+                    type: 'POST',
+                    success: function () {
+                        $('a[href=#account-setting]').click();
+                        notyFacade('修改成功', 'success')
+                    },
+                    error: function (XMLHttpRequest) {
+                        notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error')
+                    }
+                })
+            }
+
+        } else if (USER.type === '老师') {
+            var post = {
+                email: setProfileForm.find('#input-email').val(),
+                phone: setProfileForm.find('#input-phone').val(),
+                sex: setProfileForm.find('#input-sex').val(),
+                name: setProfileForm.find('#input-name').val(),
+                teacherAttr: {
+                    department: setProfileForm.find('#input-department').val(),
+                    title: setProfileForm.find('#input-title').val()
+                }
+            }
+            if (post.name === '') {
+                notyFacade('请填写姓名', 'warning')
+            } else {
+                $.ajax({
+                    url: encodeURI('/api/post/user?action=update'),
+                    data: post,
+                    type: 'POST',
+                    success: function () {
+                        $('a[href=#account-setting]').click();
+                        notyFacade('修改成功', 'success')
+                    },
+                    error: function (XMLHttpRequest) {
+                        notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error')
+                    }
+                })
+            }
+        }
+    })
 })

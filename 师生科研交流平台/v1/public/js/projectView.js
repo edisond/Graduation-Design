@@ -49,7 +49,7 @@ $(document).ready(function () {
 
     })
 
-    $.get(encodeURI('/api/get/select?project=' + projectId), function (data) {
+    $.get(encodeURI('/api/get/select?project=' + projectId + '&active=true'), function (data) {
         $('#project-selects-num').html(data.length);
         if (data.length === 0) {
             $('<span class="text-muted">暂无同学选课</span>').appendTo(projectSelects);

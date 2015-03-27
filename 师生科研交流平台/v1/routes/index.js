@@ -12,6 +12,11 @@ router.get('/', function (req, res) {
     });
 })
 
+/* 注册页 */
+router.get('/register', function (req, res) {
+    res.render('register');
+})
+
 /* 开放实验列表页 */
 router.get('/open-experiment', function (req, res) {
     res.render('project', {
