@@ -43,7 +43,8 @@
                             <br/>
                             <button type="button" class="btn btn-default" id="select-all-teacher">全部选择</button>
                             <button type="button" class="btn btn-default ml10" id="deselect-all-teacher">取消全选</button>
-                            <button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#delete-teacher"><i class="fa fa-trash-o"></i>&nbsp;删除选中记录</button>
+                            <button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#delete-teacher"><i class="fa fa-times"></i>&nbsp;失效选中记录</button>
+                            <button type="button" class="btn btn-success pull-right mr10" id="active-select-teacher"><i class="fa fa-check"></i>&nbsp;激活选中记录</button>
                             <button type="button" class="btn btn-success pull-right mr10" data-toggle="modal" data-target="#new-teacher"><i class="fa fa-plus"></i>&nbsp;添加教师</button>
                             <br/>
                             <br/>
@@ -66,7 +67,8 @@
                             <br/>
                             <button type="button" class="btn btn-default" id="select-all-student">全部选择</button>
                             <button type="button" class="btn btn-default ml10" id="deselect-all-student">取消全选</button>
-                            <button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#delete-student"><i class="fa fa-trash-o"></i>&nbsp;删除选中记录</button>
+                            <button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#delete-student"><i class="fa fa-trash-o"></i>&nbsp;失效选中记录</button>
+                            <button type="button" class="btn btn-success pull-right mr10" id="active-select-student"><i class="fa fa-check"></i>&nbsp;激活选中记录</button>
                             <button type="button" class="btn btn-success pull-right mr10" data-toggle="modal" data-target="#new-student"><i class="fa fa-plus"></i>&nbsp;添加学生</button>
                             <br/>
                             <br/>
@@ -157,22 +159,23 @@
                     </button>
                     <h4 class="modal-title">添加教师</h4>
                 </div>
-                <div class="modal-body">
-                    <form class="form-horizontal">
+                <form class="form-horizontal">
+                    <div class="modal-body">
+
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-id">工号</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-id" maxlength="50">
+                                <input class="form-control" type="text" id="input-id" maxlength="10" required pattern="^[0-9]*$" placeholder="请填写十位以下数字">
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-password">初始密码</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-password" value="123456" maxlength="50">
+                                <input class="form-control" type="password" id="input-password" maxlength="20" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label control-label" for="input-name">姓名</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control form-control" type="text" id="input-name" maxlength="50">
+                                <input class="form-control form-control" type="text" id="input-name" maxlength="10" required>
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-sex">性别</label>
                             <div class="col-xs-12 col-sm-4">
@@ -186,21 +189,21 @@
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-department">部门</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-department" maxlength="50" />
+                                <input class="form-control" type="text" id="input-department" maxlength="10" />
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-title">职称</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-title" maxlength="50" />
+                                <input class="form-control" type="text" id="input-title" maxlength="10" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-email">邮箱</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-email" maxlength="50">
+                                <input class="form-control" type="email" id="input-email" maxlength="50">
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-phone">电话</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-phone" maxlength="50">
+                                <input class="form-control" type="tel" id="input-phone" maxlength="20">
                             </div>
                         </div>
                         <div class="form-group">
@@ -208,12 +211,13 @@
                                 <input type="checkbox" checked id="input-active">&nbsp;创建并激活
                             </label>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" id="submit">提交</button>
-                </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary" id="submit">保存</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -225,22 +229,23 @@
                     </button>
                     <h4 class="modal-title">编辑教师</h4>
                 </div>
-                <div class="modal-body">
-                    <form class="form-horizontal">
+                <form class="form-horizontal">
+                    <div class="modal-body">
                         <div class="form-group">
+                            <input type="hidden" id="input-_id">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-id">工号</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-id" maxlength="50" disabled="disabled">
+                                <input class="form-control" type="text" id="input-id" maxlength="10" required pattern="^[0-9]*$" placeholder="请填写十位以下数字">
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-password">密码</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-password" value="123456" maxlength="50" disabled="disabled">
+                                <input class="form-control" type="password" id="input-password" maxlength="20" disabled="disabled">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label control-label" for="input-name">姓名</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control form-control" type="text" id="input-name" maxlength="50">
+                                <input class="form-control form-control" type="text" id="input-name" maxlength="10" required>
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-sex">性别</label>
                             <div class="col-xs-12 col-sm-4">
@@ -254,37 +259,39 @@
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-department">部门</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-department" maxlength="50" />
+                                <input class="form-control" type="text" id="input-department" maxlength="10" />
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-title">职称</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-title" maxlength="50" />
+                                <input class="form-control" type="text" id="input-title" maxlength="10" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-email">邮箱</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-email" maxlength="50">
+                                <input class="form-control" type="email" id="input-email" maxlength="50">
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-phone">电话</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-phone" maxlength="50">
+                                <input class="form-control" type="tel" id="input-phone" maxlength="20">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-xs-12 col-sm-6 control-label">
-                                <input type="checkbox" id="input-active">&nbsp;激活
-                            </label>
-                            <label class="col-xs-12 col-sm-6 control-label">
-                                <input type="checkbox" id="input-reset-password">&nbsp;重设密码
-                            </label>
+                            <div class="col-xs-12 text-right">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="input-active">激活
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="input-reset-password">重设密码
+                                </label>
+                            </div>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" id="submit">保存更改</button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary" id="submit">保存</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -294,14 +301,14 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title">删除记录</h4>
+                    <h4 class="modal-title">失效记录</h4>
                 </div>
                 <div class="modal-body">
                     <span id="delete-teacher-info"></span>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-danger" id="submit">删除</button>
+                    <button type="button" class="btn btn-danger" id="submit">确定</button>
                 </div>
             </div>
         </div>
@@ -314,22 +321,22 @@
                     </button>
                     <h4 class="modal-title">添加学生</h4>
                 </div>
-                <div class="modal-body">
-                    <form class="form-horizontal">
+                <form class="form-horizontal">
+                    <div class="modal-body">
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-id">学号</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-id" maxlength="50">
+                                <input class="form-control" type="text" id="input-id" maxlength="10" required pattern="^[0-9]*$" placeholder="请填写十位以下数字">
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-password">初始密码</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-password" value="123456" maxlength="50">
+                                <input class="form-control" type="password" id="input-password" maxlength="20" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label control-label" for="input-name">姓名</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control form-control" type="text" id="input-name" maxlength="50">
+                                <input class="form-control form-control" type="text" id="input-name" maxlength="10" required>
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-sex">性别</label>
                             <div class="col-xs-12 col-sm-4">
@@ -343,17 +350,17 @@
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-college">学院</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-college" maxlength="50">
+                                <input class="form-control" type="text" id="input-college" maxlength="10">
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-major">专业</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-major" maxlength="50">
+                                <input class="form-control" type="text" id="input-major" maxlength="10">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-grade">年级</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-grade" maxlength="50">
+                                <input class="form-control" type="number" id="input-grade" min="1" max="9999">
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-type">类型</label>
                             <div class="col-xs-12 col-sm-4">
@@ -367,28 +374,29 @@
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-email">邮箱</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-email" maxlength="50">
+                                <input class="form-control" type="email" id="input-email" maxlength="50">
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-phone">电话</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-phone" maxlength="50">
+                                <input class="form-control" type="tel" id="input-phone" maxlength="20">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-address">地址</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-address" maxlength="50">
+                                <input class="form-control" type="text" id="input-address" maxlength="20">
                             </div>
                             <label class="col-xs-12 col-sm-6 control-label">
                                 <input type="checkbox" checked id="input-active">&nbsp;创建并激活
                             </label>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" id="submit">提交</button>
-                </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary" id="submit">保存</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -400,22 +408,23 @@
                     </button>
                     <h4 class="modal-title">编辑学生</h4>
                 </div>
-                <div class="modal-body">
-                    <form class="form-horizontal">
+                <form class="form-horizontal">
+                    <div class="modal-body">
                         <div class="form-group">
+                            <input type="hidden" id="input-_id">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-id">学号</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-id" maxlength="50" disabled="disabled">
+                                <input class="form-control" type="text" id="input-id" maxlength="10" required pattern="^[0-9]*$" placeholder="请填写十位以下数字">
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-password">密码</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-password" value="123456" maxlength="50" disabled="disabled">
+                                <input class="form-control" type="password" id="input-password" maxlength="20" disabled="disabled">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label control-label" for="input-name">姓名</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control form-control" type="text" id="input-name" maxlength="50">
+                                <input class="form-control form-control" type="text" id="input-name" maxlength="10">
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-sex">性别</label>
                             <div class="col-xs-12 col-sm-4">
@@ -429,17 +438,17 @@
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-college">学院</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-college" maxlength="50">
+                                <input class="form-control" type="text" id="input-college" maxlength="10">
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-major">专业</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-major" maxlength="50">
+                                <input class="form-control" type="text" id="input-major" maxlength="10">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-grade">年级</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-grade" maxlength="50">
+                                <input class="form-control" type="number" id="input-grade" min="1" max="9999">
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-type">类型</label>
                             <div class="col-xs-12 col-sm-4">
@@ -453,31 +462,34 @@
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-email">邮箱</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-email" maxlength="50">
+                                <input class="form-control" type="email" id="input-email" maxlength="50">
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-phone">电话</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-phone" maxlength="50">
+                                <input class="form-control" type="tel" id="input-phone" maxlength="20">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-address">地址</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-address" maxlength="50">
+                                <input class="form-control" type="text" id="input-address" maxlength="20">
                             </div>
-                            <label class="col-xs-6 col-sm-3 control-label">
-                                <input type="checkbox" id="input-active">&nbsp;激活
-                            </label>
-                            <label class="col-xs-6 col-sm-3 control-label">
-                                <input type="checkbox" id="input-reset-password">&nbsp;重设密码
-                            </label>
+                            <div class="col-sm-6 text-right">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="input-active">激活
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="input-reset-password">重设密码
+                                </label>
+                            </div>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" id="submit">保存更改</button>
-                </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary" id="submit">保存</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -487,10 +499,10 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title">删除记录</h4>
+                    <h4 class="modal-title">失效记录</h4>
                 </div>
                 <div class="modal-body">
-                    将要删除选中的学生记录！（共&nbsp;<span id="delete-student-count">0</span>&nbsp;条）
+                    使选中的学生记录失效？（共&nbsp;<span id="delete-student-count">0</span>&nbsp;条）
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>

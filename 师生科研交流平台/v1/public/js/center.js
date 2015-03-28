@@ -335,7 +335,7 @@ $(document).ready(function () {
                     type: 'POST',
                     success: function () {
                         $('a[href=#account-setting]').click();
-                        notyFacade('修改成功', 'success')
+                        notyFacade('修改成功，重新登录后生效', 'success')
                     },
                     error: function (XMLHttpRequest) {
                         notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error')
@@ -363,7 +363,7 @@ $(document).ready(function () {
                     type: 'POST',
                     success: function () {
                         $('a[href=#account-setting]').click();
-                        notyFacade('修改成功', 'success')
+                        notyFacade('修改成功，重新登录后生效', 'success')
                     },
                     error: function (XMLHttpRequest) {
                         notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error')

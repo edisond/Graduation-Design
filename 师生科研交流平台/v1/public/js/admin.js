@@ -106,12 +106,12 @@ $(document).ready(function () {
         }
     });
 
-    newTeacherModel.find('#submit').click(function () {
+    newTeacherModel.find('form').html5Validate(function () {
         var teacher = {
             type: '老师',
             id: newTeacherModel.find('#input-id').val(),
             name: newTeacherModel.find('#input-name').val(),
-            password: newTeacherModel.find('#input-password').val(),
+            password: md5(newTeacherModel.find('#input-password').val()),
             teacherAttr: {
                 department: newTeacherModel.find('#input-department').val(),
                 title: newTeacherModel.find('#input-title').val()
@@ -121,34 +121,25 @@ $(document).ready(function () {
             phone: newTeacherModel.find('#input-phone').val(),
             active: newTeacherModel.find('#input-active').is(':checked')
         };
-        if (teacher.id !== '' && teacher.password !== '' && teacher.name !== '') {
-            if (!new RegExp("^[0-9]*$").test(teacher.id)) {
-                notyFacade('工号必须由数字组成', 'warning');
-                return false;
-            } else {
-                teacher.password = md5(teacher.password);
-                $.ajax({
-                    type: "POST",
-                    url: encodeURI("/api/post/user?action=new"),
-                    data: teacher,
-                    success: function () {
-                        newTeacherModel.modal('hide');
-                        newTeacherModel.find('form')[0].reset();
-                        tableTeacher.DataTable().row.add(teacher).draw();
-                        notyFacade('添加成功', 'success');
-                    },
-                    error: function () {
-                        notyFacade('该工号已存在', 'error');
-                    }
-                });
+        $.ajax({
+            type: "POST",
+            url: encodeURI("/api/post/user?action=new"),
+            data: teacher,
+            success: function () {
+                newTeacherModel.modal('hide');
+                newTeacherModel.find('form')[0].reset();
+                tableTeacher.DataTable().row.add(teacher).draw();
+                notyFacade('添加成功', 'success');
+            },
+            error: function () {
+                notyFacade('该工号已存在', 'error');
             }
-        } else {
-            notyFacade('请至少填写工号，姓名，初始密码', 'warning');
-        }
+        });
     });
 
     editTeacherModel.on('show.bs.modal', function (e) {
         var data = tableTeacher.DataTable().row($(e.relatedTarget).parents('tr')[0]).data();
+        editTeacherModel.find('#input-_id').val(data._id);
         editTeacherModel.find('#input-id').val(data.id);
         editTeacherModel.find('#input-name').val(data.name);
         editTeacherModel.find('#input-department').val(data.teacherAttr ? data.teacherAttr.department : '');
@@ -169,9 +160,10 @@ $(document).ready(function () {
         }
     });
 
-    editTeacherModel.find('#submit').click(function () {
+    editTeacherModel.find('form').html5Validate(function () {
         var teacher = {
                 type: '老师',
+                _id: editTeacherModel.find('#input-_id').val(),
                 id: editTeacherModel.find('#input-id').val(),
                 name: editTeacherModel.find('#input-name').val(),
                 password: editTeacherModel.find('#input-password').val(),
@@ -185,42 +177,40 @@ $(document).ready(function () {
                 active: editTeacherModel.find('#input-active').is(':checked')
             },
             changePwd = editTeacherModel.find('#input-reset-password').is(':checked');
-        if (teacher.id !== '') {
-            if (changePwd && teacher.password === '') {
-                notyFacade('若希望重置密码，则密码为必填项', 'warning');
-                return false;
-            } else {
-                teacher.password = md5(teacher.password);
-                $.ajax({
-                    type: "POST",
-                    url: encodeURI("/api/post/user?action=update"),
-                    data: teacher,
-                    success: function () {
-                        editTeacherModel.modal('hide');
-                        editTeacherModel.find('form')[0].reset();
-                        tableTeacher.DataTable().ajax.reload(null, false);
-                        notyFacade('编辑成功', 'success');
-                    },
-                    error: function () {
-                        notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
-                    }
-                });
-            }
+        if (changePwd && teacher.password === '') {
+            notyFacade('若希望重置密码，则密码为必填项', 'warning');
         } else {
-            notyFacade('工号为必填项', 'warning');
-            return false;
+            if (changePwd) {
+                teacher.password = md5(teacher.password);
+            } else {
+                delete teacher.password;
+            }
+            $.ajax({
+                type: "POST",
+                url: encodeURI("/api/post/user?action=update"),
+                data: teacher,
+                success: function () {
+                    editTeacherModel.modal('hide');
+                    editTeacherModel.find('form')[0].reset();
+                    editTeacherModel.find('#input-password').attr('disabled', true);
+                    tableTeacher.DataTable().ajax.reload(null, false);
+                    notyFacade('保存成功', 'success');
+                },
+                error: function () {
+                    notyFacade('该工号已存在', 'error');
+                }
+            });
         }
     });
 
     deleteTeacherModel.on('show.bs.modal', function (e) {
         var selectedNum = $('#table-teacher tbody>tr.active').size();
         if (selectedNum !== 0) {
-            $(this).find('#delete-teacher-info').html('删除选中的教师记录？（共&nbsp;' + selectedNum + '&nbsp;条）');
+            $(this).find('#delete-teacher-info').html('使选中的教师记录失效？（共&nbsp;' + selectedNum + '&nbsp;条）');
         } else {
             notyFacade('您没有选中任何记录', 'information');
             return false;
         }
-
     });
 
     deleteTeacherModel.keypress(function (e) {
@@ -231,11 +221,12 @@ $(document).ready(function () {
 
     deleteTeacherModel.find('#submit').click(function () {
         var post = {
-                id: []
+                _id: []
             },
             data = tableTeacher.DataTable().rows('.active').data();
+
         for (var i = 0, j = data.length; i < j; i++) {
-            post.id.push(data[i].id);
+            post._id.push(data[i]._id);
         }
         $.ajax({
             type: "POST",
@@ -243,8 +234,8 @@ $(document).ready(function () {
             data: post,
             success: function () {
                 deleteTeacherModel.modal('hide');
-                tableTeacher.DataTable().rows('.active').remove().draw(false);
-                notyFacade('删除成功', 'success');
+                tableTeacher.DataTable().ajax.reload(null, false);
+                notyFacade('操作成功', 'success');
             },
             error: function () {
                 notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
@@ -365,12 +356,12 @@ $(document).ready(function () {
         }
     });
 
-    newStudentModel.find('#submit').click(function () {
+    newStudentModel.find('form').html5Validate(function () {
         var student = {
             type: '同学',
             id: newStudentModel.find('#input-id').val(),
             name: newStudentModel.find('#input-name').val(),
-            password: newStudentModel.find('#input-password').val(),
+            password: md5(newStudentModel.find('#input-password').val()),
             studentAttr: {
                 major: newStudentModel.find('#input-major').val(),
                 grade: newStudentModel.find('#input-grade').val(),
@@ -383,34 +374,25 @@ $(document).ready(function () {
             phone: newStudentModel.find('#input-phone').val(),
             active: newStudentModel.find('#input-active').is(':checked')
         };
-        if (student.id !== '' && student.password !== '' && student.name !== '') {
-            if (!new RegExp("^[0-9]*$").test(student.id)) {
-                notyFacade('学号必须由数字组成', 'warning');
-                return false;
-            } else {
-                student.password = md5(student.password);
-                $.ajax({
-                    type: "POST",
-                    url: encodeURI("/api/post/user?action=new"),
-                    data: student,
-                    success: function () {
-                        newStudentModel.modal('hide');
-                        newStudentModel.find('form')[0].reset();
-                        tableStudent.DataTable().row.add(student).draw();
-                        notyFacade('添加成功', 'success');
-                    },
-                    error: function () {
-                        notyFacade('该学号已存在', 'error');
-                    }
-                });
+        $.ajax({
+            type: "POST",
+            url: encodeURI("/api/post/user?action=new"),
+            data: student,
+            success: function () {
+                newStudentModel.modal('hide');
+                newStudentModel.find('form')[0].reset();
+                tableStudent.DataTable().row.add(student).draw();
+                notyFacade('添加成功', 'success');
+            },
+            error: function () {
+                notyFacade('该学号已存在', 'error');
             }
-        } else {
-            notyFacade('请至少填写学号，姓名，初始密码', 'warning');
-        }
-    });
+        });
+    })
 
     editStudentModel.on('show.bs.modal', function (e) {
         var data = tableStudent.DataTable().row($(e.relatedTarget).parents('tr')[0]).data();
+        editStudentModel.find('#input-_id').val(data._id);
         editStudentModel.find('#input-id').val(data.id);
         editStudentModel.find('#input-name').val(data.name);
         editStudentModel.find('#input-major').val(data.studentAttr ? data.studentAttr.major : '');
@@ -434,8 +416,9 @@ $(document).ready(function () {
         }
     });
 
-    editStudentModel.find('#submit').click(function () {
+    editStudentModel.find('form').html5Validate(function () {
         var student = {
+                _id: editStudentModel.find('#input-_id').val(),
                 type: '同学',
                 id: editStudentModel.find('#input-id').val(),
                 name: editStudentModel.find('#input-name').val(),
@@ -453,30 +436,30 @@ $(document).ready(function () {
                 active: editStudentModel.find('#input-active').is(':checked')
             },
             changePwd = editStudentModel.find('#input-reset-password').is(':checked');
-        if (student.id !== '') {
-            if (changePwd && student.password === '') {
-                notyFacade('若希望重置密码，则密码为必填项', 'warning');
-                return false;
-            } else {
-                student.password = md5(student.password);
-                $.ajax({
-                    type: "POST",
-                    url: encodeURI("/api/post/user?action=update"),
-                    data: student,
-                    success: function () {
-                        editStudentModel.modal('hide');
-                        editStudentModel.find('form')[0].reset();
-                        tableStudent.DataTable().ajax.reload(null, false);
-                        notyFacade('编辑成功', 'success');
-                    },
-                    error: function () {
-                        notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
-                    }
-                });
-            }
-        } else {
-            notyFacade('学号为必填项', 'warning');
+        if (changePwd && student.password === '') {
+            notyFacade('若希望重置密码，则密码为必填项', 'warning');
             return false;
+        } else {
+            if (changePwd) {
+                student.password = md5(student.password);
+            } else {
+                delete student.password;
+            }
+            $.ajax({
+                type: "POST",
+                url: encodeURI("/api/post/user?action=update"),
+                data: student,
+                success: function () {
+                    editStudentModel.modal('hide');
+                    editStudentModel.find('form')[0].reset();
+                    editStudentModel.find('#input-password').attr('disabled', true);
+                    tableStudent.DataTable().ajax.reload(null, false);
+                    notyFacade('编辑成功', 'success');
+                },
+                error: function () {
+                    notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
+                }
+            });
         }
     });
 
@@ -498,11 +481,11 @@ $(document).ready(function () {
 
     deleteStudentModel.find('#submit').click(function () {
         var post = {
-                id: []
+                _id: []
             },
             data = tableStudent.DataTable().rows('.active').data();
         for (var i = 0, j = data.length; i < j; i++) {
-            post.id.push(data[i].id);
+            post._id.push(data[i]._id);
         }
         $.ajax({
             type: "POST",
@@ -510,8 +493,8 @@ $(document).ready(function () {
             data: post,
             success: function () {
                 deleteStudentModel.modal('hide');
-                tableStudent.DataTable().rows('.active').remove().draw(false);
-                notyFacade('删除成功', 'success');
+                tableStudent.DataTable().ajax.reload(null, false);
+                notyFacade('操作成功', 'success');
             },
             error: function () {
                 notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
@@ -554,5 +537,61 @@ $(document).ready(function () {
             changePasswordForm.find('#button-submit-password').click();
         }
     });
+
+    $('#active-select-student').click(function () {
+        var selectedNum = $('#table-student tbody>tr.active').size();
+        if (selectedNum > 0) {
+            var post = {
+                    _id: []
+                },
+                data = tableStudent.DataTable().rows('.active').data();
+            for (var i = 0, j = data.length; i < j; i++) {
+                post._id.push(data[i]._id);
+            }
+            $.ajax({
+                type: "POST",
+                url: encodeURI("/api/post/user?action=active"),
+                data: post,
+                success: function () {
+                    tableStudent.DataTable().ajax.reload(null, false);
+                    notyFacade('操作成功', 'success');
+                },
+                error: function () {
+                    notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
+                }
+            });
+        } else {
+            notyFacade('您没有选中任何记录', 'information');
+            return false;
+        }
+    })
+
+    $('#active-select-teacher').click(function () {
+        var selectedNum = $('#table-teacher tbody>tr.active').size();
+        if (selectedNum > 0) {
+            var post = {
+                    _id: []
+                },
+                data = tableTeacher.DataTable().rows('.active').data();
+            for (var i = 0, j = data.length; i < j; i++) {
+                post._id.push(data[i]._id);
+            }
+            $.ajax({
+                type: "POST",
+                url: encodeURI("/api/post/user?action=active"),
+                data: post,
+                success: function () {
+                    tableTeacher.DataTable().ajax.reload(null, false);
+                    notyFacade('操作成功', 'success');
+                },
+                error: function () {
+                    notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
+                }
+            });
+        } else {
+            notyFacade('您没有选中任何记录', 'information');
+            return false;
+        }
+    })
 
 });

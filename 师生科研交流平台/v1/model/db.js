@@ -11,7 +11,7 @@ var Dao = {
 
     /* 获取所有用户 */
     getUsers: function (condition, callback) {
-        User.find(condition, '-_id -__v -password -key').lean().exec(callback);
+        User.find(condition, '-__v -password -key').lean().exec(callback);
     },
 
     /* 新建一个用户 */
@@ -29,9 +29,9 @@ var Dao = {
             user.key = md5.md5(new Date());
             user.password = md5.md5(user.password + user.key);
         }
-        var condition = {};
-        if (user.id) condition.id = user.id;
-        if (user._id) condition._id = user._id;
+        var condition = {
+            _id: user._id
+        };
         User.findOneAndUpdate(condition, user, callback)
     },
 
@@ -58,10 +58,27 @@ var Dao = {
 
     /* 删除用户 */
     deleteUsers: function (idList, callback) {
-        User.remove({
-            'id': {
+        console.log(idList)
+        User.update({
+            _id: {
                 $in: idList
             }
+        }, {
+            active: false
+        }, {
+            multi: true
+        }, callback);
+    },
+
+    activeUsers: function (idList, callback) {
+        User.update({
+            _id: {
+                $in: idList
+            }
+        }, {
+            active: true
+        }, {
+            multi: true
         }, callback);
     },
 

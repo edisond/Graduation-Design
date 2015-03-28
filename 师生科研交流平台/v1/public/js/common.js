@@ -1,5 +1,9 @@
 moment.locale('zh-cn');
 
+function isNull(object) {
+    return !object && typeof (object) !== "undefined" && object !== 0
+}
+
 Array.prototype.unique = function () {
     var n = {},
         r = [];

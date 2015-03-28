@@ -61,7 +61,6 @@ router.post('/signout', function (req, res) {
 router.post('/user', function (req, res) {
     var user = req.body;
     if (req.session.admin) {
-        console.log(req.query.action)
         if (req.query.action === "new") {
             Dao.newUser(user, function (err) {
                 if (err) {
@@ -76,7 +75,16 @@ router.post('/user', function (req, res) {
                 res.sendStatus(err ? 500 : 200);
             });
         } else if (req.query.action === "delete") {
-            Dao.deleteUsers(user.id, function (err) {
+            Dao.deleteUsers(user._id, function (err, doc) {
+                console.log(doc);
+                if (err) {
+                    res.sendStatus(500);
+                } else {
+                    res.sendStatus(200);
+                }
+            })
+        } else if (req.query.action === "active") {
+            Dao.activeUsers(user._id, function (err) {
                 if (err) {
                     res.sendStatus(500);
                 } else {
@@ -109,12 +117,11 @@ router.post('/user', function (req, res) {
         } else if (req.query.action === "update") {
             var user = req.body;
             user._id = req.session.user._id;
-            console.log(user);
-            Dao.updateUser(user, function (err) {
+            Dao.updateUser(user, function (err, docs) {
                 if (err) {
                     res.sendStatus(500)
                 } else {
-                    res.sendStatus(200)
+                    res.sendStatus(200);
                 }
             })
         } else {
