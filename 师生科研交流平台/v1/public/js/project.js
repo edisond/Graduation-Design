@@ -72,8 +72,14 @@ $(document).ready(function () {
                 fontTarget.append($('<li><a data-edit="fontName ' + fontName + '" style="font-family:\'' + fontName + '\'">' + fontName + '</a></li>'));
             });
 
-            $('a[title]').tooltip({
+            $('[title]').tooltip({
                 container: 'body'
+            });
+
+            $('[data-role=magic-overlay]').each(function () {
+                var overlay = $(this),
+                    target = $(overlay.data('target'));
+                overlay.css('opacity', 0).css('position', 'absolute').offset(target.offset()).width(34).height(30);
             });
 
             $('.dropdown-menu input').click(function () {
@@ -119,7 +125,6 @@ $(document).ready(function () {
             formOE.find('#input-result').attr('disabled', false);
         })
         formOE.html5Validate(function () {
-
             var post = {
                 openExperimentAttr: {
                     detail: formOE.find('#input-detail').html(),
@@ -161,7 +166,7 @@ $(document).ready(function () {
                     formOE[0].reset();
                 },
                 error: function () {
-                    notyFacade('抱歉，产生了一个错误，请重试或刷新后重试', 'error');
+                    notyFacade('抱歉，产生了一个错误，请重试或刷新后重试。（请勿上传总大小超过1MB的图像）', 'error');
                 }
             });
         });

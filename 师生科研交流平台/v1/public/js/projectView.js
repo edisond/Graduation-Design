@@ -16,7 +16,7 @@ $(document).ready(function () {
         var media = $('<div class="media">'),
             mediaLeft = $('<div class="media-left">').appendTo(media),
             mediaBody = $('<div class="media-body">').appendTo(media);
-        $('<a href="/profile/' + comment.from._id + '"><img src="' + comment.from.img + '" width="50px" height="50px"></a>').appendTo(mediaLeft);
+        $('<a href="/profile/' + comment.from._id + '"><img src="' + comment.from.img + '" class="head head-sm"></a>').appendTo(mediaLeft);
         if (comment.to) {
             $('<h5 class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + '</a>' + comment.from.type + '回复了<a href="/profile/' + comment.to._id + '">' + comment.to.name + '</a>' + comment.to.type + '：</h5>').appendTo(mediaBody);
         } else {
@@ -64,8 +64,9 @@ $(document).ready(function () {
 
     commentList.delegate('a[href="#input-comment"]', 'click', function () {
         var $this = $(this);
+        $('#reply-object').html('正在回复' + $this.attr('data-name') + $this.attr('data-type'));
+
         commentBox.attr({
-            'placeholder': '正在回复' + $this.attr('data-name') + $this.attr('data-type'),
             'data-id': $this.attr('data-id'),
             'data-name': $this.attr('data-name'),
             'data-type': $this.attr('data-type')
@@ -118,7 +119,7 @@ $(document).ready(function () {
 
     $('#form-comment').html5Validate(function () {
         var comment = {
-            body: commentBox.val(),
+            body: commentBox.html(),
             from: USER._id,
             project: projectId,
             date: Date.now()
@@ -150,7 +151,7 @@ $(document).ready(function () {
                     $('<hr>').appendTo(commentList);
                 }
                 newComment(comment).appendTo(commentList);
-                $('#form-comment')[0].reset();
+                commentBox.html('');
                 $('#input-cancel').click();
                 notyFacade('发布成功', 'success');
             },
@@ -161,12 +162,57 @@ $(document).ready(function () {
     });
 
     $('#input-cancel').click(function () {
-        commentBox.attr('placeholder', '说点什么').removeAttr('data-id').removeAttr('data-name').removeAttr('data-type').val('');
+        commentBox.removeAttr('data-id').removeAttr('data-name').removeAttr('data-type').html('');
+        $('#reply-object').html('');
+    });
+
+    function initToolbarBootstrapBindings() {
+        var fonts = ['Serif', 'Sans', 'Arial', 'Arial Black', 'Courier',
+            'Courier New', 'Comic Sans MS', 'Helvetica', 'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma', 'Times',
+            'Times New Roman', 'Verdana'],
+            fontTarget = $('[title=字体]').siblings('.dropdown-menu');
+        $.each(fonts, function (idx, fontName) {
+            fontTarget.append($('<li><a data-edit="fontName ' + fontName + '" style="font-family:\'' + fontName + '\'">' + fontName + '</a></li>'));
+        });
+
+        $('[title]').tooltip({
+            container: 'body'
+        });
+
+        $('[data-role=magic-overlay]').each(function () {
+            var overlay = $(this),
+                target = $(overlay.data('target'));
+            overlay.css('opacity', 0).css('position', 'absolute').offset(target.offset()).width(34).height(30);
+        });
+
+        $('.dropdown-menu input').click(function () {
+                return false;
+            })
+            .change(function () {
+                $(this).parent('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');
+            })
+            .keydown('esc', function () {
+                this.value = '';
+                $(this).change();
+            });
+    };
+
+    initToolbarBootstrapBindings();
+
+    $('#input-comment').wysiwyg({
+        toolbarSelector: '[data-target=#input-comment][data-role=editor-toolbar]'
     });
 
     var editProjectModal = $('#edit-project');
 
     if (editProjectModal.size() > 0) {
+
+        editProjectModal.find('#input-detail').wysiwyg({
+            toolbarSelector: '[data-target=#input-detail][data-role=editor-toolbar]'
+        });
+        editProjectModal.find('#input-requirement').wysiwyg({
+            toolbarSelector: '[data-target=#input-requirement][data-role=editor-toolbar]'
+        });
 
         editProjectModal.find(".input-append.date").datetimepicker({
             format: "yyyy-mm-dd",
@@ -181,10 +227,10 @@ $(document).ready(function () {
             var post = {
                 _id: editProjectModal.find('#input-_id').val(),
                 openExperimentAttr: {
-                    detail: editProjectModal.find('#input-detail').val(),
+                    detail: editProjectModal.find('#input-detail').html(),
                     capacity: parseInt(editProjectModal.find('#input-capacity').val()),
                     effort: parseInt(editProjectModal.find('#input-effort').val()),
-                    requirement: editProjectModal.find('#input-requirement').val(),
+                    requirement: editProjectModal.find('#input-requirement').html(),
                     object: editProjectModal.find('#input-object').val(),
                     lab: editProjectModal.find('#input-lab').val(),
                     source: editProjectModal.find('#input-source').val(),

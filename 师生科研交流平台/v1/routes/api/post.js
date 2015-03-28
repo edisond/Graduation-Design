@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var session = require('express-session');
 var db = require('../../model/db');
+var fs = require('fs');
+var path = require('path');
 var Dao = db.Dao;
 
 
@@ -95,11 +97,10 @@ router.post('/user', function (req, res) {
             res.sendStatus(404);
         }
     } else if (req.session.user) {
+        user._id = req.session.user._id;
+        user.id = req.session.user.id;
         if (req.query.action === "pwd") {
-            var user = {
-                id: req.session.user.id,
-                password: req.body.op
-            };
+            user.password = req.body.op;
             Dao.checkUserPassword(user, function (match) {
                 if (match) {
                     user.password = req.body.np;
@@ -115,15 +116,32 @@ router.post('/user', function (req, res) {
                 }
             })
         } else if (req.query.action === "update") {
-            var user = req.body;
-            user._id = req.session.user._id;
-            Dao.updateUser(user, function (err, docs) {
-                if (err) {
-                    res.sendStatus(500)
-                } else {
-                    res.sendStatus(200);
-                }
-            })
+            if (user.img) {
+                var base64Data = user.img.replace(/^data:image\/\w+;base64,/, "");
+                var dataBuffer = new Buffer(base64Data, 'base64');
+                fs.writeFile("public/img/heads/" + req.session.user._id + ".jpeg", dataBuffer, function (err) {
+                    if (err) {
+                        res.sendStatus(500);
+                    } else {
+                        user.img = "/img/heads/" + req.session.user._id + ".jpeg";
+                        Dao.updateUser(user, function (err, docs) {
+                            if (err) {
+                                res.sendStatus(500)
+                            } else {
+                                res.sendStatus(200);
+                            }
+                        })
+                    }
+                })
+            } else {
+                Dao.updateUser(user, function (err, docs) {
+                    if (err) {
+                        res.sendStatus(500)
+                    } else {
+                        res.sendStatus(200);
+                    }
+                })
+            }
         } else {
             res.sendStatus(404)
         }

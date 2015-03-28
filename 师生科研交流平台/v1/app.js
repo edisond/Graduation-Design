@@ -23,7 +23,8 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-    extended: true
+    extended: true,
+    limit: 1000000
 }));
 app.use(session({
     secret: '666',

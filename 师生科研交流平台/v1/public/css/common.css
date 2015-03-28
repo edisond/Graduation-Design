@@ -75,11 +75,34 @@ table h6 {
 }
 
 .wysiwyg-textarea {
-    overflow-y: auto;
+    overflow: auto;
+    height: 250px;
+}
+
+.wysiwyg-textarea.wysiwyg-textarea-sm {
     height: 150px;
 }
 
 .btn-toolbar[data-role=editor-toolbar] {
     margin-top: 5px;
     margin-bottom: 5px;
+}
+
+.btn-toolbar .btn {
+    margin-top: 5px;
+}
+
+img.head {
+    border: 0
+}
+
+img.head.head-lg {
+    width: 100%;
+    max-width: 200px;
+    max-height: 300px;
+}
+
+img.head.head-sm {
+    width: 50px;
+    max-height: 75px;
 }

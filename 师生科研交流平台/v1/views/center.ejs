@@ -111,6 +111,29 @@
                                 <br/>
                                 <fieldset>
                                     <legend>
+                                        <a data-toggle="collapse" href="#head-setting" aria-expanded="false" aria-controls="head-setting">更换头像</a>
+                                    </legend>
+                                    <div id="head-setting" class="collapse">
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <div class="col-sm-6">
+                                                    <input class="form-control" type="file" id="input-head">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-12">
+                                                    <img id="head-setting-preview-big" class="head head-lg" />
+                                                    <img id="head-setting-preview-small" class="head head-sm" style="vertical-align: bottom" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-12 text-right">
+                                                    <button type="button" class="btn btn-primary" id="submit-head">保存</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <legend>
                                         <a data-toggle="collapse" href="#account-setting" aria-expanded="false" aria-controls="account-setting">详细信息</a>
                                     </legend>
                                     <div id="account-setting" class="collapse">
@@ -271,7 +294,7 @@
                 </div>
                 <div class="col-sm-3 col-xs-12">
                     <div class="aside aside-left">
-                        <img src="<%=user.img%>" width="100%" class="maxw200" />
+                        <img src="<%=user.img%>" class="head head-lg" />
                         <h3><%=user.name%><br/><small><%=user.id%></small></h3>
                         <hr/>
                         <%if(user.type==='同学' ){%>
