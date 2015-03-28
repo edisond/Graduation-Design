@@ -35,14 +35,14 @@
                             <legend>项目细节&nbsp;<small class="text-muted">思路，目的，涉及的内容或知识点，考察点</small>
                             </legend>
                             <p>
-                                <%=project.openExperimentAttr.detail%>
+                                <%-project.openExperimentAttr.detail%>
                             </p>
                         </fieldset>
                         <fieldset>
                             <legend>需要的主要仪器设备及实验材料
                             </legend>
                             <p>
-                                <%=project.openExperimentAttr.requirement%>
+                                <%-project.openExperimentAttr.requirement%>
                             </p>
                         </fieldset>
                         <%}%>
@@ -75,7 +75,7 @@
 
                             <% } else if(user.type==='老师' ){%>
 
-                                <button type="button" class="mr20 mb10 btn btn-primary <%=(user._id.toString()===project.teacher._id.toString())?'':'dhidden'%>" id="btn-update-content">更新实验</button>
+                                <button type="button" class="mr20 mb10 btn btn-primary <%=(user._id.toString()===project.teacher._id.toString())?'':'dhidden'%>" id="btn-update-content" data-toggle="modal" data-target="#edit-project">更新实验</button>
                                 <button type="button" class="mb10 btn btn-default" data-action="ask">参与讨论</button>
 
                                 <%} if(project.type==='开放实验项目' ){%>
@@ -110,8 +110,126 @@
                 </div>
             </div>
         </div>
-        <% include parts/include.js.html %>
-            <script type="text/javascript" src="/js/projectView.js"></script>
+
+        <%if(user._id==project.teacher._id){%>
+            <div class="modal fade" id="edit-project" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title">更新开放实验项目</h4>
+                        </div>
+                        <form class="pl20 pr20 form-horizontal form-horizontal-label-left" id="new-oe">
+                            <input type="hidden" value="<%=project._id%>" id="input-_id">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="input-college" class="col-sm-2 control-label">所属学院</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="input-college" maxlength="10" required value="<%=project.college %>">
+                                    </div>
+                                    <label for="input-lab" class="col-sm-2 control-label">所在实验室
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="input-lab" maxlength="10" required value="<%=project.openExperimentAttr.lab %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-name" class="col-sm-2 control-label">项目名称</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="input-name" maxlength="20" required value="<%=project.name %>">
+                                    </div>
+                                    <label for="input-object" class="col-sm-2 control-label">面向对象&nbsp;<a href="#" tabindex="-1"><i class="fa fa-question-circle" data-toggle="tooltip" title="学生专业"></i></a>
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="input-object" maxlength="10" required value="<%=project.openExperimentAttr.object %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-capacity" class="col-sm-2 control-label">拟定参与学生数</label>
+                                    <div class="col-sm-4">
+                                        <input type="number" class="form-control" id="input-capacity" min="1" max="9999" value="<%=project.openExperimentAttr.capacity %>">
+                                    </div>
+                                    <label for="input-effort" class="col-sm-2 control-label">预期总学时数
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <input type="number" class="form-control" id="input-effort" min="1" max="9999" value="<%=project.openExperimentAttr.effort %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-datestart" class="col-sm-2 control-label">开始时间</label>
+                                    <div class="col-sm-4">
+                                        <div class="input-group input-append date">
+                                            <input type="text" class="form-control" id="input-dateStart" required value="<%=project.dateStart %>">
+                                            <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-remove"></i>
+                                            </div>
+                                            <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-calendar"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <label for="input-dateend" class="col-sm-2 control-label">结束时间
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <div class="input-group input-append date">
+                                            <input type="text" class="form-control" id="input-dateEnd" required value="<%=project.dateEnd %>">
+                                            <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-remove"></i>
+                                            </div>
+                                            <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-calendar"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">项目来源</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" maxlength="20" class="form-control" id="input-source" value="<%=project.openExperimentAttr.source %>">
+                                    </div>
+                                    <label class="col-sm-2 control-label">结题或成果形式</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" maxlength="20" class="form-control" id="input-result" value="<%=project.openExperimentAttr.result %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-12 control-label">项目简介<small>（此处内容将显示在列表摘要中）</small>
+                                    </label>
+                                    <div class="col-sm-12">
+                                        <textarea class="form-control" rows="3" id="input-description" required>
+                                            <%=project.description %>
+                                        </textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-12 control-label">项目细节<small>（请按以下内容填写1.设计思路及实验目的；2.涉及的内容或知识点；3.采用的方法和手段；4.考察点）</small>
+                                    </label>
+                                    <div class="col-sm-12">
+                                        <textarea class="form-control" rows="7" id="input-detail" required>
+                                            <%=project.openExperimentAttr.detail %>
+                                        </textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-12 control-label">需要的主要仪器设备及实验材料
+                                    </label>
+                                    <div class="col-sm-12">
+                                        <textarea class="form-control" rows="7" id="input-requirement" required>
+                                            <%=project.openExperimentAttr.requirement %>
+                                        </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                <button type="submit" class="btn btn-primary" id="submit">保存</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <%}%>
+                <% include parts/include.js.html %>
+                    <script type="text/javascript" src="/js/projectView.js"></script>
+
+
 </body>
 
 </html>

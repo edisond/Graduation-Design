@@ -163,4 +163,54 @@ $(document).ready(function () {
     $('#input-cancel').click(function () {
         commentBox.attr('placeholder', '说点什么').removeAttr('data-id').removeAttr('data-name').removeAttr('data-type').val('');
     });
+
+    var editProjectModal = $('#edit-project');
+
+    if (editProjectModal.size() > 0) {
+
+        editProjectModal.find(".input-append.date").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: 'month',
+            autoclose: true,
+            todayBtn: true,
+            startDate: new Date(),
+            pickerPosition: "bottom-left"
+        });
+
+        editProjectModal.find('form').html5Validate(function () {
+            var post = {
+                _id: editProjectModal.find('#input-_id').val(),
+                openExperimentAttr: {
+                    detail: editProjectModal.find('#input-detail').val(),
+                    capacity: parseInt(editProjectModal.find('#input-capacity').val()),
+                    effort: parseInt(editProjectModal.find('#input-effort').val()),
+                    requirement: editProjectModal.find('#input-requirement').val(),
+                    object: editProjectModal.find('#input-object').val(),
+                    lab: editProjectModal.find('#input-lab').val(),
+                    source: editProjectModal.find('#input-source').val(),
+                    result: editProjectModal.find('#input-result').val()
+                },
+                description: editProjectModal.find('#input-description').val(),
+                college: editProjectModal.find('#input-college').val(),
+                name: editProjectModal.find('#input-name').val(),
+                teacher: USER._id,
+                dateStart: new Date(editProjectModal.find('#input-dateStart').val()),
+                dateEnd: new Date(editProjectModal.find('#input-dateEnd').val()),
+                dateUpdate: Date.now(),
+                type: '开放实验项目'
+            };
+            $.ajax({
+                type: "POST",
+                url: encodeURI("/api/post/project?action=update"),
+                data: post,
+                success: function () {
+                    window.location.reload()
+                },
+                error: function () {
+                    notyFacade('抱歉，产生了一个错误，请重试或刷新后重试', 'error');
+                }
+            });
+        })
+    }
+
 });

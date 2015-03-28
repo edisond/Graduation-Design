@@ -155,6 +155,15 @@ router.post('/project', function (req, res) {
                     res.status(200).send(doc._id)
                 }
             })
+        } else if (req.query.action === 'update') {
+            Dao.updateProject(req.body, function (err) {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500)
+                } else {
+                    res.sendStatus(200)
+                }
+            })
         } else {
             res.sendStatus(404);
         }

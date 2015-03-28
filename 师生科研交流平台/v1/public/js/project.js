@@ -62,6 +62,41 @@ $(document).ready(function () {
         formOE = model.find('#new-oe');
 
     if (formOE.size() > 0) {
+
+        function initToolbarBootstrapBindings() {
+            var fonts = ['Serif', 'Sans', 'Arial', 'Arial Black', 'Courier',
+            'Courier New', 'Comic Sans MS', 'Helvetica', 'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma', 'Times',
+            'Times New Roman', 'Verdana'],
+                fontTarget = $('[title=字体]').siblings('.dropdown-menu');
+            $.each(fonts, function (idx, fontName) {
+                fontTarget.append($('<li><a data-edit="fontName ' + fontName + '" style="font-family:\'' + fontName + '\'">' + fontName + '</a></li>'));
+            });
+
+            $('a[title]').tooltip({
+                container: 'body'
+            });
+
+            $('.dropdown-menu input').click(function () {
+                    return false;
+                })
+                .change(function () {
+                    $(this).parent('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');
+                })
+                .keydown('esc', function () {
+                    this.value = '';
+                    $(this).change();
+                });
+        };
+
+        initToolbarBootstrapBindings();
+
+        formOE.find('#input-detail').wysiwyg({
+            toolbarSelector: '[data-target=#input-detail][data-role=editor-toolbar]'
+        });
+        formOE.find('#input-requirement').wysiwyg({
+            toolbarSelector: '[data-target=#input-requirement][data-role=editor-toolbar]'
+        });
+
         formOE.find(".input-append.date").datetimepicker({
             format: "yyyy-mm-dd",
             minView: 'month',
@@ -87,10 +122,10 @@ $(document).ready(function () {
 
             var post = {
                 openExperimentAttr: {
-                    detail: formOE.find('#input-detail').val(),
+                    detail: formOE.find('#input-detail').html(),
                     capacity: parseInt(formOE.find('#input-capacity').val()),
                     effort: parseInt(formOE.find('#input-effort').val()),
-                    requirement: formOE.find('#input-requirement').val(),
+                    requirement: formOE.find('#input-requirement').html(),
                     object: formOE.find('#input-object').val(),
                     lab: formOE.find('#input-lab').val(),
                     source: formOE.find('#input-source-4').is(':checked') ? formOE.find('#input-source').val() : formOE.find('input[name=input-source]:checked').val(),

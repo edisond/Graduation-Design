@@ -51,12 +51,10 @@ router.get('/project', function (req, res) {
     var condition = {};
     if (req.query.type) condition.type = req.query.type;
     if (req.query.teacher) condition.teacher = req.query.teacher;
-    console.log(condition);
     Dao.getProjects(condition, function (err, docs) {
         if (err) {
             res.sendStatus(500);
         } else {
-            console.log(docs);
             res.status(200).send(docs);
         }
     })

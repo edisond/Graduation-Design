@@ -75,7 +75,6 @@ router.get('/project/:id', function (req, res) {
                         } else if (doc.length === 1 && doc[0].active === false) {
                             isApplied = true
                         }
-                        console.log(isApplied);
                         res.render('projectView', {
                             project: docs,
                             user: req.session.user,
