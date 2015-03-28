@@ -254,15 +254,13 @@ $(document).ready(function () {
         });
     }
 
-    setPasswordForm.find('#input-submit').click(function () {
+    setPasswordForm.html5Validate(function () {
         var post = {
             op: setPasswordForm.find('#input-orign-password').val(),
             np: setPasswordForm.find('#input-new-password').val(),
             cp: setPasswordForm.find('#input-confirm-password').val()
         };
-        if (post.op === '' || post.np === '') {
-            notyFacade('请输入原密码与新密码', 'warning')
-        } else if (post.np !== post.cp) {
+        if (post.np !== post.cp) {
             notyFacade('新密码与确认密码不一致', 'warning')
         } else {
             delete post.cp;
@@ -311,65 +309,40 @@ $(document).ready(function () {
         }
     })
 
-    setProfileForm.find('#input-submit').click(function () {
+    setProfileForm.html5Validate(function () {
+        var post = {
+            _id: USER._id,
+            id: setProfileForm.find('#input-id').val(),
+            email: setProfileForm.find('#input-email').val(),
+            phone: setProfileForm.find('#input-phone').val(),
+            sex: setProfileForm.find('#input-sex').val(),
+            name: setProfileForm.find('#input-name').val()
+        }
         if (USER.type === '同学') {
-            var post = {
-                email: setProfileForm.find('#input-email').val(),
-                phone: setProfileForm.find('#input-phone').val(),
-                sex: setProfileForm.find('#input-sex').val(),
-                name: setProfileForm.find('#input-name').val(),
-                studentAttr: {
-                    college: setProfileForm.find('#input-college').val(),
-                    major: setProfileForm.find('#input-major').val(),
-                    grade: setProfileForm.find('#input-grade').val(),
-                    studentType: setProfileForm.find('#input-studentType').val(),
-                    address: setProfileForm.find('#input-address').val()
-                }
+            post.studentAttr = {
+                college: setProfileForm.find('#input-college').val(),
+                major: setProfileForm.find('#input-major').val(),
+                grade: setProfileForm.find('#input-grade').val(),
+                studentType: setProfileForm.find('#input-studentType').val(),
+                address: setProfileForm.find('#input-address').val()
             }
-            if (post.name === '') {
-                notyFacade('请填写姓名', 'warning')
-            } else {
-                $.ajax({
-                    url: encodeURI('/api/post/user?action=update'),
-                    data: post,
-                    type: 'POST',
-                    success: function () {
-                        $('a[href=#account-setting]').click();
-                        notyFacade('修改成功，重新登录后生效', 'success')
-                    },
-                    error: function (XMLHttpRequest) {
-                        notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error')
-                    }
-                })
-            }
-
         } else if (USER.type === '老师') {
-            var post = {
-                email: setProfileForm.find('#input-email').val(),
-                phone: setProfileForm.find('#input-phone').val(),
-                sex: setProfileForm.find('#input-sex').val(),
-                name: setProfileForm.find('#input-name').val(),
-                teacherAttr: {
-                    department: setProfileForm.find('#input-department').val(),
-                    title: setProfileForm.find('#input-title').val()
-                }
-            }
-            if (post.name === '') {
-                notyFacade('请填写姓名', 'warning')
-            } else {
-                $.ajax({
-                    url: encodeURI('/api/post/user?action=update'),
-                    data: post,
-                    type: 'POST',
-                    success: function () {
-                        $('a[href=#account-setting]').click();
-                        notyFacade('修改成功，重新登录后生效', 'success')
-                    },
-                    error: function (XMLHttpRequest) {
-                        notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error')
-                    }
-                })
+            post.teacherAttr = {
+                department: setProfileForm.find('#input-department').val(),
+                title: setProfileForm.find('#input-title').val()
             }
         }
+        $.ajax({
+            url: encodeURI('/api/post/user?action=update'),
+            data: post,
+            type: 'POST',
+            success: function () {
+                $('a[href=#account-setting]').click();
+                notyFacade('修改成功，重新登录后生效', 'success')
+            },
+            error: function (XMLHttpRequest) {
+                notyFacade('该学号/工号已被使用', 'error')
+            }
+        })
     })
 })

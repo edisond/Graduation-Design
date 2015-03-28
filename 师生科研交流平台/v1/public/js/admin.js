@@ -132,7 +132,7 @@ $(document).ready(function () {
                 notyFacade('添加成功', 'success');
             },
             error: function () {
-                notyFacade('该工号已存在', 'error');
+                notyFacade('该工号已被使用', 'error');
             }
         });
     });
@@ -197,7 +197,7 @@ $(document).ready(function () {
                     notyFacade('保存成功', 'success');
                 },
                 error: function () {
-                    notyFacade('该工号已存在', 'error');
+                    notyFacade('该工号已被使用', 'error');
                 }
             });
         }
@@ -385,7 +385,7 @@ $(document).ready(function () {
                 notyFacade('添加成功', 'success');
             },
             error: function () {
-                notyFacade('该学号已存在', 'error');
+                notyFacade('该学号已被使用', 'error');
             }
         });
     })
@@ -457,7 +457,7 @@ $(document).ready(function () {
                     notyFacade('编辑成功', 'success');
                 },
                 error: function () {
-                    notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
+                    notyFacade('该学号已被使用', 'error');
                 }
             });
         }

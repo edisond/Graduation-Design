@@ -24,7 +24,7 @@ $(document).ready(function () {
                     }, 3000)
                 },
                 error: function () {
-                    notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
+                    notyFacade('该学号/工号已被使用，如有疑问，请联系管理员', 'error');
                 }
             })
         }

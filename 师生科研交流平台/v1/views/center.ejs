@@ -119,17 +119,17 @@
                                                 <div class="form-group">
                                                     <label class="col-xs-12 col-sm-2 control-label" for="input-id">学号</label>
                                                     <div class="col-xs-12 col-sm-4">
-                                                        <input class="form-control" type="text" id="input-id" maxlength="50" disabled="disabled">
+                                                        <input class="form-control" type="text" id="input-id" maxlength="10" required pattern="^[0-9]*$" placeholder="请填写十位以下数字">
                                                     </div>
                                                     <label class="col-xs-12 col-sm-2 control-label" for="input-address">地址</label>
                                                     <div class="col-xs-12 col-sm-4">
-                                                        <input class="form-control" type="text" id="input-address" maxlength="50">
+                                                        <input class="form-control" type="text" id="input-address" maxlength="20">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-xs-12 col-sm-2 control-label control-label" for="input-name">姓名</label>
                                                     <div class="col-xs-12 col-sm-4">
-                                                        <input class="form-control form-control" type="text" id="input-name" maxlength="50">
+                                                        <input class="form-control form-control" type="text" id="input-name" maxlength="10" required>
                                                     </div>
                                                     <label class="col-xs-12 col-sm-2 control-label" for="input-sex">性别</label>
                                                     <div class="col-xs-12 col-sm-4">
@@ -143,17 +143,17 @@
                                                 <div class="form-group">
                                                     <label class="col-xs-12 col-sm-2 control-label" for="input-college">学院</label>
                                                     <div class="col-xs-12 col-sm-4">
-                                                        <input class="form-control" type="text" id="input-college" maxlength="50">
+                                                        <input class="form-control" type="text" id="input-college" maxlength="10">
                                                     </div>
                                                     <label class="col-xs-12 col-sm-2 control-label" for="input-major">专业</label>
                                                     <div class="col-xs-12 col-sm-4">
-                                                        <input class="form-control" type="text" id="input-major" maxlength="50">
+                                                        <input class="form-control" type="text" id="input-major" maxlength="10">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-xs-12 col-sm-2 control-label" for="input-grade">年级</label>
                                                     <div class="col-xs-12 col-sm-4">
-                                                        <input class="form-control" type="text" id="input-grade" maxlength="50">
+                                                        <input class="form-control" type="number" id="input-grade" min="1" max="9999">
                                                     </div>
                                                     <label class="col-xs-12 col-sm-2 control-label" for="input-type">类型</label>
                                                     <div class="col-xs-12 col-sm-4">
@@ -167,16 +167,16 @@
                                                 <div class="form-group">
                                                     <label class="col-xs-12 col-sm-2 control-label" for="input-email">邮箱</label>
                                                     <div class="col-xs-12 col-sm-4">
-                                                        <input class="form-control" type="text" id="input-email" maxlength="50">
+                                                        <input class="form-control" type="email" id="input-email" maxlength="50">
                                                     </div>
                                                     <label class="col-xs-12 col-sm-2 control-label" for="input-phone">电话</label>
                                                     <div class="col-xs-12 col-sm-4">
-                                                        <input class="form-control" type="text" id="input-phone" maxlength="50">
+                                                        <input class="form-control" type="tel" id="input-phone" maxlength="20">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="col-xs-12">
-                                                        <button type="button" class="btn btn-primary pull-right" id="input-submit">保存</button>
+                                                        <button type="submit" class="btn btn-primary pull-right" id="input-submit">保存</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -186,18 +186,18 @@
                                                     <div class="form-group">
                                                         <label class="col-xs-12 col-sm-2 control-label" for="input-id">工号</label>
                                                         <div class="col-xs-12 col-sm-4">
-                                                            <input class="form-control" type="text" id="input-id" maxlength="50" disabled="disabled">
+                                                            <input class="form-control" type="text" id="input-id" maxlength="10" required pattern="^[0-9]*$" placeholder="请填写十位以下数字">
                                                         </div>
                                                         <label class="col-xs-12 col-sm-2 control-label" for="input-department">部门</label>
                                                         <div class="col-xs-12 col-sm-4">
-                                                            <input class="form-control" type="text" id="input-department" maxlength="50" />
+                                                            <input class="form-control" type="text" id="input-department" maxlength="10" />
                                                         </div>
 
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="col-xs-12 col-sm-2 control-label control-label" for="input-name">姓名</label>
                                                         <div class="col-xs-12 col-sm-4">
-                                                            <input class="form-control form-control" type="text" id="input-name" maxlength="50">
+                                                            <input class="form-control form-control" type="text" id="input-name" maxlength="10" required>
                                                         </div>
                                                         <label class="col-xs-12 col-sm-2 control-label" for="input-sex">性别</label>
                                                         <div class="col-xs-12 col-sm-4">
@@ -211,20 +211,20 @@
                                                     <div class="form-group">
                                                         <label class="col-xs-12 col-sm-2 control-label" for="input-email">邮箱</label>
                                                         <div class="col-xs-12 col-sm-4">
-                                                            <input class="form-control" type="text" id="input-email" maxlength="50">
+                                                            <input class="form-control" type="email" id="input-email" maxlength="50">
                                                         </div>
                                                         <label class="col-xs-12 col-sm-2 control-label" for="input-phone">电话</label>
                                                         <div class="col-xs-12 col-sm-4">
-                                                            <input class="form-control" type="text" id="input-phone" maxlength="50">
+                                                            <input class="form-control" type="tel" id="input-phone" maxlength="20">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="col-xs-12 col-sm-2 control-label" for="input-title">职称</label>
                                                         <div class="col-xs-12 col-sm-4">
-                                                            <input class="form-control" type="text" id="input-title" maxlength="50" />
+                                                            <input class="form-control" type="text" id="input-title" maxlength="10" />
                                                         </div>
                                                         <div class="col-sm-6">
-                                                            <button type="button" class="btn btn-primary pull-right" id="input-submit">保存</button>
+                                                            <button type="submit" class="btn btn-primary pull-right" id="input-submit">保存</button>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -240,24 +240,24 @@
                                             <div class="form-group">
                                                 <label class="col-sm-2" for="input-orign-password">原密码</label>
                                                 <div class="col-sm-4">
-                                                    <input type="password" class="form-control" id="input-orign-password">
+                                                    <input type="password" class="form-control" id="input-orign-password" required>
                                                 </div>
 
                                             </div>
                                             <div class="form-group">
                                                 <label class="col-sm-2" for="input-new-password">新密码</label>
                                                 <div class="col-sm-4">
-                                                    <input type="password" class="form-control" id="input-new-password">
+                                                    <input type="password" class="form-control" id="input-new-password" required>
                                                 </div>
                                                 <label class="col-sm-2" for="input-confirm-password">确认</label>
                                                 <div class="col-sm-4">
-                                                    <input type="password" class="form-control" id="input-confirm-password">
+                                                    <input type="password" class="form-control" id="input-confirm-password" required>
                                                 </div>
 
                                             </div>
                                             <div class="form-group">
                                                 <div class="col-sm-12">
-                                                    <button type="button" class="btn btn-primary pull-right" id="input-submit">保存</button>
+                                                    <button type="submit" class="btn btn-primary pull-right" id="input-submit">保存</button>
                                                 </div>
                                             </div>
                                         </form>

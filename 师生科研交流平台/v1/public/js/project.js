@@ -2,6 +2,7 @@ $(document).ready(function () {
 
     var projectType = $('#projectType').val(),
         list = $('#list');
+
     list.delegate('a[data-link="project"]', 'click', function (e) {
         if (!USER) {
             notyFacade('请先登录', 'information')
@@ -58,9 +59,10 @@ $(document).ready(function () {
 
 
     var model = $('#new-project'),
-        form = model.find('#new-oe');
-    if (form.size() === 1) {
-        form.find(".input-append.date").datetimepicker({
+        formOE = model.find('#new-oe');
+
+    if (formOE.size() > 0) {
+        formOE.find(".input-append.date").datetimepicker({
             format: "yyyy-mm-dd",
             minView: 'month',
             autoclose: true,
@@ -69,67 +71,64 @@ $(document).ready(function () {
             pickerPosition: "bottom-left"
         });
 
-        form.find('#input-source-1, #input-source-2, #input-source-3').click(function () {
-            form.find('#input-source').attr('disabled', true);
+        formOE.find('#input-source-1, #input-source-2, #input-source-3').click(function () {
+            formOE.find('#input-source').attr('disabled', true);
         })
-        form.find('#input-source-4').click(function () {
-            form.find('#input-source').attr('disabled', false);
+        formOE.find('#input-source-4').click(function () {
+            formOE.find('#input-source').attr('disabled', false);
         })
-        form.find('#input-result-1, #input-result-2, #input-result-3, #input-result-4').click(function () {
-            form.find('#input-result').attr('disabled', true);
+        formOE.find('#input-result-1, #input-result-2, #input-result-3, #input-result-4').click(function () {
+            formOE.find('#input-result').attr('disabled', true);
         })
-        form.find('#input-result-5').click(function () {
-            form.find('#input-result').attr('disabled', false);
+        formOE.find('#input-result-5').click(function () {
+            formOE.find('#input-result').attr('disabled', false);
         })
-        model.find('#submit').click(function () {
+        formOE.html5Validate(function () {
 
             var post = {
                 openExperimentAttr: {
-                    detail: form.find('#input-detail').val(),
-                    capacity: parseInt(form.find('#input-capacity').val()),
-                    effort: parseInt(form.find('#input-effort').val()),
-                    requirement: form.find('#input-requirement').val(),
-                    object: form.find('#input-object').val(),
-                    lab: form.find('#input-lab').val(),
-                    source: form.find('#input-source-4').is(':checked') ? form.find('#input-source').val() : form.find('input[name=input-source]:checked').val(),
-                    result: form.find('#input-result-5').is(':checked') ? form.find('#input-result').val() : form.find('input[name=input-result]:checked').val()
+                    detail: formOE.find('#input-detail').val(),
+                    capacity: parseInt(formOE.find('#input-capacity').val()),
+                    effort: parseInt(formOE.find('#input-effort').val()),
+                    requirement: formOE.find('#input-requirement').val(),
+                    object: formOE.find('#input-object').val(),
+                    lab: formOE.find('#input-lab').val(),
+                    source: formOE.find('#input-source-4').is(':checked') ? formOE.find('#input-source').val() : formOE.find('input[name=input-source]:checked').val(),
+                    result: formOE.find('#input-result-5').is(':checked') ? formOE.find('#input-result').val() : formOE.find('input[name=input-result]:checked').val()
                 },
-                description: form.find('#input-description').val(),
-                college: form.find('#input-college').val(),
-                name: form.find('#input-name').val(),
+                description: formOE.find('#input-description').val(),
+                college: formOE.find('#input-college').val(),
+                name: formOE.find('#input-name').val(),
                 teacher: USER._id,
-                dateStart: new Date(form.find('#input-dateStart').val()),
-                dateEnd: new Date(form.find('#input-dateEnd').val()),
+                dateStart: new Date(formOE.find('#input-dateStart').val()),
+                dateEnd: new Date(formOE.find('#input-dateEnd').val()),
                 type: '开放实验项目'
             };
-            if (isNaN(post.openExperimentAttr.capacity) || isNaN(post.openExperimentAttr.effort) || post.college === '' || post.name === '' || post.dateStart === '' || post.dateEnd === '') {
-                notyFacade('请填写表单各项，并在学生数与学时数中填写整数', 'warning');
-            } else {
-                $.ajax({
-                    type: "POST",
-                    url: encodeURI("/api/post/project?action=new"),
-                    data: post,
-                    success: function (data) {
-                        notyFacade('成功创建开放实验项目', 'success');
-                        model.modal('hide');
-                        post._id = data;
-                        post.teacher = {
-                            _id: USER._id,
-                            name: USER.name
-                        };
-                        if (list.find('div.project').size() === 0) {
-                            $('#load-state').hide();
-                        } else {
-                            $('<hr>').prependTo(list);
-                        }
-                        createProject(post).prependTo(list);
-                        form[0].reset();
-                    },
-                    error: function () {
-                        notyFacade('抱歉，产生了一个错误，请重试或刷新后重试', 'error');
+
+            $.ajax({
+                type: "POST",
+                url: encodeURI("/api/post/project?action=new"),
+                data: post,
+                success: function (data) {
+                    notyFacade('成功创建开放实验项目', 'success');
+                    model.modal('hide');
+                    post._id = data;
+                    post.teacher = {
+                        _id: USER._id,
+                        name: USER.name
+                    };
+                    if (list.find('div.project').size() === 0) {
+                        $('#load-state').hide();
+                    } else {
+                        $('<hr>').prependTo(list);
                     }
-                });
-            }
+                    createProject(post).prependTo(list);
+                    formOE[0].reset();
+                },
+                error: function () {
+                    notyFacade('抱歉，产生了一个错误，请重试或刷新后重试', 'error');
+                }
+            });
         });
     }
 

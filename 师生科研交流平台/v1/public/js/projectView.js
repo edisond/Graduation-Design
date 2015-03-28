@@ -116,19 +116,13 @@ $(document).ready(function () {
         commentBox.focus();
     });
 
-    $('#input-submit').click(function () {
+    $('#form-comment').html5Validate(function () {
         var comment = {
             body: commentBox.val(),
             from: USER._id,
             project: projectId,
             date: Date.now()
         };
-
-        if (comment.body === '') {
-            notyFacade('请填写讨论内容', 'information');
-            return false;
-        }
-
         if (commentBox.attr('data-id')) {
             comment.to = commentBox.attr('data-id')
         }

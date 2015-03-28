@@ -70,50 +70,46 @@
                                 </button>
                                 <h4 class="modal-title">新建<%=projectType%></h4>
                             </div>
-                            <div class="modal-body">
-                                <form class="pl20 pr20 form-horizontal form-horizontal-label-left" id="new-oe">
-
+                            <form class="pl20 pr20 form-horizontal form-horizontal-label-left" id="new-oe">
+                                <div class="modal-body">
                                     <div class="form-group">
                                         <label for="input-college" class="col-sm-2 control-label">所属学院</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="input-college">
+                                            <input type="text" class="form-control" id="input-college" maxlength="10" required>
                                         </div>
                                         <label for="input-lab" class="col-sm-2 control-label">所在实验室
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="input-lab">
+                                            <input type="text" class="form-control" id="input-lab" maxlength="10" required>
                                         </div>
                                     </div>
-
                                     <div class="form-group">
                                         <label for="input-name" class="col-sm-2 control-label">项目名称</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="input-name">
+                                            <input type="text" class="form-control" id="input-name" maxlength="20" required>
                                         </div>
                                         <label for="input-object" class="col-sm-2 control-label">面向对象&nbsp;<a href="#" tabindex="-1"><i class="fa fa-question-circle" data-toggle="tooltip" title="学生专业"></i></a>
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="input-object">
+                                            <input type="text" class="form-control" id="input-object" maxlength="10" required>
                                         </div>
                                     </div>
-
                                     <div class="form-group">
                                         <label for="input-capacity" class="col-sm-2 control-label">拟定参与学生数</label>
                                         <div class="col-sm-4">
-                                            <input type="number" class="form-control" id="input-capacity">
+                                            <input type="number" class="form-control" id="input-capacity" min="1" max="9999">
                                         </div>
                                         <label for="input-effort" class="col-sm-2 control-label">预期总学时数
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="number" class="form-control" id="input-effort">
+                                            <input type="number" class="form-control" id="input-effort" min="1" max="9999">
                                         </div>
                                     </div>
-
                                     <div class="form-group">
                                         <label for="input-datestart" class="col-sm-2 control-label">开始时间</label>
                                         <div class="col-sm-4">
                                             <div class="input-group input-append date">
-                                                <input type="text" class="form-control" id="input-dateStart">
+                                                <input type="text" class="form-control" id="input-dateStart" required>
                                                 <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-remove"></i>
                                                 </div>
                                                 <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-calendar"></i>
@@ -124,7 +120,7 @@
                                         </label>
                                         <div class="col-sm-4">
                                             <div class="input-group input-append date">
-                                                <input type="text" class="form-control" id="input-dateEnd">
+                                                <input type="text" class="form-control" id="input-dateEnd" required>
                                                 <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-remove"></i>
                                                 </div>
                                                 <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-calendar"></i>
@@ -132,80 +128,75 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">项目来源</label>
                                         <div class="col-sm-7">
                                             <label class="radio-inline">
-                                                <input type="radio" name="input-source" id="input-source-1" checked value="教师科研课题">&nbsp;教师科研课题
+                                                <input type="radio" name="input-source" id="input-source-1" checked value="教师科研课题">教师科研课题
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="input-source" id="input-source-2" value="实验室自拟">&nbsp;实验室自拟
+                                                <input type="radio" name="input-source" id="input-source-2" value="实验室自拟">实验室自拟
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="input-source" id="input-source-3" value="综合素质提高型">&nbsp;综合素质提高型
+                                                <input type="radio" name="input-source" id="input-source-3" value="综合素质提高型">综合素质提高型
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="input-source" id="input-source-4" value="其它">&nbsp;其它
+                                                <input type="radio" name="input-source" id="input-source-4" value="其它">其它
                                             </label>
-
                                         </div>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control" id="input-source" placeholder="其它来源" disabled>
+                                            <input type="text" class="form-control" id="input-source" placeholder="其它来源" disabled maxlength="20">
                                         </div>
                                     </div>
-
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">结题或成果形式</label>
                                         <div class="col-sm-7">
                                             <label class="radio-inline">
-                                                <input type="radio" name="input-result" id="input-result-1" checked value="实验报告">&nbsp;实验报告
+                                                <input type="radio" name="input-result" id="input-result-1" checked value="实验报告">实验报告
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="input-result" id="input-result-2" value="论文">&nbsp;论文
+                                                <input type="radio" name="input-result" id="input-result-2" value="论文">论文
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="input-result" id="input-result-3" value="实物作品">&nbsp;实物作品
+                                                <input type="radio" name="input-result" id="input-result-3" value="实物作品">实物作品
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="input-result" id="input-result-4" value="专利">&nbsp;专利
+                                                <input type="radio" name="input-result" id="input-result-4" value="专利">专利
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="input-result" id="input-result-5" value="其它">&nbsp;其它
+                                                <input type="radio" name="input-result" id="input-result-5" value="其它">其它
                                             </label>
                                         </div>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control" id="input-result" placeholder="其它形式" disabled>
+                                            <input type="text" class="form-control" id="input-result" placeholder="其它形式" disabled maxlength="20">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-12 control-label">项目简介</label>
+                                        <label class="col-sm-12 control-label">项目简介（此处内容将显示在列表摘要中）</label>
                                         <div class="col-sm-12">
-                                            <textarea class="form-control" rows="3" id="input-description"></textarea>
+                                            <textarea class="form-control" rows="3" id="input-description" required></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-12 control-label">项目细节<small>（请按以下内容填写1.设计思路及实验目的；2.涉及的内容或知识点；3.采用的方法和手段；4.考察点）</small>
                                         </label>
                                         <div class="col-sm-12">
-                                            <textarea class="form-control" rows="7" id="input-detail"></textarea>
+                                            <textarea class="form-control" rows="7" id="input-detail" required></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-12 control-label">需要的主要仪器设备及实验材料
                                         </label>
                                         <div class="col-sm-12">
-                                            <textarea class="form-control" rows="7" id="input-requirement"></textarea>
+                                            <textarea class="form-control" rows="7" id="input-requirement" required></textarea>
                                         </div>
                                     </div>
-                                </form>
-
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                <button type="button" class="btn btn-primary" id="submit">提交</button>
-                            </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    <button type="submit" class="btn btn-primary" id="submit">保存</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

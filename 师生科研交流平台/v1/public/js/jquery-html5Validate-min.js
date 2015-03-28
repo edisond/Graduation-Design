@@ -363,11 +363,12 @@
                 align: "center",
                 css: {
                     maxWidth: 280,
-                    backgroundColor: "#FFFFE0",
-                    borderColor: "#F7CE39",
-                    color: "#333",
+                    backgroundColor: "#000",
+                    borderColor: "#000",
+                    color: "#fff",
                     fontSize: "12px",
                     padding: "5px 10px",
+                    'border-radius': '5px',
                     zIndex: 9999
                 }
             };
