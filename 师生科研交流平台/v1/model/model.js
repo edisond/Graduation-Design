@@ -192,10 +192,39 @@ var Comment = new Schema({
     }
 });
 
+var Team = new Schema({
+    name: {
+        type: 'String',
+        required: true
+    },
+    leader: {
+        type: Schema.Types.ObjectId,
+        ref: 'user',
+        required: true
+    },
+    member: [{
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+    }],
+    desc: {
+        type: 'String',
+        required: true
+    },
+    dateCreate: {
+        type: 'Date',
+        required: true,
+        default: Date.now()
+    }
+})
+
 var Select = new Schema({
     student: {
         type: Schema.Types.ObjectId,
         ref: 'user'
+    },
+    team: {
+        type: Schema.Types.ObjectId,
+        ref: 'team'
     },
     project: {
         type: Schema.Types.ObjectId,
@@ -218,3 +247,4 @@ module.exports.Admin = mongoose.model('admin', Admin);
 module.exports.Project = mongoose.model('project', Project);
 module.exports.Comment = mongoose.model('comment', Comment);
 module.exports.Select = mongoose.model('select', Select);
+module.exports.Team = mongoose.model('team', Team);

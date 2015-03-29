@@ -5,6 +5,7 @@ var Admin = model.Admin;
 var Project = model.Project;
 var Select = model.Select;
 var Comment = model.Comment;
+var Team = model.Team;
 var md5 = require('../lib/md5');
 
 var Dao = {
@@ -201,8 +202,25 @@ var Dao = {
     },
 
     /* 获取讨论 */
-    getComments: function (condiction, callback) {
-        Comment.find(condiction).lean().populate('from to', 'name type img').populate('project', 'name').exec(callback);
+    getComments: function (condition, callback) {
+        Comment.find(condition).lean().populate('from to', 'name type img').populate('project', 'name').exec(callback);
+    },
+
+    newTeam: function (team, callback) {
+        team = new Team(team);
+        team.save(callback);
+    },
+
+    getTeams: function (condition, callback) {
+        Team.find({
+            $or: [{
+                _id: condition._id
+            }, {
+                leader: condition.leader
+            }, {
+                member: condition.member
+            }]
+        }, '-__v').lean().exec(callback)
     }
 
 }

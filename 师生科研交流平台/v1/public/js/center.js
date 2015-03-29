@@ -2,6 +2,7 @@ $(document).ready(function () {
 
     var commentList = $('#comments'),
         projectList = $('#projects'),
+        teamList = $('#teams'),
         setProfileForm = $('#account-setting').find('form'),
         setPasswordForm = $('#password-setting').find('form');
 
@@ -65,6 +66,27 @@ $(document).ready(function () {
             }
         }
 
+    })
+
+    function newTeam(team) {
+        var div = $('<div class="team">');
+        var title = $('<h4><a href="/team/' + team._id + '">' + team.name + '</a></h4>').appendTo(div);
+        $('<small class="text-muted">' + team.desc + '</small>').appendTo(div);
+        return div
+    }
+
+    $.get(encodeURI('/api/get/team?leader=' + USER._id + '&member=' + USER._id), function (data) {
+        if (data.length === 0) {
+            teamList.find('#load-state').html('暂未创建或加入团队')
+        } else {
+            teamList.find('#load-state').hide();
+            for (var i = 0, j = data.length; i < j; i++) {
+                newTeam(data[i]).appendTo(teamList);
+                if (i < j - 1) {
+                    $('<hr>').appendTo(teamList);
+                }
+            }
+        }
     })
 
     $('#head-setting-preview-big, #head-setting-preview-small').attr('src', USER.img);
@@ -385,4 +407,44 @@ $(document).ready(function () {
             }
         })
     })
+
+    $('button[data-target=#new-team]').click(function () {
+        if (USER.type === '老师') {
+            notyFacade('只有学生可以作为团队负责人（创建团队）。', 'information')
+        }
+    })
+
+    $('#new-team').find('form').html5Validate(function () {
+        var $this = $(this);
+        var post = {
+            name: $this.find('#input-name').val(),
+            desc: $this.find('#input-desc').val()
+        }
+        $.ajax({
+            url: encodeURI('/api/post/team?action=new'),
+            type: "POST",
+            data: post,
+            success: function (data) {
+                notyFacade('创建成功', 'success');
+                $('#new-team').modal('hide');
+                post._id = data;
+                if (teamList.find('div.team').size() === 0) {
+                    teamList.find('#load-state').hide();
+                } else {
+                    $('<hr>').prependTo(teamList);
+                }
+                newTeam(post).prependTo(teamList);
+                $this[0].reset();
+            },
+            error: function (XMLHttpRequest) {
+                if (XMLHttpRequest.status === 403) {
+                    notyFacade('你不能拥有超过5个团队', 'warning')
+                } else {
+                    notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error')
+                }
+            }
+        })
+    })
+
+
 })

@@ -17,6 +17,8 @@
                             </li>
                             <li role="presentation"><a id="project" href="#tab-project" aria-controls="tab-project" role="tab" data-toggle="tab"><i class="fa fa-book"></i>&nbsp;<%=user.type==='同学'?'我的选题':'我的项目'%></a>
                             </li>
+                            <li role="presentation"><a id="team" href="#tab-team" aria-controls="tab-team" role="tab" data-toggle="tab"><i class="fa fa-users"></i>&nbsp;我的团队</a>
+                            </li>
                             <li role="presentation"><a id="apply" href="#tab-apply" aria-controls="tab-apply" role="tab" data-toggle="tab"><i class="fa fa-edit"></i>&nbsp;<%=user.type==='同学'?'项目申请':'学生申请'%></a>
                             </li>
                             <li role="presentation"><a id="settings" href="#tab-settings" aria-controls="tab-settings" role="tab" data-toggle="tab"><i class="fa fa-cog"></i>&nbsp;设置</a>
@@ -58,6 +60,37 @@
                                     <p class="text-muted" id="load-state">加载中</p>
                                 </div>
                             </div>
+                            <div role="tabpanel" class="tab-pane fade" id="tab-team">
+                                <br/>
+                                <form class="form-inline " id="tab-team-filter">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="输入团队名..." aria-describedby="addon-search">
+                                            <span class="input-group-addon" id="addon-search"><i class="fa fa-search"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="hidden-xs ml30"></span>
+                                        <div class="input-group text-center pull-center">
+                                            <label class="checkbox-inline mr10">
+                                                <input type="checkbox" id="inlineCheckbox1" value="option1"><i class="fa fa-user"></i>&nbsp;我是负责人
+                                            </label>
+                                            <label class="checkbox-inline mr10">
+                                                <input type="checkbox" id="inlineCheckbox2" value="option2"><i class="fa fa-users"></i>&nbsp;我是团员
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group pull-right">
+                                        <div class="input-group">
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#new-team"><i class="fa fa-plus"></i>&nbsp;创建团队</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <hr class="hr-dark" />
+                                <div id="teams">
+                                    <p class="text-muted" id="load-state">加载中</p>
+                                </div>
+                            </div>
                             <div role="tabpanel" class="tab-pane fade" id="tab-apply">
                                 <br/>
                                 <%if(user.type==='同学' ){%>
@@ -82,9 +115,9 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <div class="input-group pull-center">
-                                                <button type="button" class="btn btn-success pull-right"><i class="fa fa-plus"></i>&nbsp;我有想法</button>
+                                        <div class="form-group pull-right">
+                                            <div class="input-group">
+                                                <button type="button" class="btn btn-success"><i class="fa fa-plus"></i>&nbsp;我有想法</button>
                                             </div>
                                         </div>
                                     </form>
@@ -109,30 +142,8 @@
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="tab-settings">
                                 <br/>
+
                                 <fieldset>
-                                    <legend>
-                                        <a data-toggle="collapse" href="#head-setting" aria-expanded="false" aria-controls="head-setting">更换头像</a>
-                                    </legend>
-                                    <div id="head-setting" class="collapse">
-                                        <form class="form-horizontal">
-                                            <div class="form-group">
-                                                <div class="col-sm-6">
-                                                    <input class="form-control" type="file" id="input-head">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="col-sm-12">
-                                                    <img id="head-setting-preview-big" class="head head-lg" />
-                                                    <img id="head-setting-preview-small" class="head head-sm" style="vertical-align: bottom" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="col-sm-12 text-right">
-                                                    <button type="button" class="btn btn-primary" id="submit-head">保存</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
                                     <legend>
                                         <a data-toggle="collapse" href="#account-setting" aria-expanded="false" aria-controls="account-setting">详细信息</a>
                                     </legend>
@@ -256,6 +267,31 @@
                                 </fieldset>
                                 <fieldset>
                                     <legend>
+                                        <a data-toggle="collapse" href="#head-setting" aria-expanded="false" aria-controls="head-setting">更换头像</a>
+                                    </legend>
+                                    <div id="head-setting" class="collapse">
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <div class="col-sm-6">
+                                                    <input class="form-control" type="file" id="input-head">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-12">
+                                                    <img id="head-setting-preview-big" class="head head-lg" />
+                                                    <img id="head-setting-preview-small" class="head head-sm" style="vertical-align: bottom" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-12 text-right">
+                                                    <button type="button" class="btn btn-primary" id="submit-head">保存</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>
                                         <a data-toggle="collapse" href="#password-setting" aria-expanded="false" aria-controls="password-setting">更改密码</a>
                                     </legend>
                                     <div id="password-setting" class="collapse">
@@ -333,14 +369,6 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <hr/>
-                                    <h5><i class="fa fa-users"></i>我的团队</h5>
-                                    <ul class="list-unstyled">
-                                        <li><a href="#">基于Web的师生互动科研平台</a>
-                                        </li>
-                                        <li><a href="#">HTML5智能马桶系统</a>
-                                        </li>
-                                    </ul>
                     </div>
                 </div>
             </div>
@@ -391,9 +419,42 @@
                     </div>
                 </div>
             </div>
-            <%}%>
-                <% include parts/include.js.html %>
-                    <script type="text/javascript" src="/js/center.js"></script>
+            <%} else if(user.type==='同学' ){%>
+                <div class="modal fade" id="new-team" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title">创建团队</h4>
+                            </div>
+                            <form>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="input-orign-password">负责人</label>
+                                        <input type="text" class="form-control" id="input-leader" required value="<%=user.name+' ('+user.id+')'%>" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="input-orign-password">名称</label>
+                                        <input type="text" class="form-control" id="input-name" required maxlength="20">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="input-orign-password">描述</label>
+                                        <textarea class="form-control" id="input-desc" required maxlength="500" rows="3"></textarea>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    <button type="submit" class="btn btn-primary" id="submit">保存</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <%}%>
+                    <% include parts/include.js.html %>
+                        <script type="text/javascript" src="/js/center.js"></script>
 </body>
 
 </html>

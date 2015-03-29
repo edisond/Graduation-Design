@@ -5,7 +5,7 @@ var db = require('../../model/db');
 var fs = require('fs');
 var path = require('path');
 var Dao = db.Dao;
-
+var md5 = require('../../lib/md5');
 
 /* 更新管理员 */
 router.post('/update/admin', function (req, res) {
@@ -253,5 +253,42 @@ router.post('/select', function (req, res) {
         res.sendStatus(401);
     }
 });
+
+router.post('/team', function (req, res) {
+    if (req.session.user) {
+        var action = req.query.action;
+        if (action === 'new' && req.session.user.type === "同学") {
+            var team = {
+                name: req.body.name,
+                leader: req.session.user._id,
+                desc: req.body.desc
+            }
+            Dao.getTeams({
+                leader: team.leader
+            }, function (err, docs) {
+                if (err) {
+                    res.sendStatus(500)
+                } else {
+                    if (docs.length < 5) {
+                        Dao.newTeam(team, function (err, docs) {
+                            if (err) {
+                                res.sendStatus(500)
+                            } else {
+                                res.status(200).send(docs._id);
+                            }
+                        })
+                    } else {
+                        res.sendStatus(403);
+                    }
+                }
+            })
+
+        } else {
+            res.sendStatus(404);
+        }
+    } else {
+        res.sendStatus(401);
+    }
+})
 
 module.exports = router;

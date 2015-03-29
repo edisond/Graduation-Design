@@ -124,6 +124,10 @@ $(document).ready(function () {
             project: projectId,
             date: Date.now()
         };
+        if (comment.body === '') {
+            notyFacade('请填写讨论内容', 'warning');
+            return false;
+        }
         if (commentBox.attr('data-id')) {
             comment.to = commentBox.attr('data-id')
         }
