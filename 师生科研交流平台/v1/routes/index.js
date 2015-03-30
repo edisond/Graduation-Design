@@ -105,6 +105,26 @@ router.get('/center', function (req, res) {
     }
 })
 
+router.get('/profile/:id', function (req, res) {
+    if (req.session.user) {
+        if (req.session.user._id.toString() === req.params.id.toString()) {
+            res.redirect('/center');
+        } else {
+            Dao.getUser(req.params.id, function (err, docs) {
+                if (err) {
+                    res.sendStatus(500)
+                } else {
+                    res.render('profile', {
+                        user: req.session.user,
+                        profile: docs
+                    });
+                }
+            })
+        }
+    } else {
+        res.redirect('/');
+    }
+})
 
 /* 管理员页 */
 router.get('/admin', function (req, res) {

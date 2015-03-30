@@ -39,6 +39,7 @@ $(document).ready(function () {
         var div = $('<div>');
         var title = $('<h4><a href="/project/' + select._id + '">' + select.name + '</a><small class="ml20">' + select.type + '</small></h4>').appendTo(div);
         var tag = $('<span class="label ml10">').appendTo(title);
+
         if (new Date(select.dateStart) > Date.now()) {
             tag.addClass('label-success').html('未开始');
         } else if (new Date(select.dateStart) < Date.now() && new Date(select.dateEnd) > Date.now()) {
@@ -46,7 +47,29 @@ $(document).ready(function () {
         } else if (new Date(select.dateEnd) < Date.now()) {
             tag.addClass('label-default').html('已结束');
         }
+
         $('<small class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;更新于' + moment(select.dateUpdate).fromNow() + '</small>').appendTo(div);
+        return div
+    }
+
+    function newProjectStudent(select) {
+        var div = $('<div>');
+        var title = $('<h4><a href="/project/' + select.project._id + '">' + select.project.name + '</a><small class="ml20">' + select.project.type + '</small></h4>').appendTo(div);
+        var tag = $('<span class="label ml10">').appendTo(title);
+
+        if (select.active) {
+            if (new Date(select.project.dateStart) > Date.now()) {
+                tag.addClass('label-success').html('未开始');
+            } else if (new Date(select.project.dateStart) < Date.now() && new Date(select.project.dateEnd) > Date.now()) {
+                tag.addClass('label-primary').html('进行中');
+            } else if (new Date(select.project.dateEnd) < Date.now()) {
+                tag.addClass('label-default').html('已结束');
+            }
+        } else {
+            tag.addClass('label-warning').html('申请中');
+        }
+
+        $('<small class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;更新于' + moment(select.project.dateUpdate).fromNow() + '</small>').appendTo(div);
         return div
     }
 
@@ -253,22 +276,8 @@ $(document).ready(function () {
         });
 
     } else {
-        var applyList = $('#applies');
 
-        function newApply(apply) {
-            var div = $('<div>');
-            var title = $('<h4><a href="/project/' + apply.project._id + '">' + apply.project.name + '</a><small class="ml20">' + apply.project.type + '</small></h4>').appendTo(div);
-            var tag = $('<span class="label ml10">').appendTo(title);
-            if (apply.active) {
-                tag.addClass('label-success').html('已通过');
-            } else {
-                tag.addClass('label-primary').html('申请中');
-            }
-            $('<small class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;更新于' + moment(apply.project.dateUpdate).fromNow() + '</small>').appendTo(div);
-            return div
-        }
-
-        $.get(encodeURI('/api/get/select?active=true&student=' + USER._id), function (data) {
+        $.get(encodeURI('/api/get/select?student=' + USER._id), function (data) {
             if (data.length === 0) {
                 projectList.find('#load-state').html('暂无选题')
             } else {
@@ -287,7 +296,7 @@ $(document).ready(function () {
                     } else if (data[i].project.type === '科技创新工程项目') {
                         ipNum++;
                     }
-                    newProject(data[i].project).appendTo(projectList);
+                    newProjectStudent(data[i]).appendTo(projectList);
                     if (i < j - 1) {
                         $('<hr>').appendTo(projectList);
                     }
@@ -295,23 +304,6 @@ $(document).ready(function () {
                 $('#oe-num').html(oeNum);
                 $('#cc-num').html(ccNum);
                 $('#ip-num').html(ipNum);
-            }
-        });
-
-        $.get(encodeURI('/api/get/select?active=false&student=' + USER._id), function (data) {
-            if (data.length === 0) {
-                applyList.find('#load-state').html('暂无申请')
-            } else {
-                applyList.find('#load-state').hide();
-                data.sort(function (a, b) {
-                    return a.project.dateUpdate < b.project.dateUpdate
-                });
-                for (var i = 0, j = data.length; i < j; i++) {
-                    newApply(data[i]).appendTo(applyList);
-                    if (i < j - 1) {
-                        $('<hr>').appendTo(applyList);
-                    }
-                }
             }
         });
     }

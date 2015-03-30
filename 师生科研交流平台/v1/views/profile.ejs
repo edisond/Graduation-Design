@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%=profile.name%> - 用户资料 - 师生科研互动平台</title>
+    <%include parts/include.css.html%>
+</head>
+
+<body>
+    <% include parts/nav.ejs %>
+        <input type="hidden" value="<%=profile._id%>" id="profile-_id">
+        <input type="hidden" value="<%=profile.type%>" id="profile-type">
+        <div class="container mt20">
+            <div class="row">
+                <div class="col-sm-9 col-xs-12 pull-right">
+                    <div role="tabpanel">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a id="project" href="#tab-project" aria-controls="tab-project" role="tab" data-toggle="tab"><i class="fa fa-book"></i>&nbsp;参与项目</a>
+                            </li>
+                            <li role="presentation"><a id="team" href="#tab-team" aria-controls="tab-team" role="tab" data-toggle="tab"><i class="fa fa-users"></i>&nbsp;参与团队</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="tab-project">
+                                <br/>
+                                <form class="form-inline " id="tab-project-filter">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="输入项目名..." aria-describedby="addon-search">
+                                            <span class="input-group-addon" id="addon-search"><i class="fa fa-search"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="hidden-xs ml30"></span>
+                                        <div class="input-group text-center pull-center">
+                                            <label class="checkbox-inline mr10">
+                                                <input type="checkbox" id="inlineCheckbox1" value="option1"><i class="fa fa-flask"></i>&nbsp;开放实验
+                                            </label>
+                                            <label class="checkbox-inline mr10">
+                                                <input type="checkbox" id="inlineCheckbox2" value="option2"><i class="fa fa-trophy"></i>&nbsp;挑战杯
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" id="inlineCheckbox3" value="option3"><i class="fa fa-lightbulb-o"></i>&nbsp;创新项目
+                                            </label>
+                                        </div>
+                                    </div>
+                                </form>
+                                <hr class="hr-dark" />
+                                <div id="projects">
+                                    <p class="text-muted" id="load-state">加载中</p>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="tab-team">
+                                <br/>
+                                <form class="form-inline " id="tab-team-filter">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="输入团队名..." aria-describedby="addon-search">
+                                            <span class="input-group-addon" id="addon-search"><i class="fa fa-search"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="hidden-xs ml30"></span>
+                                        <div class="input-group text-center pull-center">
+                                            <label class="checkbox-inline mr10">
+                                                <input type="checkbox" id="inlineCheckbox1" value="option1"><i class="fa fa-user"></i>&nbsp;负责人
+                                            </label>
+                                        </div>
+                                    </div>
+                                </form>
+                                <hr class="hr-dark" />
+                                <div id="teams">
+                                    <p class="text-muted" id="load-state">加载中</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    <div class="aside aside-left">
+                        <img src="<%=profile.img%>" class="head head-lg" />
+                        <h3><%=profile.name%><br/><small><%=profile.id%></small></h3>
+                        <hr/>
+                        <%if(profile.type==='同学' ){%>
+                            <h5><i class="fa fa-tag"></i><%=profile.studentAttr?profile.studentAttr.major:''%></h5>
+                            <h5><i class="fa fa-clock-o"></i><%=profile.studentAttr?profile.studentAttr.grade:''%></h5>
+                            <h5><i class="fa fa-graduation-cap"></i><%=profile.studentAttr?profile.studentAttr.studentType:''%></h5>
+                            <h5><i class="fa fa-envelope"></i><a href="mailto:<%=user.email%>"><%=profile.email%></a></h5>
+                            <%} else if (profile.type==='老师' ){%>
+                                <h5><i class="fa fa-institution"></i><%=profile.teacherAttr?profile.teacherAttr.department:''%></h5>
+                                <h5><i class="fa fa-tag"></i><%=profile.teacherAttr?profile.teacherAttr.title:''%></h5>
+                                <%}%>
+                                    <hr/>
+                                    <table class="table table-condensed table-none-bordered text-center">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <h2 id="oe-num">-</h2>
+                                                </td>
+                                                <td>
+                                                    <h2 id="cc-num">-</h2>
+                                                </td>
+                                                <td>
+                                                    <h2 id="ip-num">-</h2>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <h5><small>开放实验</small></h5>
+                                                </td>
+                                                <td>
+                                                    <h5><small>挑战杯</small></h5>
+                                                </td>
+                                                <td>
+                                                    <h5><small>创新项目</small></h5>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% include parts/include.js.html %>
+            <script type="text/javascript" src="/js/profile.js"></script>
+</body>
+
+</html>

@@ -15,6 +15,10 @@ var Dao = {
         User.find(condition, '-__v -password -key').lean().exec(callback);
     },
 
+    getUser: function (_id, callback) {
+        User.findById(_id, '-__v -password -key').lean().exec(callback);
+    },
+
     /* 新建一个用户 */
     newUser: function (user, callback) {
         user.img = user.img || '/img/heads/' + user.type + '-default.jpg';

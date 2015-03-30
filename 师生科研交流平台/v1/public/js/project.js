@@ -79,7 +79,7 @@ $(document).ready(function () {
             $('[data-role=magic-overlay]').each(function () {
                 var overlay = $(this),
                     target = $(overlay.data('target'));
-                overlay.css('opacity', 0).css('position', 'absolute').offset(target.offset()).width(34).height(30);
+                overlay.css('opacity', 0).css('position', 'absolute').offset(target.offset()).css('margin-top', target.css('margin-top')).width(34).height(30);
             });
 
             $('.dropdown-menu input').click(function () {
