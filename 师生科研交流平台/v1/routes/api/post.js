@@ -13,11 +13,7 @@ router.post('/update/admin', function (req, res) {
         Dao.checkAdminPassword(req.body.op, function (match) {
             if (match) {
                 Dao.updateAdmin(req.body.np, function (err) {
-                    if (err) {
-                        res.sendStatus(500);
-                    } else {
-                        res.sendStatus(200);
-                    }
+                    res.sendStatus(err ? 500 : 200);
                 })
             } else {
                 res.sendStatus(401);
@@ -30,7 +26,7 @@ router.post('/update/admin', function (req, res) {
 
 /* 登录 */
 router.post('/signin', function (req, res) {
-    if (req.query.type && req.query.type === 'admin') {
+    if (req.query.type === 'admin') {
         Dao.checkAdminPassword(req.body.password, function (match) {
             if (match) {
                 req.session.admin = 'admin';
@@ -39,7 +35,6 @@ router.post('/signin', function (req, res) {
                 res.sendStatus(401);
             }
         })
-
     } else {
         var user = req.body;
         Dao.checkUserPassword(user, function (match, docs) {
@@ -65,12 +60,7 @@ router.post('/user', function (req, res) {
     if (req.session.admin) {
         if (req.query.action === "new") {
             Dao.newUser(user, function (err) {
-                if (err) {
-                    console.log(err);
-                    res.sendStatus(500)
-                } else {
-                    res.sendStatus(200);
-                }
+                res.sendStatus(err ? 500 : 200);
             })
         } else if (req.query.action === "update") {
             Dao.updateUser(user, function (err) {
@@ -78,20 +68,11 @@ router.post('/user', function (req, res) {
             });
         } else if (req.query.action === "delete") {
             Dao.deleteUsers(user._id, function (err, doc) {
-                console.log(doc);
-                if (err) {
-                    res.sendStatus(500);
-                } else {
-                    res.sendStatus(200);
-                }
+                res.sendStatus(err ? 500 : 200);
             })
         } else if (req.query.action === "active") {
             Dao.activeUsers(user._id, function (err) {
-                if (err) {
-                    res.sendStatus(500);
-                } else {
-                    res.sendStatus(200);
-                }
+                res.sendStatus(err ? 500 : 200);
             })
         } else {
             res.sendStatus(404);
@@ -105,11 +86,7 @@ router.post('/user', function (req, res) {
                 if (match) {
                     user.password = req.body.np;
                     Dao.updateUser(user, function (err) {
-                        if (err) {
-                            res.sendStatus(500)
-                        } else {
-                            res.sendStatus(200)
-                        }
+                        res.sendStatus(err ? 500 : 200);
                     })
                 } else {
                     res.sendStatus(401)
@@ -125,21 +102,13 @@ router.post('/user', function (req, res) {
                     } else {
                         user.img = "/img/heads/" + req.session.user._id + ".jpeg";
                         Dao.updateUser(user, function (err, docs) {
-                            if (err) {
-                                res.sendStatus(500)
-                            } else {
-                                res.sendStatus(200);
-                            }
+                            res.sendStatus(err ? 500 : 200);
                         })
                     }
                 })
             } else {
                 Dao.updateUser(user, function (err, docs) {
-                    if (err) {
-                        res.sendStatus(500)
-                    } else {
-                        res.sendStatus(200);
-                    }
+                    res.sendStatus(err ? 500 : 200);
                 })
             }
         } else {
@@ -149,11 +118,7 @@ router.post('/user', function (req, res) {
         if (req.query.action && req.query.action === 'new') {
             user.active = false;
             Dao.newUser(user, function (err) {
-                if (err) {
-                    res.sendStatus(500)
-                } else {
-                    res.sendStatus(200)
-                }
+                res.sendStatus(err ? 500 : 200);
             })
         } else {
             res.sendStatus(404)
@@ -167,20 +132,11 @@ router.post('/project', function (req, res) {
     if (req.query.action && req.session.user._id === req.body.teacher) {
         if (req.query.action === 'new') {
             Dao.newProject(req.body, function (err, doc) {
-                if (err) {
-                    res.sendStatus(500)
-                } else {
-                    res.status(200).send(doc._id)
-                }
+                res.sendStatus(err ? 500 : 200);
             })
         } else if (req.query.action === 'update') {
             Dao.updateProject(req.body, function (err) {
-                if (err) {
-                    console.log(err);
-                    res.sendStatus(500)
-                } else {
-                    res.sendStatus(200)
-                }
+                res.sendStatus(err ? 500 : 200);
             })
         } else {
             res.sendStatus(404);
@@ -206,21 +162,15 @@ router.post('/comment', function (req, res) {
 });
 
 router.post('/select', function (req, res) {
-
     if (req.session.user) {
         var action = req.query.action;
-
         if (action === 'apply' && req.session.user.type === "同学") {
             var select = {
                 student: req.session.user._id,
                 project: req.body._id
             };
             Dao.newSelect(select, function (err) {
-                if (err) {
-                    res.sendStatus(500)
-                } else {
-                    res.sendStatus(200);
-                }
+                res.sendStatus(err ? 500 : 200);
             })
         } else if (action === 'cancel' && req.session.user.type === "同学") {
             var select = {
@@ -228,26 +178,16 @@ router.post('/select', function (req, res) {
                 project: req.body._id
             };
             Dao.deleteSelect(select, function (err) {
-                if (err) {
-                    res.sendStatus(500)
-                } else {
-                    res.sendStatus(200);
-                }
+                res.sendStatus(err ? 500 : 200);
             })
         } else if (action === 'approve' && req.session.user.type === "老师") {
             var select = req.body;
             select.active = true;
-            console.log(select);
             Dao.updateSelect(select, function (err) {
-                if (err) {
-                    console.log(err)
-                    res.sendStatus(500)
-                } else {
-                    res.sendStatus(200);
-                }
+                res.sendStatus(err ? 500 : 200);
             })
         } else {
-            res.sendStatus(401);
+            res.sendStatus(404);
         }
     } else {
         res.sendStatus(401);
@@ -274,7 +214,18 @@ router.post('/team', function (req, res) {
                             if (err) {
                                 res.sendStatus(500)
                             } else {
-                                res.status(200).send(docs._id);
+                                Dao.newTeamApply({
+                                    user: docs.leader,
+                                    active: true,
+                                    team: docs._id
+                                }, function (err) {
+                                    if (err) {
+                                        res.sendStatus(500)
+                                    } else {
+                                        res.status(200).send(docs._id);
+                                    }
+                                })
+
                             }
                         })
                     } else {
@@ -290,5 +241,53 @@ router.post('/team', function (req, res) {
         res.sendStatus(401);
     }
 })
+
+router.post('/teamapply', function (req, res) {
+    if (req.session.user) {
+        var action = req.query.action;
+        if (action === 'apply') {
+            var teamapply = {
+                user: req.session.user._id,
+                team: req.body._id
+            };
+            Dao.newTeamApply(teamapply, function (err) {
+                res.sendStatus(err ? 500 : 200);
+            })
+        } else if (action === 'cancel') {
+            var teamapply = {
+                user: req.session.user._id,
+                team: req.body._id
+            };
+            Dao.deleteTeamApply(teamapply, function (err) {
+                res.sendStatus(err ? 500 : 200);
+            })
+        } else if (action === 'approve') {
+            var teamapply = req.body;
+            console.log(teamapply)
+            Dao.getTeam(teamapply.team, function (err, doc) {
+                if (err) {
+                    res.sendStatus(500)
+                } else {
+                    try {
+                        if (doc.leader._id.toString() === req.session.user._id.toString()) {
+                            teamapply.active = true;
+                            Dao.updateTeamApply(teamapply, function (err) {
+                                res.sendStatus(err ? 500 : 200);
+                            })
+                        } else {
+                            res.sendStatus(401)
+                        }
+                    } catch (err) {
+                        res.sendStatus(500);
+                    }
+                }
+            })
+        } else {
+            res.sendStatus(404);
+        }
+    } else {
+        res.sendStatus(401);
+    }
+});
 
 module.exports = router;

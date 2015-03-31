@@ -23,94 +23,50 @@ $(document).ready(function () {
 
     }
 
-    function newComment(comment) {
-        var media = $('<div class="media">'),
-            mediaLeft = $('<div class="media-left">').appendTo(media),
-            mediaBody = $('<div class="media-body">').appendTo(media);
-        $('<a href="/profile/' + comment.from._id + '"><img src="' + comment.from.img + '" class="head head-sm"></a>').appendTo(mediaLeft);
-        $('<h5 class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + '</a>' + comment.from.type + '在<a href="/project/' + comment.project._id + '">' + comment.project.name + '</a>回复了我：</h5>').appendTo(mediaBody);
-        $('<p>' + comment.body + '&nbsp;<a class="ml10" href="/project/' + comment.project._id + '" data-toggle="tooltip" title="回复"><i class="fa fa-reply"></i></a></p>').appendTo(mediaBody);
-        $('<small class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;' + moment(comment.date).fromNow() + '</small>').appendTo(mediaBody);
-        media.find('[data-toggle=tooltip]').tooltip();
-        return media;
-    }
 
-    function newProject(select) {
-        var div = $('<div>');
-        var title = $('<h4><a href="/project/' + select._id + '">' + select.name + '</a><small class="ml20">' + select.type + '</small></h4>').appendTo(div);
-        var tag = $('<span class="label ml10">').appendTo(title);
-
-        if (new Date(select.dateStart) > Date.now()) {
-            tag.addClass('label-success').html('未开始');
-        } else if (new Date(select.dateStart) < Date.now() && new Date(select.dateEnd) > Date.now()) {
-            tag.addClass('label-primary').html('进行中');
-        } else if (new Date(select.dateEnd) < Date.now()) {
-            tag.addClass('label-default').html('已结束');
-        }
-
-        $('<small class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;更新于' + moment(select.dateUpdate).fromNow() + '</small>').appendTo(div);
-        return div
-    }
-
-    function newProjectStudent(select) {
-        var div = $('<div>');
-        var title = $('<h4><a href="/project/' + select.project._id + '">' + select.project.name + '</a><small class="ml20">' + select.project.type + '</small></h4>').appendTo(div);
-        var tag = $('<span class="label ml10">').appendTo(title);
-
-        if (select.active) {
-            if (new Date(select.project.dateStart) > Date.now()) {
-                tag.addClass('label-success').html('未开始');
-            } else if (new Date(select.project.dateStart) < Date.now() && new Date(select.project.dateEnd) > Date.now()) {
-                tag.addClass('label-primary').html('进行中');
-            } else if (new Date(select.project.dateEnd) < Date.now()) {
-                tag.addClass('label-default').html('已结束');
-            }
-        } else {
-            tag.addClass('label-warning').html('申请中');
-        }
-
-        $('<small class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;更新于' + moment(select.project.dateUpdate).fromNow() + '</small>').appendTo(div);
-        return div
-    }
-
-    $.get(encodeURI('/api/get/comment?to=' + USER._id), function (data) {
-        if (data.length === 0) {
-            commentList.find('#load-state').html('暂无动态')
-        } else {
-            commentList.find('#load-state').hide();
-            data.sort(function (a, b) {
-                return a.date < b.date
-            });
-            for (var i = 0, j = data.length; i < j; i++) {
-                newComment(data[i]).appendTo(commentList);
-                if (i < j - 1) {
-                    $('<hr>').appendTo(commentList);
+    function fetchComments() {
+        commentList.empty();
+        var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(commentList)
+        $.get(encodeURI('/api/get/comment?to=' + USER._id), function (data) {
+            if (data.length === 0) {
+                loadstate.html('<i class="fa fa-frown-o"></i>&nbsp;暂无动态')
+            } else {
+                commentList.empty().hide();
+                data.sort(function (a, b) {
+                    return a.date < b.date
+                });
+                for (var i = 0, j = data.length; i < j; i++) {
+                    DOMCreator.myComment(data[i]).appendTo(commentList);
+                    if (i < j - 1) {
+                        $('<hr>').appendTo(commentList);
+                    }
                 }
+                commentList.fadeIn(250)
             }
-        }
-
-    })
-
-    function newTeam(team) {
-        var div = $('<div class="team">');
-        var title = $('<h4><a href="/team/' + team._id + '">' + team.name + '</a></h4>').appendTo(div);
-        $('<small class="text-muted">' + team.desc + '</small>').appendTo(div);
-        return div
+        })
     }
 
-    $.get(encodeURI('/api/get/team?leader=' + USER._id + '&member=' + USER._id), function (data) {
-        if (data.length === 0) {
-            teamList.find('#load-state').html('暂未创建或加入团队')
-        } else {
-            teamList.find('#load-state').hide();
-            for (var i = 0, j = data.length; i < j; i++) {
-                newTeam(data[i]).appendTo(teamList);
-                if (i < j - 1) {
-                    $('<hr>').appendTo(teamList);
+    function fetchMyTeam() {
+        teamList.empty();
+        var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(teamList)
+        $.get(encodeURI('/api/get/teamapply?user=' + USER._id), function (data) {
+            if (data.length === 0) {
+                loadstate.html('<i class="fa fa-frown-o"></i>&nbsp;暂无团队')
+            } else {
+                teamList.empty().hide();
+                for (var i = 0, j = data.length; i < j; i++) {
+                    DOMCreator.myTeam(data[i], USER._id).appendTo(teamList);
+                    if (i < j - 1) {
+                        $('<hr>').appendTo(teamList);
+                    }
                 }
+                teamList.fadeIn(250)
             }
-        }
-    })
+        })
+    }
+
+    fetchComments();
+    fetchMyTeam();
 
     $('#head-setting-preview-big, #head-setting-preview-small').attr('src', USER.img);
 
@@ -156,42 +112,49 @@ $(document).ready(function () {
         }
     })
 
-    console.log(typeof FileReader)
-
     if (USER.type === '老师') {
-        var viewStudentModel = $('#view-select'),
-            tableApply = $('#table-apply');
+        var tableApply = $('#table-apply');
 
 
-        $.get(encodeURI('/api/get/project?teacher=' + USER._id), function (data) {
-            if (data.length === 0) {
-                projectList.find('#load-state').html('暂无项目')
-            } else {
-                projectList.find('#load-state').hide();
-                data.sort(function (a, b) {
-                    return a.dateUpdate < b.dateUpdate
-                });
-                var oeNum = 0,
-                    ccNum = 0,
-                    ipNum = 0;
-                for (var i = 0, j = data.length; i < j; i++) {
-                    if (data[i].type === '开放实验项目') {
-                        oeNum++;
-                    } else if (data[i].type === '挑战杯项目') {
-                        ccNum++;
-                    } else if (data[i].type === '科技创新工程项目') {
-                        ipNum++;
+        function fetchProjects() {
+            projectList.empty();
+            var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(projectList);
+            $.get(encodeURI('/api/get/project?teacher=' + USER._id), function (data) {
+                if (data.length === 0) {
+                    loadstate.html('<i class="fa fa-frown-o"></i>&nbsp;暂无项目');
+                    $('#oe-num').html(0);
+                    $('#cc-num').html(0);
+                    $('#ip-num').html(0);
+                } else {
+                    projectList.empty().hide();
+                    data.sort(function (a, b) {
+                        return a.dateUpdate < b.dateUpdate
+                    });
+                    var oeNum = 0,
+                        ccNum = 0,
+                        ipNum = 0;
+                    for (var i = 0, j = data.length; i < j; i++) {
+                        if (data[i].type === '开放实验项目') {
+                            oeNum++;
+                        } else if (data[i].type === '挑战杯项目') {
+                            ccNum++;
+                        } else if (data[i].type === '科技创新工程项目') {
+                            ipNum++;
+                        }
+                        DOMCreator.project(data[i]).appendTo(projectList);
+                        if (i < j - 1) {
+                            $('<hr>').appendTo(projectList);
+                        }
                     }
-                    newProject(data[i]).appendTo(projectList);
-                    if (i < j - 1) {
-                        $('<hr>').appendTo(projectList);
-                    }
+                    projectList.fadeIn(250);
+                    $('#oe-num').html(oeNum);
+                    $('#cc-num').html(ccNum);
+                    $('#ip-num').html(ipNum);
                 }
-                $('#oe-num').html(oeNum);
-                $('#cc-num').html(ccNum);
-                $('#ip-num').html(ipNum);
-            }
-        });
+            });
+        }
+
+        fetchProjects();
 
         tableApply.dataTable({
             "ajax": {
@@ -205,7 +168,7 @@ $(document).ready(function () {
                 {
                     "data": "student.name"
             }, {
-                    "data": "student.type"
+                    "data": "student.studentAttr.studentType"
             },
                 {
                     "data": "project.name"
@@ -220,7 +183,7 @@ $(document).ready(function () {
                     "width": '100px',
                     'className': "text-center",
                     'render': function (data, type, row) {
-                        return '<a href="#" data-id="' + data + '" data-action="view" data-toggle="modal" data-target="#view-select"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a>';
+                        return '<a href="/profile/' + row.student._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a>';
                     }
             }
         ],
@@ -260,52 +223,115 @@ $(document).ready(function () {
             })
         });
 
-        viewStudentModel.on('show.bs.modal', function (e) {
-            var $this = $(this),
-                data = tableApply.DataTable().row($(e.relatedTarget).parents('tr')[0]).data();
-            $this.find('#name').html(data.student.name);
-            $('<small class="ml20">').html(data.student.id).appendTo($this.find('#name'));
-            $this.find('#college').html(data.student.studentAttr.college);
-            $this.find('#major').html(data.student.studentAttr.major);
-            $this.find('#grade').html(data.student.studentAttr.grade);
-            $this.find('#studentType').html(data.student.studentAttr.studentType);
-            $this.find('#address').html(data.student.studentAttr.address);
-            $this.find('#phone').html(data.student.phone);
-            $this.find('#email').html(data.student.email);
-            $this.find('#sex').html(data.student.sex);
-        });
-
     } else {
+        var tableApply = $('#table-apply');
 
-        $.get(encodeURI('/api/get/select?student=' + USER._id), function (data) {
-            if (data.length === 0) {
-                projectList.find('#load-state').html('暂无选题')
-            } else {
-                var oeNum = 0,
-                    ccNum = 0,
-                    ipNum = 0;
-                projectList.find('#load-state').hide();
-                data.sort(function (a, b) {
-                    return a.project.dateUpdate < b.project.dateUpdate
-                });
-                for (var i = 0, j = data.length; i < j; i++) {
-                    if (data[i].project.type === '开放实验项目') {
-                        oeNum++;
-                    } else if (data[i].project.type === '挑战杯项目') {
-                        ccNum++;
-                    } else if (data[i].project.type === '科技创新工程项目') {
-                        ipNum++;
+        function fetchProjects() {
+            projectList.empty();
+            var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(projectList);
+            $.get(encodeURI('/api/get/select?student=' + USER._id), function (data) {
+                if (data.length === 0) {
+                    loadstate.html('<i class="fa fa-frown-o"></i>&nbsp;暂无项目');
+                    $('#oe-num').html(0);
+                    $('#cc-num').html(0);
+                    $('#ip-num').html(0);
+                } else {
+                    projectList.empty().hide();
+                    data.sort(function (a, b) {
+                        return a.project.dateUpdate < b.project.dateUpdate
+                    });
+                    var oeNum = 0,
+                        ccNum = 0,
+                        ipNum = 0;
+                    for (var i = 0, j = data.length; i < j; i++) {
+                        if (data[i].project.type === '开放实验项目') {
+                            oeNum++;
+                        } else if (data[i].project.type === '挑战杯项目') {
+                            ccNum++;
+                        } else if (data[i].project.type === '科技创新工程项目') {
+                            ipNum++;
+                        }
+                        DOMCreator.myProject(data[i]).appendTo(projectList);
+                        if (i < j - 1) {
+                            $('<hr>').appendTo(projectList);
+                        }
                     }
-                    newProjectStudent(data[i]).appendTo(projectList);
-                    if (i < j - 1) {
-                        $('<hr>').appendTo(projectList);
-                    }
+                    projectList.fadeIn(250);
+                    $('#oe-num').html(oeNum);
+                    $('#cc-num').html(ccNum);
+                    $('#ip-num').html(ipNum);
                 }
-                $('#oe-num').html(oeNum);
-                $('#cc-num').html(ccNum);
-                $('#ip-num').html(ipNum);
+
+            })
+        }
+
+        fetchProjects();
+
+        tableApply.dataTable({
+            "ajax": {
+                'url': encodeURI('/api/get/teamapply?active=false&leader=' + USER._id),
+                'dataSrc': '',
+            },
+            "columns": [
+                {
+                    "data": "user.id"
+            },
+                {
+                    "data": "user.name"
+            }, {
+                    "data": "user.type"
+            },
+                {
+                    "data": "team.name"
+            },
+                {
+                    "data": "_id",
+                    "searchable": false,
+                    "orderable": false,
+                    "width": '100px',
+                    'className': "text-center",
+                    'render': function (data, type, row) {
+                        return '<a href="/profile/' + row.user._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a>';
+                    }
+            }
+        ],
+            "language": {
+                "lengthMenu": "每页显示 _MENU_ 条记录",
+                "zeroRecords": "无记录",
+                "info": "正在显示第 _PAGE_ 页，共 _PAGES_ 页",
+                "infoEmpty": "无记录",
+                "sSearch": "搜索",
+                "infoFiltered": "(正从 _MAX_ 条记录中过滤)",
+                "paginate": {
+                    "previous": "上一页",
+                    "next": "下一页"
+                }
             }
         });
+
+        tableApply.delegate('a[data-action=approve]', 'click', function (e) {
+            var row = $(e.target).parents('tr')[0],
+                data = tableApply.DataTable().row(row).data(),
+                post = {
+                    team: data.team._id,
+                    _id: data._id,
+                    date: Date.now,
+                    active: false
+                };
+            $.ajax({
+                url: encodeURI('/api/post/teamapply?action=approve'),
+                type: 'POST',
+                data: post,
+                success: function () {
+                    tableApply.DataTable().row(row).remove().draw(false);
+                    notyFacade('操作成功', 'success');
+                },
+                error: function () {
+                    notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
+                }
+            })
+        });
+
     }
 
     setPasswordForm.html5Validate(function () {
@@ -419,13 +445,7 @@ $(document).ready(function () {
             success: function (data) {
                 notyFacade('创建成功', 'success');
                 $('#new-team').modal('hide');
-                post._id = data;
-                if (teamList.find('div.team').size() === 0) {
-                    teamList.find('#load-state').hide();
-                } else {
-                    $('<hr>').prependTo(teamList);
-                }
-                newTeam(post).prependTo(teamList);
+                fetchMyTeam();
                 $this[0].reset();
             },
             error: function (XMLHttpRequest) {

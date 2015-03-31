@@ -6,6 +6,7 @@ var Project = model.Project;
 var Select = model.Select;
 var Comment = model.Comment;
 var Team = model.Team;
+var TeamApply = model.TeamApply;
 var md5 = require('../lib/md5');
 
 var Dao = {
@@ -215,16 +216,65 @@ var Dao = {
         team.save(callback);
     },
 
+    getTeam: function (_id, callback) {
+        Team.findById(_id).populate('leader', 'name type img').lean().exec(callback)
+    },
+
     getTeams: function (condition, callback) {
+        Team.find(condition, '-__v').lean().exec(callback)
+    },
+
+    newTeamApply: function (ta, callback) {
+        TeamApply.find({
+            user: ta.user,
+            team: ta.team
+        }, function (err, docs) {
+            if (err) {
+                callback(err);
+            } else if (docs.length > 0) {
+                callback('重复申请');
+            } else {
+                ta = new TeamApply(ta);
+                ta.save(callback);
+            }
+        })
+    },
+
+    getTeamApply: function (_id, callback) {
+        TeamApply.findById(_id).lean().exec(callback);
+    },
+
+    getTeamApplies: function (condition, callback) {
+        TeamApply.find(condition).populate('team', 'name desc date leader').populate('user', '_id name type img').lean().exec(callback);
+    },
+
+    getTeamAppliesByLeader: function (condition, callback) {
         Team.find({
-            $or: [{
-                _id: condition._id
-            }, {
-                leader: condition.leader
-            }, {
-                member: condition.member
-            }]
-        }, '-__v').lean().exec(callback)
+            leader: condition.leader
+        }, function (err, docs) {
+            if (err) {
+                callback(err)
+            } else {
+                var IdList = [];
+                for (var i = 0, j = docs.length; i < j; i++) {
+                    IdList.push(docs[i]._id);
+                }
+                TeamApply.find({
+                    team: {
+                        $in: IdList
+                    },
+                    active: condition.active
+                }).populate('user', '-__v -password -key').populate('team', 'name desc').lean().exec(callback);
+            }
+        })
+    },
+
+    updateTeamApply: function (ta, callback) {
+        TeamApply.findByIdAndUpdate(ta._id, ta, callback)
+    },
+
+    deleteTeamApply: function (condition, callback) {
+        TeamApply.findOneAndRemove(condition, callback);
     }
 
 }

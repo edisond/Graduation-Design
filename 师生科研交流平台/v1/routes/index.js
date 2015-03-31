@@ -126,6 +126,44 @@ router.get('/profile/:id', function (req, res) {
     }
 })
 
+router.get('/team/:id', function (req, res) {
+    if (req.session.user) {
+        Dao.getTeam(req.params.id, function (err, docs) {
+            if (docs) {
+                docs.date = moment(docs.date).fromNow();
+                var isSelected = false,
+                    isApplied = false,
+                    condition = {
+                        user: req.session.user._id,
+                        team: docs._id
+                    };
+                Dao.getTeamApplies(condition, function (err, doc) {
+                    if (err) {
+                        res.sendStatus(500);
+                    } else {
+                        if (doc.length === 1 && doc[0].active) {
+                            isSelected = true
+                        } else if (doc.length === 1 && doc[0].active === false) {
+                            isApplied = true
+                        }
+                        res.render('team', {
+                            team: docs,
+                            user: req.session.user,
+                            isSelected: isSelected,
+                            isApplied: isApplied
+                        })
+                    }
+                })
+            } else {
+                res.sendStatus(404);
+            }
+        })
+
+    } else {
+        res.redirect('/');
+    }
+})
+
 /* 管理员页 */
 router.get('/admin', function (req, res) {
     if (req.session.admin) {

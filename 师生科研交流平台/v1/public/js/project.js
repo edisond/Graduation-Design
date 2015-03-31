@@ -3,7 +3,7 @@ $(document).ready(function () {
     var projectType = $('#projectType').val(),
         list = $('#list');
 
-    list.delegate('a[data-link="project"]', 'click', function (e) {
+    list.delegate('a', 'click', function (e) {
         if (!USER) {
             notyFacade('请先登录', 'information')
             return false
@@ -11,51 +11,43 @@ $(document).ready(function () {
 
     })
 
-    function createProject(project) {
-        var node = $('<div class="project">');
-        var title = $('<h4>').appendTo(node);
-        $('<a data-link="project">').attr('href', '/project/' + project._id).html(project.name).appendTo(title);
-        var subtitle = $('<small class="ml10">').html('指导教师：' + project.teacher.name).appendTo(title);
-        var tag = $('<span class="label ml10">').appendTo(title);
-        if (new Date(project.dateStart) > Date.now()) {
-            tag.addClass('label-success').html('未开始');
-        } else if (new Date(project.dateStart) < Date.now() && new Date(project.dateEnd) > Date.now()) {
-            tag.addClass('label-primary').html('进行中');
-        } else if (new Date(project.dateEnd) < Date.now()) {
-            tag.addClass('label-default').html('已结束');
-        }
-        $('<p class="text-muted">').html(project.description).appendTo(node);
-        return node;
-    };
-
-    $.get(encodeURI('/api/get/project?type=' + projectType), function (data) {
-        if (data.length === 0) {
-            $('#load-state').html('暂无项目')
-        } else {
-            $('#load-state').hide();
-            var teachers = [],
-                lastUpdate = new Date(data[0].dateUpdate);
-
-            data.sort(function (a, b) {
-                return new Date(a.dateUpdate) < new Date(b.dateUpdate);
-            });
-            for (var i = 0, j = data.length; i < j; i++) {
-                createProject(data[i]).appendTo(list);
-                if (i < j - 1) {
-                    $('<hr>').appendTo(list);
+    function fetchProjecs() {
+        list.empty();
+        var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(list)
+        $.get(encodeURI('/api/get/project?type=' + projectType), function (data) {
+            if (data.length === 0) {
+                loadstate.html('<i class="fa fa-frown-o"></i>&nbsp;暂无项目');
+                $('#header-project-num').html('0');
+                $('#header-teacher-num').html('0');
+                $('#header-update-date').html('等待更新');
+            } else {
+                list.empty().hide();
+                var teachers = [],
+                    lastUpdate = new Date(data[0].dateUpdate);
+                data.sort(function (a, b) {
+                    return new Date(a.dateUpdate) < new Date(b.dateUpdate);
+                });
+                for (var i = 0, j = data.length; i < j; i++) {
+                    DOMCreator.project(data[i]).appendTo(list);
+                    if (i < j - 1) {
+                        $('<hr>').appendTo(list);
+                    }
+                    teachers.push(data[i].teacher['_id']);
+                    var temp = new Date(data[i].dateUpdate);
+                    if (temp > lastUpdate) {
+                        lastUpdate = temp;
+                    }
                 }
-                teachers.push(data[i].teacher['_id']);
-                var temp = new Date(data[i].dateUpdate);
-                if (temp > lastUpdate) {
-                    lastUpdate = temp;
-                }
+                list.fadeIn(250);
+                $('#header-project-num').html(data.length);
+                $('#header-teacher-num').html(teachers.unique().length);
+                lastUpdate = moment(lastUpdate);
+                $('#header-update-date').html('更新于' + lastUpdate.fromNow());
             }
-            $('#header-project-num').html(data.length);
-            $('#header-teacher-num').html(teachers.unique().length);
-            lastUpdate = moment(lastUpdate);
-            $('#header-update-date').html(lastUpdate.fromNow());
-        }
-    })
+        })
+    }
+
+    fetchProjecs();
 
 
     var model = $('#new-project'),
@@ -149,20 +141,10 @@ $(document).ready(function () {
                 type: "POST",
                 url: encodeURI("/api/post/project?action=new"),
                 data: post,
-                success: function (data) {
+                success: function () {
                     notyFacade('成功创建开放实验项目', 'success');
                     model.modal('hide');
-                    post._id = data;
-                    post.teacher = {
-                        _id: USER._id,
-                        name: USER.name
-                    };
-                    if (list.find('div.project').size() === 0) {
-                        $('#load-state').hide();
-                    } else {
-                        $('<hr>').prependTo(list);
-                    }
-                    createProject(post).prependTo(list);
+                    fetchProjecs();
                     formOE[0].reset();
                 },
                 error: function () {

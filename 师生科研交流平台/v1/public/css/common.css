@@ -99,10 +99,10 @@ img.head {
 img.head.head-lg {
     width: 100%;
     max-width: 200px;
-    max-height: 300px;
+    max-height: 200px;
 }
 
 img.head.head-sm {
     width: 50px;
-    max-height: 75px;
+    height: 50px;
 }

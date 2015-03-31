@@ -19,7 +19,7 @@
                             </li>
                             <li role="presentation"><a id="team" href="#tab-team" aria-controls="tab-team" role="tab" data-toggle="tab"><i class="fa fa-users"></i>&nbsp;我的团队</a>
                             </li>
-                            <li role="presentation"><a id="apply" href="#tab-apply" aria-controls="tab-apply" role="tab" data-toggle="tab"><i class="fa fa-edit"></i>&nbsp;<%=user.type==='同学'?'项目申请':'学生申请'%></a>
+                            <li role="presentation"><a id="apply" href="#tab-apply" aria-controls="tab-apply" role="tab" data-toggle="tab"><i class="fa fa-edit"></i>&nbsp;<%=user.type==='同学'?'入团申请':'学生申请'%></a>
                             </li>
                             <li role="presentation"><a id="settings" href="#tab-settings" aria-controls="tab-settings" role="tab" data-toggle="tab"><i class="fa fa-cog"></i>&nbsp;设置</a>
                             </li>
@@ -354,51 +354,7 @@
             </div>
         </div>
         <%if(user.type==='老师' ){%>
-            <div class="modal fade" id="view-select" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                            </button>
-                            <h4 class="modal-title">查看学生</h4>
-                        </div>
-                        <div class="modal-body">
-                            <h4 id="name" class="ml20"><small id="id"></small></h4>
-                            <table class="table table-none-bordered">
-                                <tbody>
-                                    <tr>
-                                        <td>性别：</td>
-                                        <td id="sex"></td>
-                                        <td>住址：</td>
-                                        <td id="address"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>学院：</td>
-                                        <td id="college"></td>
-                                        <td>专业：</td>
-                                        <td id="major"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>年级：</td>
-                                        <td id="grade"></td>
-                                        <td>类型：</td>
-                                        <td id="studentType"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>邮箱：</td>
-                                        <td id="email"></td>
-                                        <td>电话：</td>
-                                        <td id="phone"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <%} else if(user.type==='同学' ){%>
                 <div class="modal fade" id="new-team" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog">

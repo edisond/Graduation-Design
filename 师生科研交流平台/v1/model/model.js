@@ -202,10 +202,6 @@ var Team = new Schema({
         ref: 'user',
         required: true
     },
-    member: [{
-        type: Schema.Types.ObjectId,
-        ref: 'user'
-    }],
     desc: {
         type: 'String',
         required: true
@@ -242,9 +238,33 @@ var Select = new Schema({
     }
 });
 
+var TeamApply = new Schema({
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user',
+        required: true
+    },
+    team: {
+        type: Schema.Types.ObjectId,
+        ref: 'team',
+        required: true
+    },
+    active: {
+        type: 'Boolean',
+        required: true,
+        default: false
+    },
+    date: {
+        type: 'Date',
+        required: true,
+        default: Date.now()
+    }
+})
+
 module.exports.User = mongoose.model('user', User);
 module.exports.Admin = mongoose.model('admin', Admin);
 module.exports.Project = mongoose.model('project', Project);
 module.exports.Comment = mongoose.model('comment', Comment);
 module.exports.Select = mongoose.model('select', Select);
 module.exports.Team = mongoose.model('team', Team);
+module.exports.TeamApply = mongoose.model('teamapply', TeamApply);

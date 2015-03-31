@@ -1,19 +1,20 @@
-var express = require('express');
-var session = require('express-session');
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var moment = require('moment');
-moment.locale('zh-cn');
-var routes = require('./routes/index');
-var apiGet = require('./routes/api/get');
-var apiPost = require('./routes/api/post');
-var app = express();
+var express = require('express'),
+    session = require('express-session'),
+    mongoose = require('mongoose'),
+    path = require('path'),
+    favicon = require('serve-favicon'),
+    logger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    moment = require('moment'),
+    routes = require('./routes/index'),
+    apiGet = require('./routes/api/get'),
+    apiPost = require('./routes/api/post'),
+    app = express(),
+    xssFilters = require('xss‐filters');
 
+mongoose.connect('mongodb://localhost/test');
+moment.locale('zh-cn');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -26,6 +27,7 @@ app.use(bodyParser.urlencoded({
     extended: true,
     limit: 1000000
 }));
+
 app.use(session({
     secret: '666',
     resave: false,

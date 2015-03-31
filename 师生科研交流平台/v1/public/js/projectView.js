@@ -12,60 +12,48 @@ $(document).ready(function () {
         $('#nav-link-to-ip').addClass('active');
     }
 
-    function newComment(comment) {
-        var media = $('<div class="media">'),
-            mediaLeft = $('<div class="media-left">').appendTo(media),
-            mediaBody = $('<div class="media-body">').appendTo(media);
-        $('<a href="/profile/' + comment.from._id + '"><img src="' + comment.from.img + '" class="head head-sm"></a>').appendTo(mediaLeft);
-        if (comment.to) {
-            $('<h5 class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + '</a>' + comment.from.type + '回复了<a href="/profile/' + comment.to._id + '">' + comment.to.name + '</a>' + comment.to.type + '：</h5>').appendTo(mediaBody);
-        } else {
-            $('<h5 class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + '</a>' + comment.from.type + '说：</h5>').appendTo(mediaBody);
-        }
-        $('<p>' + comment.body + '&nbsp;<a href="#input-comment" data-toggle="tooltip" title="回复" class="ml10" data-id="' + comment.from._id + '" data-name="' + comment.from.name + '" data-type="' + comment.from.type + '"><i class="fa fa-reply"></i></a></p>').appendTo(mediaBody);
-        $('<small class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;' + moment(comment.date).fromNow() + '</small>').appendTo(mediaBody);
-        media.find('[data-toggle=tooltip]').tooltip();
-        return media;
+    function fetchComments() {
+        commentList.empty();
+        var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(commentList)
+        $.get(encodeURI('/api/get/comment?project=' + projectId), function (data) {
+            if (data.length === 0) {
+                loadstate.html('<i class="fa fa-frown-o"></i>&nbsp;暂无讨论')
+            } else {
+                commentList.empty().hide();
+                for (var i = 0, j = data.length; i < j; i++) {
+                    DOMCreator.comment(data[i]).appendTo(commentList);
+                    if (i < j - 1) {
+                        $('<hr>').appendTo(commentList);
+                    }
+                }
+                commentList.fadeIn(250);
+            }
+        })
     }
 
-    function newHead(user) {
-        var head = $('<a class="dinlineblock mr5 mt5" data-toggle="tooltip" data-placement="bottom" title="' + user.name + '" href="/profile/' + user._id + '"></a>');
-        $('<img height="50px" width="50px" src="' + user.img + '"/>').appendTo(head);
-        return head.tooltip();
-    }
-
-    $.get(encodeURI('/api/get/comment?project=' + projectId), function (data) {
-        if (data.length === 0) {
-            $('#comments-state').html('暂无讨论')
-        } else {
-            $('#comments-state').hide();
-            for (var i = 0, j = data.length; i < j; i++) {
-                newComment(data[i]).appendTo(commentList);
-                if (i < j - 1) {
-                    $('<hr>').appendTo(commentList);
+    function fetchSelector() {
+        projectSelects.empty();
+        var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(projectSelects)
+        $.get(encodeURI('/api/get/select?project=' + projectId + '&active=true'), function (data) {
+            $('#project-selects-num').html(data.length);
+            if (data.length === 0) {
+                loadstate.html('暂无同学选课');
+            } else {
+                projectSelects.empty().hide();
+                for (var i = 0, j = data.length; i < j; i++) {
+                    DOMCreator.head(data[i].student).appendTo(projectSelects);
                 }
             }
-        }
+            projectSelects.fadeIn(250)
+        })
+    }
 
-    })
-
-    $.get(encodeURI('/api/get/select?project=' + projectId + '&active=true'), function (data) {
-        $('#project-selects-num').html(data.length);
-        if (data.length === 0) {
-            $('<span class="text-muted">暂无同学选课</span>').appendTo(projectSelects);
-        } else {
-            for (var i = 0, j = data.length; i < j; i++) {
-                newHead(data[i].student).appendTo(projectSelects);
-            }
-        }
-
-
-    })
+    fetchComments();
+    fetchSelector();
 
     commentList.delegate('a[href="#input-comment"]', 'click', function () {
         var $this = $(this);
         $('#reply-object').html('正在回复' + $this.attr('data-name') + $this.attr('data-type'));
-
         commentBox.attr({
             'data-id': $this.attr('data-id'),
             'data-name': $this.attr('data-name'),
@@ -136,25 +124,7 @@ $(document).ready(function () {
             data: comment,
             type: 'POST',
             success: function () {
-                comment.from = {
-                    _id: USER._id,
-                    type: USER.type,
-                    name: USER.name,
-                    img: USER.img
-                };
-                if (comment.to) {
-                    comment.to = {
-                        _id: commentBox.attr('data-id'),
-                        type: commentBox.attr('data-type'),
-                        name: commentBox.attr('data-name')
-                    }
-                }
-                if (commentList.find('.media').size() === 0) {
-                    $('#comments-state').hide();
-                } else {
-                    $('<hr>').appendTo(commentList);
-                }
-                newComment(comment).appendTo(commentList);
+                fetchComments();
                 commentBox.html('');
                 $('#input-cancel').click();
                 notyFacade('发布成功', 'success');
