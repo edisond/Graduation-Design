@@ -11,7 +11,7 @@ var express = require('express'),
     apiGet = require('./routes/api/get'),
     apiPost = require('./routes/api/post'),
     app = express(),
-    xssFilters = require('xss‐filters');
+    xssFilters = require('xss-filters');
 
 mongoose.connect('mongodb://localhost/test');
 moment.locale('zh-cn');
