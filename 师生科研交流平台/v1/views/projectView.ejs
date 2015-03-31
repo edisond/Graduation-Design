@@ -53,53 +53,6 @@
                                 </div>
                                 <form class="well mt20" id="form-comment">
                                     <div class="form-group">
-                                        <div class="btn-toolbar" data-role="editor-toolbar" data-target="#input-comment">
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="字体"><i class="fa fa-font"></i>&nbsp;<b class="caret"></b></a>
-                                                <ul class="dropdown-menu">
-                                                </ul>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="大小"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a data-edit="fontSize 5"><font size="5">Huge</font></a>
-                                                    </li>
-                                                    <li><a data-edit="fontSize 3"><font size="3">Normal</font></a>
-                                                    </li>
-                                                    <li><a data-edit="fontSize 1"><font size="1">Small</font></a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm" data-edit="bold" title="加粗 (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="italic" title="斜体 (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="strikethrough" title="删除线"><i class="fa fa-strikethrough"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="underline" title="下划线 (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm" data-edit="insertunorderedlist" title="无序列表"><i class="fa fa-list-ul"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="insertorderedlist" title="有序列表"><i class="fa fa-list-ol"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="outdent" title="退格 (Shift+Tab)"><i class="fa fa-dedent"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="indent" title="入格 (Tab)"><i class="fa fa-indent"></i></a>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm" data-edit="justifyleft" title="左对齐 (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="justifycenter" title="居中 (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="justifyright" title="右对齐 (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="justifyfull" title="自适应 (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="超链接"><i class="fa fa-link"></i></a>
-                                                <div class="dropdown-menu input-append p10">
-                                                    <input class="form-control" placeholder="URL" type="text" data-edit="createLink" />
-                                                    <button class="btn btn-default btn-sm mt5" type="button">添加</button>
-                                                </div>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm" data-edit="undo" title="撤销 (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="redo" title="恢复 (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
-                                            </div>
-                                        </div>
                                         <div class="form-control wysiwyg-textarea wysiwyg-textarea-sm" id="input-comment"></div>
                                     </div>
                                     <div class="form-group">
@@ -160,7 +113,7 @@
             </div>
         </div>
 
-        <%if(user._id==project.teacher._id){%>
+        <%if(user._id==project.teacher._id &&project.type==='开放实验项目' ){%>
             <div class="modal fade" id="edit-project" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -169,7 +122,7 @@
                             </button>
                             <h4 class="modal-title">更新开放实验项目</h4>
                         </div>
-                        <form class="pl20 pr20 form-horizontal form-horizontal-label-left" id="new-oe">
+                        <form class="form-horizontal form-horizontal-label-left" id="new-oe">
                             <input type="hidden" value="<%=project._id%>" id="input-_id">
                             <div class="modal-body">
                                 <div class="form-group">
@@ -251,57 +204,6 @@
                                     <label class="col-sm-12 control-label">项目细节<small>（请按以下内容填写1.设计思路及实验目的；2.涉及的内容或知识点；3.采用的方法和手段；4.考察点）</small>
                                     </label>
                                     <div class="col-sm-12">
-                                        <div class="btn-toolbar" data-role="editor-toolbar" data-target="#input-detail">
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="字体"><i class="fa fa-font"></i>&nbsp;<b class="caret"></b></a>
-                                                <ul class="dropdown-menu">
-                                                </ul>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="大小"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a data-edit="fontSize 5"><font size="5">Huge</font></a>
-                                                    </li>
-                                                    <li><a data-edit="fontSize 3"><font size="3">Normal</font></a>
-                                                    </li>
-                                                    <li><a data-edit="fontSize 1"><font size="1">Small</font></a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm" data-edit="bold" title="加粗 (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="italic" title="斜体 (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="strikethrough" title="删除线"><i class="fa fa-strikethrough"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="underline" title="下划线 (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm" data-edit="insertunorderedlist" title="无序列表"><i class="fa fa-list-ul"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="insertorderedlist" title="有序列表"><i class="fa fa-list-ol"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="outdent" title="退格 (Shift+Tab)"><i class="fa fa-dedent"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="indent" title="入格 (Tab)"><i class="fa fa-indent"></i></a>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm" data-edit="justifyleft" title="左对齐 (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="justifycenter" title="居中 (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="justifyright" title="右对齐 (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="justifyfull" title="自适应 (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm" id="pictureBtn"><i class="fa fa-picture-o"></i></a>
-                                                <input type="file" data-role="magic-overlay" title="插入图片（请勿上传总大小超过1MB的图像）" data-target="#pictureBtn" data-edit="insertImage">
-                                                <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="超链接"><i class="fa fa-link"></i></a>
-                                                <div class="dropdown-menu input-append p10">
-                                                    <input class="form-control" placeholder="URL" type="text" data-edit="createLink" />
-                                                    <button class="btn btn-default btn-sm mt5" type="button">添加</button>
-                                                </div>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm" data-edit="undo" title="撤销 (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="redo" title="恢复 (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12">
                                         <div class="form-control wysiwyg-textarea" id="input-detail">
                                             <%-project.openExperimentAttr.detail %>
                                         </div>
@@ -310,57 +212,6 @@
                                 <div class="form-group">
                                     <label class="col-sm-12 control-label">需要的主要仪器设备及实验材料
                                     </label>
-                                    <div class="col-sm-12">
-                                        <div class="btn-toolbar" data-role="editor-toolbar" data-target="#input-requirement">
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="字体"><i class="fa fa-font"></i>&nbsp;<b class="caret"></b></a>
-                                                <ul class="dropdown-menu">
-                                                </ul>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="大小"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a data-edit="fontSize 5"><font size="5">Huge</font></a>
-                                                    </li>
-                                                    <li><a data-edit="fontSize 3"><font size="3">Normal</font></a>
-                                                    </li>
-                                                    <li><a data-edit="fontSize 1"><font size="1">Small</font></a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm" data-edit="bold" title="加粗 (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="italic" title="斜体 (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="strikethrough" title="删除线"><i class="fa fa-strikethrough"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="underline" title="下划线 (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm" data-edit="insertunorderedlist" title="无序列表"><i class="fa fa-list-ul"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="insertorderedlist" title="有序列表"><i class="fa fa-list-ol"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="outdent" title="退格 (Shift+Tab)"><i class="fa fa-dedent"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="indent" title="入格 (Tab)"><i class="fa fa-indent"></i></a>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm" data-edit="justifyleft" title="左对齐 (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="justifycenter" title="居中 (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="justifyright" title="右对齐 (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="justifyfull" title="自适应 (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm" id="pictureBtn"><i class="fa fa-picture-o"></i></a>
-                                                <input type="file" data-role="magic-overlay" title="插入图片（请勿上传总大小超过1MB的图像）" data-target="#pictureBtn" data-edit="insertImage">
-                                                <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="超链接"><i class="fa fa-link"></i></a>
-                                                <div class="dropdown-menu input-append p10">
-                                                    <input class="form-control" placeholder="URL" type="text" data-edit="createLink" />
-                                                    <button class="btn btn-default btn-sm mt5" type="button">添加</button>
-                                                </div>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default btn-sm" data-edit="undo" title="撤销 (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a>
-                                                <a class="btn btn-default btn-sm" data-edit="redo" title="恢复 (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="col-sm-12">
                                         <div class="form-control wysiwyg-textarea" id="input-requirement">
                                             <%-project.openExperimentAttr.requirement %>

@@ -147,6 +147,68 @@ var DOMCreator = {
 
 }
 
+$.fn.extend({
+    Wysiwyg: function (options) {
+        return $(this).each(function () {
+            var $this = $(this),
+                defaults = {
+                    imgBtn: true
+                };
+            var options = $.extend(options, defaults);
+            var withImgBtn = typeof withImgBtn === 'undefined' ? true : withImgBtn;
+            var toolbar = '<div class="btn-toolbar" data-role="editor-toolbar" data-target="#' + $this.attr('id') + '">';
+            toolbar += '<div class="btn-group"><a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="字体"><i class="fa fa-font"></i>&nbsp;<b class="caret"></b></a><ul class="dropdown-menu"></ul></div>';
+            toolbar += '<div class="btn-group"><a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="大小"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a><ul class="dropdown-menu"><li><a data-edit="fontSize 5"><font size="5">大</font></a></li><li><a data-edit="fontSize 3"><font size="3">中</font></a></li><li><a data-edit="fontSize 1"><font size="1">小</font></a></li></ul></div>';
+            toolbar += '<div class="btn-group"><a class="btn btn-default btn-sm" data-edit="bold" title="加粗 (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a><a class="btn btn-default btn-sm" data-edit="italic" title="斜体 (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a><a class="btn btn-default btn-sm" data-edit="strikethrough" title="删除线"><i class="fa fa-strikethrough"></i></a><a class="btn btn-default btn-sm" data-edit="underline" title="下划线 (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a></div>';
+            toolbar += '<div class="btn-group"><a class="btn btn-default btn-sm" data-edit="insertunorderedlist" title="无序列表"><i class="fa fa-list-ul"></i></a><a class="btn btn-default btn-sm" data-edit="insertorderedlist" title="有序列表"><i class="fa fa-list-ol"></i></a><a class="btn btn-default btn-sm" data-edit="outdent" title="退格 (Shift+Tab)"><i class="fa fa-dedent"></i></a><a class="btn btn-default btn-sm" data-edit="indent" title="入格 (Tab)"><i class="fa fa-indent"></i></a></div>';
+            toolbar += '<div class="btn-group"><a class="btn btn-default btn-sm" data-edit="justifyleft" title="左对齐 (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a><a class="btn btn-default btn-sm" data-edit="justifycenter" title="居中 (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a><a class="btn btn-default btn-sm" data-edit="justifyright" title="右对齐 (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a><a class="btn btn-default btn-sm" data-edit="justifyfull" title="自适应 (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a></div>';
+            toolbar += '<div class="btn-group">';
+            if (options.imgBtn) {
+                toolbar += '<a class="btn btn-default btn-sm" id="pictureBtn"><i class="fa fa-picture-o"></i></a><input type="file" data-role="magic-overlay" title="插入图片（请勿上传总大小超过1MB的图像）" data-target="#pictureBtn" data-edit="insertImage">';
+            }
+            toolbar += '<a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="超链接"><i class="fa fa-link"></i></a><div class="dropdown-menu input-append p10"><input class="form-control" placeholder="URL" type="text" data-edit="createLink" /><button class="btn btn-default btn-sm mt5" type="button">添加</button></div>';
+            toolbar += '</div>';
+            toolbar += '<div class="btn-group"><a class="btn btn-default btn-sm" data-edit="undo" title="撤销 (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a><a class="btn btn-default btn-sm" data-edit="redo" title="恢复 (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a></div>';
+            toolbar += '</div>';
+            toolbar = $(toolbar);
+
+            var fonts = ['Serif', 'Sans', 'Arial', 'Arial Black', 'Courier',
+            'Courier New', 'Comic Sans MS', 'Helvetica', 'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma', 'Times',
+            'Times New Roman', 'Verdana'],
+                fontTarget = toolbar.find('[title=字体]').siblings('.dropdown-menu');
+            $.each(fonts, function (idx, fontName) {
+                fontTarget.append($('<li><a data-edit="fontName ' + fontName + '" style="font-family:\'' + fontName + '\'">' + fontName + '</a></li>'));
+            });
+
+            toolbar.find('[title]').tooltip({
+                container: 'body'
+            });
+
+            toolbar.find('[data-role=magic-overlay]').each(function () {
+                var overlay = $(this),
+                    target = $(overlay.data('target'));
+                overlay.css('opacity', 0).css('position', 'absolute').offset(target.offset()).css('margin-top', target.css('margin-top')).width(34).height(30);
+            });
+
+            toolbar.find('.dropdown-menu input').click(function () {
+                    return false;
+                })
+                .change(function () {
+                    $(this).parent('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');
+                })
+                .keydown('esc', function () {
+                    this.value = '';
+                    $(this).change();
+                });
+            toolbar.insertBefore($this);
+            $this.wysiwyg({
+                toolbarSelector: '[data-target=#' + $this.attr('id') + '][data-role=editor-toolbar]'
+            });
+        })
+    }
+
+});
+
 $(document).ready(function () {
     var nav = $('nav.navbar-static-top'),
         pathname = window.location.pathname;

@@ -49,60 +49,23 @@ $(document).ready(function () {
 
     fetchProjecs();
 
+    $('.wysiwyg-textarea').Wysiwyg()
 
     var model = $('#new-project'),
-        formOE = model.find('#new-oe');
+        formOE = model.find('#new-oe'),
+        formCC = model.find('#new-cc'),
+        formIP = model.find('#new-ip');
+
+    model.find(".input-append.date").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: 'month',
+        autoclose: true,
+        todayBtn: true,
+        startDate: new Date(),
+        pickerPosition: "bottom-left"
+    });
 
     if (formOE.size() > 0) {
-
-        function initToolbarBootstrapBindings() {
-            var fonts = ['Serif', 'Sans', 'Arial', 'Arial Black', 'Courier',
-            'Courier New', 'Comic Sans MS', 'Helvetica', 'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma', 'Times',
-            'Times New Roman', 'Verdana'],
-                fontTarget = $('[title=字体]').siblings('.dropdown-menu');
-            $.each(fonts, function (idx, fontName) {
-                fontTarget.append($('<li><a data-edit="fontName ' + fontName + '" style="font-family:\'' + fontName + '\'">' + fontName + '</a></li>'));
-            });
-
-            $('[title]').tooltip({
-                container: 'body'
-            });
-
-            $('[data-role=magic-overlay]').each(function () {
-                var overlay = $(this),
-                    target = $(overlay.data('target'));
-                overlay.css('opacity', 0).css('position', 'absolute').offset(target.offset()).css('margin-top', target.css('margin-top')).width(34).height(30);
-            });
-
-            $('.dropdown-menu input').click(function () {
-                    return false;
-                })
-                .change(function () {
-                    $(this).parent('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');
-                })
-                .keydown('esc', function () {
-                    this.value = '';
-                    $(this).change();
-                });
-        };
-
-        initToolbarBootstrapBindings();
-
-        formOE.find('#input-detail').wysiwyg({
-            toolbarSelector: '[data-target=#input-detail][data-role=editor-toolbar]'
-        });
-        formOE.find('#input-requirement').wysiwyg({
-            toolbarSelector: '[data-target=#input-requirement][data-role=editor-toolbar]'
-        });
-
-        formOE.find(".input-append.date").datetimepicker({
-            format: "yyyy-mm-dd",
-            minView: 'month',
-            autoclose: true,
-            todayBtn: true,
-            startDate: new Date(),
-            pickerPosition: "bottom-left"
-        });
 
         formOE.find('#input-source-1, #input-source-2, #input-source-3').click(function () {
             formOE.find('#input-source').attr('disabled', true);
@@ -152,6 +115,54 @@ $(document).ready(function () {
                 }
             });
         });
+    } else if (formCC.size() > 0) {
+
+        formCC.html5Validate(function () {
+            var $this = $(this),
+                post = {
+                    challengeCupAttr: {
+                        ccTeam: $this.find('#input-ccTeam').html(),
+                        ccFund: $this.find('#input-ccFund').html(),
+                        ccDBasic: $this.find('#input-ccDBasic').html(),
+                        ccDMarket: $this.find('#input-ccDMarket').html(),
+                        ccDManage: $this.find('#input-ccDManage').html(),
+                        ccSchedule: $this.find('#input-ccSchedule').html(),
+                        ccCondition: $this.find('#input-ccCondition').html(),
+                        ccUsage: $this.find('#input-ccUsage').html(),
+                        ccStatus: $this.find('#input-ccStatus').html(),
+                        ccGoal: $this.find('#input-ccGoal').html(),
+                        ccBasis: $this.find('#input-ccBasis').html(),
+                        ccType: $this.find('input[name=input-type]:checked').val()
+                    },
+                    description: $this.find('#input-description').val(),
+                    college: $this.find('#input-college').val(),
+                    name: $this.find('#input-name').val(),
+                    dateStart: new Date($this.find('#input-dateStart').val()),
+                    dateEnd: new Date($this.find('#input-dateEnd').val()),
+                    type: '挑战杯项目'
+                };
+            if (USER.type === '老师') {
+                post.teacher = USER._id
+            } else {
+                post.active = false;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: encodeURI("/api/post/project?action=new"),
+                data: post,
+                success: function () {
+                    notyFacade('成功创建挑战杯项目', 'success');
+                    model.modal('hide');
+                    fetchProjecs();
+                    $this[0].reset();
+                },
+                error: function () {
+                    notyFacade('抱歉，产生了一个错误，请重试或刷新后重试。（请勿上传总大小超过1MB的图像）', 'error');
+                }
+            });
+        })
+
     }
 
 

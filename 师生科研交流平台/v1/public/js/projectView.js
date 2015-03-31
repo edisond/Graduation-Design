@@ -140,53 +140,11 @@ $(document).ready(function () {
         $('#reply-object').html('');
     });
 
-    function initToolbarBootstrapBindings() {
-        var fonts = ['Serif', 'Sans', 'Arial', 'Arial Black', 'Courier',
-            'Courier New', 'Comic Sans MS', 'Helvetica', 'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma', 'Times',
-            'Times New Roman', 'Verdana'],
-            fontTarget = $('[title=字体]').siblings('.dropdown-menu');
-        $.each(fonts, function (idx, fontName) {
-            fontTarget.append($('<li><a data-edit="fontName ' + fontName + '" style="font-family:\'' + fontName + '\'">' + fontName + '</a></li>'));
-        });
-
-        $('[title]').tooltip({
-            container: 'body'
-        });
-
-        $('[data-role=magic-overlay]').each(function () {
-            var overlay = $(this),
-                target = $(overlay.data('target'));
-            overlay.css('opacity', 0).css('position', 'absolute').offset(target.offset()).width(34).height(30);
-        });
-
-        $('.dropdown-menu input').click(function () {
-                return false;
-            })
-            .change(function () {
-                $(this).parent('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');
-            })
-            .keydown('esc', function () {
-                this.value = '';
-                $(this).change();
-            });
-    };
-
-    initToolbarBootstrapBindings();
-
-    $('#input-comment').wysiwyg({
-        toolbarSelector: '[data-target=#input-comment][data-role=editor-toolbar]'
-    });
+    $('.wysiwyg-textarea').Wysiwyg()
 
     var editProjectModal = $('#edit-project');
 
     if (editProjectModal.size() > 0) {
-
-        editProjectModal.find('#input-detail').wysiwyg({
-            toolbarSelector: '[data-target=#input-detail][data-role=editor-toolbar]'
-        });
-        editProjectModal.find('#input-requirement').wysiwyg({
-            toolbarSelector: '[data-target=#input-requirement][data-role=editor-toolbar]'
-        });
 
         editProjectModal.find(".input-append.date").datetimepicker({
             format: "yyyy-mm-dd",

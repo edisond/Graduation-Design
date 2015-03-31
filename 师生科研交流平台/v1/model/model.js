@@ -131,7 +131,6 @@ var Project = new Schema({
     /* 教师id */
     teacher: {
         type: Schema.Types.ObjectId,
-        required: true,
         ref: 'user'
     },
     /* 开放实验属性 */
@@ -158,6 +157,32 @@ var Project = new Schema({
         result: String,
         /* 对象 */
         object: String
+    },
+    challengeCupAttr: {
+        ccType: {
+            type: 'String',
+            enum: ['哲学社会科学类社会调查报告和学术论文', '自然科学类学术论文', '科技发明制作类', '创业计划类']
+        },
+        ccBasis: String,
+        ccGoal: String,
+        ccStatus: String,
+        ccUsage: String,
+        ccCondition: String,
+        ccSchedule: String,
+        ccTeam: String,
+        ccFund: String,
+        ccDBasic: String,
+        ccDMarket: String,
+        ccDManage: String
+    },
+
+    innovationProjectAttr: {
+        ipDetail: String,
+        ipKeywords: String,
+        ipBasis: String,
+        ipSchedule: String,
+        ipCondition: String,
+        ipFund: String
     }
 });
 

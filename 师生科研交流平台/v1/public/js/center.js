@@ -113,10 +113,11 @@ $(document).ready(function () {
     })
 
     if (USER.type === '老师') {
+
         var tableApply = $('#table-apply');
 
 
-        function fetchProjects() {
+        function fetchTeacherProjects() {
             projectList.empty();
             var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(projectList);
             $.get(encodeURI('/api/get/project?teacher=' + USER._id), function (data) {
@@ -154,7 +155,7 @@ $(document).ready(function () {
             });
         }
 
-        fetchProjects();
+        fetchTeacherProjects();
 
         tableApply.dataTable({
             "ajax": {
@@ -224,6 +225,8 @@ $(document).ready(function () {
         });
 
     } else {
+
+
         var tableApply = $('#table-apply');
 
         function fetchProjects() {

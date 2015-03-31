@@ -25,7 +25,7 @@
                 <div class="col-sm-9 col-xs-12">
                     <span>项目列表</span>
                     <div class="btn-group pull-right">
-                        <% if(typeof user!=='undefined' && user.type==='老师' ){%>
+                        <% if(typeof user!=='undefined' && ((user.type==='老师' && projectType==='开放实验项目' ) || projectType==='挑战杯项目' || projectType==='科技创新工程项目' )){%>
                             <a href='#' data-toggle="modal" data-target="#new-project"><i class="fa fa-plus"></i>&nbsp;新建</a>
                             <% } %>
                                 <a class="cursor-pointer ml10" data-toggle="dropdown" aria-expanded="false">
@@ -68,9 +68,9 @@
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                                 </button>
-                                <h4 class="modal-title">新建<%=projectType%></h4>
+                                <h4 class="modal-title">新建开放实验项目</h4>
                             </div>
-                            <form class="pl20 pr20 form-horizontal form-horizontal-label-left" id="new-oe">
+                            <form class="form-horizontal form-horizontal-label-left" id="new-oe">
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <label for="input-college" class="col-sm-2 control-label">所属学院</label>
@@ -106,7 +106,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="input-datestart" class="col-sm-2 control-label">开始时间</label>
+                                        <label for="input-dateStart" class="col-sm-2 control-label">开始时间</label>
                                         <div class="col-sm-4">
                                             <div class="input-group input-append date">
                                                 <input type="text" class="form-control" id="input-dateStart" required>
@@ -116,7 +116,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <label for="input-dateend" class="col-sm-2 control-label">结束时间
+                                        <label for="input-dateEnd" class="col-sm-2 control-label">结束时间
                                         </label>
                                         <div class="col-sm-4">
                                             <div class="input-group input-append date">
@@ -182,114 +182,12 @@
                                         <label class="col-sm-12 control-label">项目细节<small>（请按以下内容填写1.设计思路及实验目的；2.涉及的内容或知识点；3.采用的方法和手段；4.考察点）</small>
                                         </label>
                                         <div class="col-sm-12">
-                                            <div class="btn-toolbar" data-role="editor-toolbar" data-target="#input-detail">
-                                                <div class="btn-group">
-                                                    <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="字体"><i class="fa fa-font"></i>&nbsp;<b class="caret"></b></a>
-                                                    <ul class="dropdown-menu">
-                                                    </ul>
-                                                </div>
-                                                <div class="btn-group">
-                                                    <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="大小"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a data-edit="fontSize 5"><font size="5">Huge</font></a>
-                                                        </li>
-                                                        <li><a data-edit="fontSize 3"><font size="3">Normal</font></a>
-                                                        </li>
-                                                        <li><a data-edit="fontSize 1"><font size="1">Small</font></a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="btn-group">
-                                                    <a class="btn btn-default btn-sm" data-edit="bold" title="加粗 (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="italic" title="斜体 (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="strikethrough" title="删除线"><i class="fa fa-strikethrough"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="underline" title="下划线 (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a>
-                                                </div>
-                                                <div class="btn-group">
-                                                    <a class="btn btn-default btn-sm" data-edit="insertunorderedlist" title="无序列表"><i class="fa fa-list-ul"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="insertorderedlist" title="有序列表"><i class="fa fa-list-ol"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="outdent" title="退格 (Shift+Tab)"><i class="fa fa-dedent"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="indent" title="入格 (Tab)"><i class="fa fa-indent"></i></a>
-                                                </div>
-                                                <div class="btn-group">
-                                                    <a class="btn btn-default btn-sm" data-edit="justifyleft" title="左对齐 (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="justifycenter" title="居中 (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="justifyright" title="右对齐 (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="justifyfull" title="自适应 (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a>
-                                                </div>
-                                                <div class="btn-group">
-                                                    <a class="btn btn-default btn-sm" id="pictureBtn"><i class="fa fa-picture-o"></i></a>
-                                                    <input type="file" data-role="magic-overlay" title="插入图片（请勿上传总大小超过1MB的图像）" data-target="#pictureBtn" data-edit="insertImage">
-                                                    <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="超链接"><i class="fa fa-link"></i></a>
-                                                    <div class="dropdown-menu input-append p10">
-                                                        <input class="form-control" placeholder="URL" type="text" data-edit="createLink" />
-                                                        <button class="btn btn-default btn-sm mt5" type="button">添加</button>
-                                                    </div>
-                                                </div>
-                                                <div class="btn-group">
-                                                    <a class="btn btn-default btn-sm" data-edit="undo" title="撤销 (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="redo" title="恢复 (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12">
                                             <div class="form-control wysiwyg-textarea" id="input-detail"></div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-12 control-label">需要的主要仪器设备及实验材料
                                         </label>
-                                        <div class="col-sm-12">
-                                            <div class="btn-toolbar" data-role="editor-toolbar" data-target="#input-requirement">
-                                                <div class="btn-group">
-                                                    <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="字体"><i class="fa fa-font"></i>&nbsp;<b class="caret"></b></a>
-                                                    <ul class="dropdown-menu">
-                                                    </ul>
-                                                </div>
-                                                <div class="btn-group">
-                                                    <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="大小"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a data-edit="fontSize 5"><font size="5">Huge</font></a>
-                                                        </li>
-                                                        <li><a data-edit="fontSize 3"><font size="3">Normal</font></a>
-                                                        </li>
-                                                        <li><a data-edit="fontSize 1"><font size="1">Small</font></a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="btn-group">
-                                                    <a class="btn btn-default btn-sm" data-edit="bold" title="加粗 (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="italic" title="斜体 (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="strikethrough" title="删除线"><i class="fa fa-strikethrough"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="underline" title="下划线 (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a>
-                                                </div>
-                                                <div class="btn-group">
-                                                    <a class="btn btn-default btn-sm" data-edit="insertunorderedlist" title="无序列表"><i class="fa fa-list-ul"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="insertorderedlist" title="有序列表"><i class="fa fa-list-ol"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="outdent" title="退格 (Shift+Tab)"><i class="fa fa-dedent"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="indent" title="入格 (Tab)"><i class="fa fa-indent"></i></a>
-                                                </div>
-                                                <div class="btn-group">
-                                                    <a class="btn btn-default btn-sm" data-edit="justifyleft" title="左对齐 (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="justifycenter" title="居中 (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="justifyright" title="右对齐 (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="justifyfull" title="自适应 (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a>
-                                                </div>
-                                                <div class="btn-group">
-                                                    <a class="btn btn-default btn-sm" id="pictureBtn"><i class="fa fa-picture-o"></i></a>
-                                                    <input type="file" data-role="magic-overlay" title="插入图片（请勿上传总大小超过1MB的图像）" data-target="#pictureBtn" data-edit="insertImage">
-                                                    <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="超链接"><i class="fa fa-link"></i></a>
-                                                    <div class="dropdown-menu input-append p10">
-                                                        <input class="form-control" placeholder="URL" type="text" data-edit="createLink" />
-                                                        <button class="btn btn-default btn-sm mt5" type="button">添加</button>
-                                                    </div>
-                                                </div>
-                                                <div class="btn-group">
-                                                    <a class="btn btn-default btn-sm" data-edit="undo" title="撤销 (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a>
-                                                    <a class="btn btn-default btn-sm" data-edit="redo" title="恢复 (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
                                         <div class="col-sm-12">
                                             <div class="form-control wysiwyg-textarea" id="input-requirement"></div>
                                         </div>
@@ -303,7 +201,168 @@
                         </div>
                     </div>
                 </div>
-                <%}%>
+                <%} else if(typeof user!=='undefined' && projectType==='挑战杯项目' ){%>
+                    <div class="modal fade" id="new-project" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h4 class="modal-title">新建挑战杯项目<small class="text-danger ml20"><%=user.type==='同学'?'注意：同学发布的项目在寻求指导教师后方可激活':'' %></small></h4>
+                                </div>
+                                <form class="form-horizontal form-horizontal-label-left" id="new-cc">
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="input-name" class="col-sm-2 control-label">项目名称</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" id="input-name" maxlength="20" required>
+                                            </div>
+                                            <label for="input-college" class="col-sm-2 control-label">所属学院</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" id="input-college" maxlength="10" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="input-dateStart" class="col-sm-2 control-label">预期开始时间</label>
+                                            <div class="col-sm-4">
+                                                <div class="input-group input-append date">
+                                                    <input type="text" class="form-control" id="input-dateStart" required>
+                                                    <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-remove"></i>
+                                                    </div>
+                                                    <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-calendar"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <label for="input-dateEnd" class="col-sm-2 control-label">预期结束时间
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <div class="input-group input-append date">
+                                                    <input type="text" class="form-control" id="input-dateEnd" required>
+                                                    <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-remove"></i>
+                                                    </div>
+                                                    <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-calendar"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">项目类别</label>
+                                            <div class="col-sm-10">
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="input-type" id="input-type-1" checked value="哲学社会科学类社会调查报告和学术论文">哲学社会科学类社会调查报告和学术论文
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="input-type" id="input-type-2" value="自然科学类学术论文">自然科学类学术论文
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="input-type" id="input-type-3" value="科技发明制作类">科技发明制作类
+                                                </label>
+                                                <%if(user.type==='同学' ){%>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="input-type" id="input-type-4" value="创业计划类">创业计划类
+                                                    </label>
+                                                    <%}%>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label">项目简介<small>（此处内容将显示在列表摘要中）</small>
+                                            </label>
+                                            <div class="col-sm-12">
+                                                <textarea class="form-control" rows="3" id="input-description" required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label">项目的基本内容、意义摘要、研究思路和方法
+                                            </label>
+                                            <div class="col-sm-12">
+                                                <div class="form-control wysiwyg-textarea" id="input-ccBasis"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label">项目拟解决的技术难点以及预期达到的目标、主要技术指标和水平
+                                            </label>
+                                            <div class="col-sm-12">
+                                                <div class="form-control wysiwyg-textarea" id="input-ccGoal"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label">项目研究内容的发展现状与趋势，与项目有关研究领域的基础以及专利申请和授权情况
+                                            </label>
+                                            <div class="col-sm-12">
+                                                <div class="form-control wysiwyg-textarea" id="input-ccStatus"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label">预期研究成果应用、转化的前景预测及分析
+                                            </label>
+                                            <div class="col-sm-12">
+                                                <div class="form-control wysiwyg-textarea" id="input-ccUsage"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label">研究工作条件与基础
+                                            </label>
+                                            <div class="col-sm-12">
+                                                <div class="form-control wysiwyg-textarea" id="input-ccCondition"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label">研究工作计划及进度（各实施阶段目标和内容）
+                                            </label>
+                                            <div class="col-sm-12">
+                                                <div class="form-control wysiwyg-textarea" id="input-ccSchedule"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label">团队的学科搭配和梯队建设情况
+                                            </label>
+                                            <div class="col-sm-12">
+                                                <div class="form-control wysiwyg-textarea" id="input-ccTeam"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label">经费申请金额、经费用途和使用计划
+                                            </label>
+                                            <div class="col-sm-12">
+                                                <div class="form-control wysiwyg-textarea" id="input-ccFund"></div>
+                                            </div>
+                                        </div>
+                                        <%if(user.type==='同学' ){%>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">创业项目概述、产品和服务介绍<small class="ml10">（创业计划类项目填写）</small>
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-control wysiwyg-textarea" id="input-ccDBasic"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">创业公司市场、竞争和营销概述<small class="ml10">（创业计划类项目填写）</small>
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-control wysiwyg-textarea" id="input-ccDMarket"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">创业公司财务、经营和组织概述<small class="ml10">（创业计划类项目填写）</small>
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-control wysiwyg-textarea" id="input-ccDManage"></div>
+                                                </div>
+                                            </div>
+                                            <%}%>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                        <button type="submit" class="btn btn-primary" id="submit">保存</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <%}%>
 </body>
 
 </html>
