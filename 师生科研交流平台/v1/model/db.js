@@ -125,20 +125,21 @@ var Dao = {
 
     /* 获取项目 */
     getProjects: function (condition, callback) {
-        Project.find(condition).populate('teacher', 'name').lean().exec(callback);
+        Project.find(condition).populate('teacher', 'name').populate('creator', 'name').lean().exec(callback);
     },
 
     /* 获取一个开放实验 */
     getProject: function (id, callback) {
         Project.findOne({
             _id: id
-        }).populate('teacher', 'name department email phone img').lean().exec(callback);
+        }).populate('teacher', 'name department email phone img').populate('creator', 'name').lean().exec(callback);
     },
 
     /* 更新开放实验 */
     updateProject: function (project, callback) {
         Project.findOneAndUpdate({
-            '_id': project._id
+            _id: project._id,
+            creator: project.creator
         }, project, callback)
     },
 

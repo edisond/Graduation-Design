@@ -129,20 +129,35 @@ router.post('/user', function (req, res) {
 
 /* 项目 */
 router.post('/project', function (req, res) {
-    if (req.query.action && req.session.user._id === req.body.teacher) {
-        if (req.query.action === 'new') {
-            Dao.newProject(req.body, function (err, doc) {
-                res.sendStatus(err ? 500 : 200);
-            })
-        } else if (req.query.action === 'update') {
-            Dao.updateProject(req.body, function (err) {
-                res.sendStatus(err ? 500 : 200);
-            })
+    if (req.query.action && req.session.user) {
+        if (req.session.user.type === '老师') {
+            if (req.query.action === 'new') {
+
+                req.body.teacher = req.session.user._id;
+                Dao.newProject(req.body, function (err, doc) {
+                    res.sendStatus(err ? 500 : 200);
+                })
+            } else if (req.query.action === 'update') {
+                req.body.creator = req.session.user._id;
+                Dao.updateProject(req.body, function (err) {
+                    res.sendStatus(err ? 500 : 200);
+                })
+            } else {
+                res.sendStatus(404);
+            }
+        } else if (req.session.user.type === '同学') {
+            if (req.query.action === 'new') {
+                req.body.active = false;
+                req.body.creator = req.session.user._id;
+                Dao.newProject(req.body, function (err, doc) {
+                    res.sendStatus(err ? 500 : 200);
+                })
+            }
         } else {
-            res.sendStatus(404);
+            res.sendStatus(401)
         }
     } else {
-        res.sendStatus(401)
+        res.sendStatus(404)
     }
 });
 

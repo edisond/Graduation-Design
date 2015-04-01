@@ -133,6 +133,10 @@ var Project = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'user'
     },
+    creator: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+    },
     /* 开放实验属性 */
     openExperimentAttr: {
         /* 详细 */

@@ -406,7 +406,7 @@ $(document).ready(function () {
                 college: setProfileForm.find('#input-college').val(),
                 major: setProfileForm.find('#input-major').val(),
                 grade: setProfileForm.find('#input-grade').val(),
-                studentType: setProfileForm.find('#input-studentType').val(),
+                studentType: setProfileForm.find('#input-type').val(),
                 address: setProfileForm.find('#input-address').val()
             }
         } else if (USER.type === '老师') {

@@ -59,11 +59,17 @@ var DOMCreator = {
         var node = $('<div>');
         var title = $('<h4>').appendTo(node);
         $('<a>').attr('href', '/project/' + project._id).html(project.name).appendTo(title);
-        var subtitle = $('<small class="ml10">').html('指导教师：' + project.teacher.name).appendTo(title);
+        if (isNull(project.teacher)) {
+            $('<small class="ml10">').html('暂无指导教师').appendTo(title);
+        } else {
+            $('<small class="ml10">').html('指导教师：' + project.teacher.name).appendTo(title);
+        }
         var tag = $('<span class="label ml10">').appendTo(title),
             dateStart = new Date(project.dateStart),
             dateEnd = new Date(project.dateEnd);
-        if (dateStart > Date.now()) {
+        if (!project.active) {
+            tag.addClass('label-warning').html('寻求导师');
+        } else if (dateStart > Date.now()) {
             tag.addClass('label-success').html('未开始');
         } else if (dateStart <= Date.now() && dateEnd >= Date.now()) {
             tag.addClass('label-primary').html('进行中');
