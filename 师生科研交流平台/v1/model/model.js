@@ -135,6 +135,7 @@ var Project = new Schema({
     },
     creator: {
         type: Schema.Types.ObjectId,
+        required: true,
         ref: 'user'
     },
     /* 开放实验属性 */

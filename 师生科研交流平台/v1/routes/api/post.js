@@ -132,8 +132,8 @@ router.post('/project', function (req, res) {
     if (req.query.action && req.session.user) {
         if (req.session.user.type === '老师') {
             if (req.query.action === 'new') {
-
                 req.body.teacher = req.session.user._id;
+                req.body.creator = req.session.user._id;
                 Dao.newProject(req.body, function (err, doc) {
                     res.sendStatus(err ? 500 : 200);
                 })
@@ -278,7 +278,6 @@ router.post('/teamapply', function (req, res) {
             })
         } else if (action === 'approve') {
             var teamapply = req.body;
-            console.log(teamapply)
             Dao.getTeam(teamapply.team, function (err, doc) {
                 if (err) {
                     res.sendStatus(500)
