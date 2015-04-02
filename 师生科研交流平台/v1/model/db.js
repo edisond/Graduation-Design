@@ -129,10 +129,8 @@ var Dao = {
     },
 
     /* 获取一个开放实验 */
-    getProject: function (id, callback) {
-        Project.findOne({
-            _id: id
-        }).populate('teacher', 'name department email phone img').populate('creator', 'name').lean().exec(callback);
+    getProject: function (_id, callback) {
+        Project.findById(_id).populate('teacher', 'name department email phone img').populate('creator', 'name type').lean().exec(callback);
     },
 
     /* 更新开放实验 */
@@ -167,7 +165,7 @@ var Dao = {
     },
 
     getSelects: function (condition, callback) {
-        Select.find(condition).populate('project', '_id name type dateStart dateEnd dateUpdate').populate('student', '_id name img').lean().exec(callback);
+        Select.find(condition).populate('project', '_id name type dateStart dateEnd dateUpdate').populate('student', '_id name img').populate('team', 'name').lean().exec(callback);
     },
 
     getSelectsByTeacher: function (condition, callback) {

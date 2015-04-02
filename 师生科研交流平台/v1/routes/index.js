@@ -52,38 +52,68 @@ router.get('/project/:id', function (req, res) {
                 docs.dateUpdate = moment(docs.dateUpdate).fromNow();
                 docs.dateStart = moment(docs.dateStart).format('l');
                 docs.dateEnd = moment(docs.dateEnd).format('l');
-                var isSelected = false,
-                    isApplied = false,
-                    projectFix,
-                    condition = {
-                        student: req.session.user._id,
-                        project: docs._id
-                    };
                 if (docs.type === '开放实验项目') {
-                    projectFix = 'open-experiment'
-                } else if (docs.type === '挑战杯项目') {
-                    projectFix = 'challenge-cup'
-                } else if (docs.type === '科技创新工程项目') {
-                    projectFix = 'innovation-project'
-                }
-                Dao.getSelects(condition, function (err, doc) {
-                    if (err) {
-                        res.sendStatus(500);
-                    } else {
-                        if (doc.length === 1 && doc[0].active) {
-                            isSelected = true
-                        } else if (doc.length === 1 && doc[0].active === false) {
-                            isApplied = true
+                    var isSelected = false,
+                        isApplied = false,
+                        projectFix = 'open-experiment',
+                        condition = {
+                            student: req.session.user._id,
+                            project: docs._id
+                        };
+                    Dao.getSelects(condition, function (err, doc) {
+                        if (err) {
+                            res.sendStatus(500);
+                        } else {
+                            if (doc.length === 1 && doc[0].active) {
+                                isSelected = true
+                            } else if (doc.length === 1 && doc[0].active === false) {
+                                isApplied = true
+                            }
+                            res.render('projectView', {
+                                project: docs,
+                                user: req.session.user,
+                                isSelected: isSelected,
+                                isApplied: isApplied,
+                                projectFix: projectFix
+                            })
                         }
-                        res.render('projectView', {
-                            project: docs,
-                            user: req.session.user,
-                            isSelected: isSelected,
-                            isApplied: isApplied,
-                            projectFix: projectFix
-                        })
-                    }
-                })
+                    })
+                } else if (docs.type === '挑战杯项目') {
+                    var projectFix = 'challenge-cup',
+                        condition = {
+                            project: docs._id
+                        };
+                    Dao.getSelects(condition, function (err, doc) {
+                        if (err) {
+                            res.sendStatus(500);
+                        } else {
+                            res.render('projectView', {
+                                project: docs,
+                                user: req.session.user,
+                                team: (doc.length && doc[0].team) ? doc[0].team : undefined,
+                                projectFix: projectFix
+                            })
+                        }
+                    })
+                } else if (docs.type === '科技创新工程项目') {
+                    var projectFix = 'innovation-project',
+                        condition = {
+                            project: docs._id
+                        };
+                    Dao.getSelects(condition, function (err, doc) {
+                        if (err) {
+                            res.sendStatus(500);
+                        } else {
+                            res.render('projectView', {
+                                project: docs,
+                                user: req.session.user,
+                                team: (doc.length && doc[0].team) ? doc[0].team : undefined,
+                                projectFix: projectFix
+                            })
+                        }
+                    })
+                }
+
             } else {
                 res.sendStatus(404);
             }

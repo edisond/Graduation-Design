@@ -101,6 +101,25 @@ $(document).ready(function () {
         });
     });
 
+    $('#btn-teacher-apply').click(function () {
+        if (confirm('1')) {
+            var post = {
+                _id: projectId
+            };
+            $.ajax({
+                type: "POST",
+                url: encodeURI("/api/post/project?action=guide"),
+                data: post,
+                success: function () {
+                    window.location.reload()
+                },
+                error: function () {
+                    notyFacade('抱歉，产生了一个错误，请重试或刷新后重试', 'error');
+                }
+            });
+        }
+    })
+
     $('button[data-action=ask]').click(function () {
         commentBox.focus();
     });
@@ -155,9 +174,9 @@ $(document).ready(function () {
             pickerPosition: "bottom-left"
         });
 
-        editProjectModal.find('form').html5Validate(function () {
+        editProjectModal.find('#new-oe').html5Validate(function () {
             var post = {
-                _id: editProjectModal.find('#input-_id').val(),
+                _id: projectId,
                 openExperimentAttr: {
                     detail: editProjectModal.find('#input-detail').html(),
                     capacity: parseInt(editProjectModal.find('#input-capacity').val()),
@@ -171,11 +190,47 @@ $(document).ready(function () {
                 description: editProjectModal.find('#input-description').val(),
                 college: editProjectModal.find('#input-college').val(),
                 name: editProjectModal.find('#input-name').val(),
-                teacher: USER._id,
                 dateStart: new Date(editProjectModal.find('#input-dateStart').val()),
                 dateEnd: new Date(editProjectModal.find('#input-dateEnd').val()),
-                dateUpdate: Date.now(),
-                type: '开放实验项目'
+                dateUpdate: Date.now()
+            };
+            $.ajax({
+                type: "POST",
+                url: encodeURI("/api/post/project?action=update"),
+                data: post,
+                success: function () {
+                    window.location.reload()
+                },
+                error: function () {
+                    notyFacade('抱歉，产生了一个错误，请重试或刷新后重试', 'error');
+                }
+            });
+        })
+
+        editProjectModal.find('#new-cc').html5Validate(function () {
+            var $this = $(this);
+            var post = {
+                _id: projectId,
+                challengeCupAttr: {
+                    ccTeam: $this.find('#input-ccTeam').html(),
+                    ccFund: $this.find('#input-ccFund').html(),
+                    ccDBasic: $this.find('#input-ccDBasic').html(),
+                    ccDMarket: $this.find('#input-ccDMarket').html(),
+                    ccDManage: $this.find('#input-ccDManage').html(),
+                    ccSchedule: $this.find('#input-ccSchedule').html(),
+                    ccCondition: $this.find('#input-ccCondition').html(),
+                    ccUsage: $this.find('#input-ccUsage').html(),
+                    ccStatus: $this.find('#input-ccStatus').html(),
+                    ccGoal: $this.find('#input-ccGoal').html(),
+                    ccBasis: $this.find('#input-ccBasis').html(),
+                    ccType: $this.find('input[name=input-type]:checked').val()
+                },
+                description: $this.find('#input-description').val(),
+                college: $this.find('#input-college').val(),
+                name: $this.find('#input-name').val(),
+                dateStart: new Date($this.find('#input-dateStart').val()),
+                dateEnd: new Date($this.find('#input-dateEnd').val()),
+                dateUpdate: Date.now()
             };
             $.ajax({
                 type: "POST",
