@@ -135,10 +135,7 @@ var Dao = {
 
     /* 更新开放实验 */
     updateProject: function (project, callback) {
-        Project.findOneAndUpdate({
-            _id: project._id,
-            creator: project.creator
-        }, project, callback)
+        Project.findByIdAndUpdate(project._id, project, callback)
     },
 
     /* 删除开放实验 */

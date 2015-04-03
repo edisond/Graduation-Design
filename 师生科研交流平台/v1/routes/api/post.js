@@ -132,18 +132,27 @@ router.post('/project', function (req, res) {
     if (req.query.action && req.session.user) {
         if (req.session.user.type === '老师') {
             if (req.query.action === 'new') {
-                req.body.creator = req.session.user._id;
+                req.body.creator = req.body.teacher = req.session.user._id;
                 Dao.newProject(req.body, function (err, doc) {
                     res.sendStatus(err ? 500 : 200);
                 })
             } else if (req.query.action === 'update') {
-                req.body.creator = req.session.user._id;
-                Dao.updateProject(req.body, function (err) {
-                    res.sendStatus(err ? 500 : 200);
+                Dao.getProject(req.body._id, function (err, doc) {
+                    if (err || !doc) {
+                        res.sendStatus(500)
+                    } else {
+                        if (doc.teacher._id.toString() === req.session.user._id.toString()) {
+                            Dao.updateProject(req.body, function (err) {
+                                res.sendStatus(err ? 500 : 200);
+                            })
+                        } else {
+                            res.sendStatus(401);
+                        }
+                    }
                 })
             } else if (req.query.action === 'guide') {
                 Dao.getProject(req.body._id, function (err, docs) {
-                    if (err || docs.teacher) {
+                    if (err || !doc || docs.teacher) {
                         res.sendStatus(500)
                     } else {
                         req.body.teacher = req.session.user._id;
@@ -165,10 +174,19 @@ router.post('/project', function (req, res) {
                     res.sendStatus(err ? 500 : 200);
                 })
             } else if (req.query.action === 'update') {
-                req.body.creator = req.session.user._id;
                 delete req.body.active;
-                Dao.updateProject(req.body, function (err) {
-                    res.sendStatus(err ? 500 : 200);
+                Dao.getProject(req.body._id, function (err, doc) {
+                    if (err || !doc) {
+                        res.sendStatus(500)
+                    } else {
+                        if (doc.creator._id.toString() === req.session.user._id.toString()) {
+                            Dao.updateProject(req.body, function (err) {
+                                res.sendStatus(err ? 500 : 200);
+                            })
+                        } else {
+                            res.sendStatus(401);
+                        }
+                    }
                 })
             } else {
                 res.sendStatus(404);
