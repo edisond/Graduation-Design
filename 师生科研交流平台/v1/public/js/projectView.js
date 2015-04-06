@@ -246,4 +246,55 @@ $(document).ready(function () {
         })
     }
 
+    var selectTeamModal = $('#select-team');
+
+    if (selectTeamModal.size() > 0) {
+        selectTeamModal.on('show.bs.modal', function (e) {
+            var selector = selectTeamModal.find('#selector');
+            var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(selector)
+            $.get(encodeURI('/api/get/team?leader=' + USER._id), function (data) {
+                if (data.length === 0) {
+                    loadstate.html('暂未创建团队');
+                } else {
+                    selector.empty().hide();
+                    for (var i = 0, j = data.length; i < j; i++) {
+                        $('<div class="radio"><label><input type="radio" name="select-team" value="' + data[i]._id + '">' + data[i].name + '</label></div>').appendTo(selector);
+                    }
+                }
+                selector.fadeIn(250)
+            })
+        })
+
+        selectTeamModal.find('#submit').click(function () {
+            selected = selectTeamModal.find('[name=select-team]:checked').val();
+            if (selected) {
+                var post = {
+                    _id: projectId,
+                    team: selected
+                };
+                $.ajax({
+                    url: encodeURI('/api/post/select?action=apply&type=team'),
+                    data: post,
+                    type: 'POST',
+                    success: function () {
+                        selectTeamModal.hide();
+                        notyFacade('申请成功，请等待教师确认', 'success');
+                    },
+                    error: function (XMLHttpRequest) {
+                        if (XMLHttpRequest.status === 403) {
+                            notyFacade('请勿重复选课', 'warning')
+                        } else {
+                            notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
+                        }
+                    }
+
+                });
+            } else {
+                notyFacade('请选择一个团队', 'warning')
+            }
+
+        })
+    }
+
+
 });

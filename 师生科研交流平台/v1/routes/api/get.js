@@ -102,7 +102,6 @@ router.get('/team', function (req, res) {
         var condition = {};
         if (req.query._id) condition._id = req.query._id;
         if (req.query.leader) condition.leader = req.query.leader;
-        if (req.query.member) condition.member = req.query.member;
         Dao.getTeams(condition, function (err, docs) {
             if (err) {
                 console.log(err)

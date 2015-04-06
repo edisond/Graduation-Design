@@ -81,7 +81,8 @@ router.get('/project/:id', function (req, res) {
                 } else if (docs.type === '挑战杯项目') {
                     var projectFix = 'challenge-cup',
                         condition = {
-                            project: docs._id
+                            project: docs._id,
+                            active: true
                         };
                     Dao.getSelects(condition, function (err, doc) {
                         if (err) {
@@ -98,7 +99,8 @@ router.get('/project/:id', function (req, res) {
                 } else if (docs.type === '科技创新工程项目') {
                     var projectFix = 'innovation-project',
                         condition = {
-                            project: docs._id
+                            project: docs._id,
+                            active: true
                         };
                     Dao.getSelects(condition, function (err, doc) {
                         if (err) {

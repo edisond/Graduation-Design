@@ -148,7 +148,8 @@ var Dao = {
     newSelect: function (select, callback) {
         Select.find({
             student: select.student,
-            project: select.project
+            project: select.project,
+            team: select.team
         }, function (err, docs) {
             if (err) {
                 callback(err);
@@ -181,7 +182,7 @@ var Dao = {
                         $in: IdList
                     },
                     active: condition.active
-                }).populate('student', '-__v -password -key').populate('project', 'name type').lean().exec(callback);
+                }).populate('student', '-__v -password -key').populate('project', 'name type').populate('team', 'name').lean().exec(callback);
             }
         })
     },

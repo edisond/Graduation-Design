@@ -13,7 +13,10 @@ $(document).ready(function () {
                 return a.project.dateUpdate < b.project.dateUpdate
             });
             for (var i = 0, j = data.length; i < j; i++) {
-                newProject(data[i]).appendTo(projectList);
+                DOMCreator.myProject(data[i]).appendTo(projectList);
+                if (i < j - 1) {
+                    $('<hr>').appendTo(projectList);
+                }
             }
         }
     })

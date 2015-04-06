@@ -32,7 +32,7 @@ $(document).ready(function () {
                     if (i < j - 1) {
                         $('<hr>').appendTo(list);
                     }
-                    if (!isNull(data[i].teacher)) {
+                    if (data[i].teacher) {
                         teachers.push(data[i].teacher._id);
                     }
                     var temp = new Date(data[i].dateUpdate);

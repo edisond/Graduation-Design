@@ -152,12 +152,12 @@ router.post('/project', function (req, res) {
                 })
             } else if (req.query.action === 'guide') {
                 Dao.getProject(req.body._id, function (err, docs) {
-                    if (err || !doc || docs.teacher) {
+                    if (err || !docs || docs.teacher) {
                         res.sendStatus(500)
                     } else {
                         req.body.teacher = req.session.user._id;
+                        req.body.creator = req.session.user._id;
                         req.body.active = true;
-                        req.body.creator = docs.creator._id;
                         Dao.updateProject(req.body, function (err) {
                             res.sendStatus(err ? 500 : 200);
                         })
@@ -217,30 +217,53 @@ router.post('/comment', function (req, res) {
 router.post('/select', function (req, res) {
     if (req.session.user) {
         var action = req.query.action;
-        if (action === 'apply' && req.session.user.type === "同学") {
-            var select = {
-                student: req.session.user._id,
-                project: req.body._id
-            };
-            Dao.newSelect(select, function (err) {
-                res.sendStatus(err ? 500 : 200);
+        if (req.query.type === 'team') {
+            Dao.getTeam(req.body.team, function (err, doc) {
+                if (err || !doc) {
+                    res.sendStatus(500)
+                } else if (doc.leader._id == req.session.user._id) {
+                    var select = {
+                        team: req.body.team,
+                        project: req.body._id
+                    };
+                    Dao.newSelect(select, function (err) {
+                        if (err) {
+                            res.sendStatus(err === '重复选课' ? 403 : 500)
+                        } else {
+                            res.sendStatus(200)
+                        }
+                    })
+                } else {
+                    res.sendStatus(401)
+                }
             })
-        } else if (action === 'cancel' && req.session.user.type === "同学") {
-            var select = {
-                student: req.session.user._id,
-                project: req.body._id
-            };
-            Dao.deleteSelect(select, function (err) {
-                res.sendStatus(err ? 500 : 200);
-            })
-        } else if (action === 'approve' && req.session.user.type === "老师") {
-            var select = req.body;
-            select.active = true;
-            Dao.updateSelect(select, function (err) {
-                res.sendStatus(err ? 500 : 200);
-            })
+
         } else {
-            res.sendStatus(404);
+            if (action === 'apply' && req.session.user.type === "同学") {
+                var select = {
+                    student: req.session.user._id,
+                    project: req.body._id
+                };
+                Dao.newSelect(select, function (err) {
+                    res.sendStatus(err ? 500 : 200);
+                })
+            } else if (action === 'cancel' && req.session.user.type === "同学") {
+                var select = {
+                    student: req.session.user._id,
+                    project: req.body._id
+                };
+                Dao.deleteSelect(select, function (err) {
+                    res.sendStatus(err ? 500 : 200);
+                })
+            } else if (action === 'approve' && req.session.user.type === "老师") {
+                var select = req.body;
+                select.active = true;
+                Dao.updateSelect(select, function (err) {
+                    res.sendStatus(err ? 500 : 200);
+                })
+            } else {
+                res.sendStatus(404);
+            }
         }
     } else {
         res.sendStatus(401);

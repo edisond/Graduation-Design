@@ -9,6 +9,8 @@
 
 <body>
     <% include parts/nav.ejs %>
+        <script type="text/javascript">
+        </script>
         <div class="header header-<%=projectFix%>">
             <div class="container">
                 <div class="row">
@@ -21,8 +23,6 @@
                             <i class="fa fa-street-view"></i>指导教师：&nbsp;<%=project.teacher.name%>
                             <%} else {%>
                             <i class="fa fa-street-view"></i>暂无导师
-                            <%} if(project.type!=='开放实验项目'){%>
-                            <i class="fa fa-user ml20"></i>创建者：&nbsp;<%=project.creator.name%>
                             <%}%>
                             <i class="fa fa-clock-o ml20"></i>&nbsp;更新于<%=project.dateUpdate%></h5>
                     </div>
@@ -178,9 +178,9 @@
                             <h5><i class="fa fa-envelope"></i><a href="mailto:<%=project.teacher.email%>"><%=project.teacher.email%></a></h5>
                             <h5><i class="fa fa-phone"></i><%=project.teacher.phone%></h5>
                             <%} else if(project.type==='挑战杯项目' ){%>
-                                <button type="button" class="mb10 btn btn-primary <%=(user._id.toString()===project.creator._id.toString() || user._id.toString()===project.teacher._id.toString())?'':'dhidden'%>" id="btn-update-content" data-toggle="modal" data-target="#edit-project">更新项目</button>
+                                <button type="button" class="mb10 btn btn-primary <%=user._id.toString()===project.creator._id.toString() ?'':'dhidden'%>" id="btn-update-content" data-toggle="modal" data-target="#edit-project">更新项目</button>
                                 <button type="button" class="mb10 btn btn-success <%=(user.type==='老师'&&!project.teacher)?'':'dhidden'%>" id="btn-teacher-apply">指导项目</button>
-                                <button type="button" class="mb10 btn btn-success <%=user.type==='老师'||team?'dhidden':''%>" id="btn-team-apply">加入项目</button>
+                                <button type="button" class="mb10 btn btn-success <%=user.type==='同学'&&project.teacher?'':'dhidden'%>" id="btn-team-apply" data-toggle="modal" data-target="#select-team">加入项目</button>
                                 <button type="button" class="mb10 btn btn-default" data-action="ask">参与讨论</button>
                                 <hr/>
                                 <div class="text-muted">所属学院：</div>
@@ -211,7 +211,7 @@
             </div>
         </div>
 
-        <%if(project.teacher && user._id==project.teacher._id && project.type==='开放实验项目' ){%>
+        <%if(project.teacher && project.type==='开放实验项目' ){%>
             <div class="modal fade" id="edit-project" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -325,7 +325,7 @@
                     </div>
                 </div>
             </div>
-            <%} else if((user._id.toString()===project.creator._id.toString() || user._id.toString()===project.teacher._id.toString()) && project.type==='挑战杯项目' ){%>
+            <%} else if(user._id==project.creator._id && project.type==='挑战杯项目' ){%>
                 <div class="modal fade" id="edit-project" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
@@ -510,8 +510,29 @@
                     </div>
                 </div>
                 <%}%>
-                    <% include parts/include.js.html %>
-                        <script type="text/javascript" src="/js/projectView.js"></script>
+
+                    <%if(user.type==='同学' &&project.teacher){%>
+                        <div class="modal fade" id="select-team" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h4 class="modal-title">选择团队</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div id="selector"></div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                        <button type="button" class="btn btn-primary" id="submit">确定</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <%}%>
+                            <% include parts/include.js.html %>
+                                <script type="text/javascript" src="/js/projectView.js"></script>
 
 
 </body>

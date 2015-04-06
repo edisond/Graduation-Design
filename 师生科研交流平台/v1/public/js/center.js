@@ -162,29 +162,34 @@ $(document).ready(function () {
                 'url': encodeURI('/api/get/select?active=false&teacher=' + USER._id),
                 'dataSrc': '',
             },
-            "columns": [
-                {
-                    "data": "student.id"
-            },
-                {
-                    "data": "student.name"
-            }, {
-                    "data": "student.studentAttr.studentType"
-            },
-                {
-                    "data": "project.name"
-            },
-                {
+            "columns": [{
+                    "data": "_id",
+                    'render': function (data, type, row) {
+                        return row.team ? '团队' : '学生'
+                    }
+                }, {
+                    "data": "_id",
+                    'render': function (data, type, row) {
+                        return row.team ? row.team.name : row.student.name
+                    }
+                }, {
                     "data": "project.type"
-            },
-                {
+                }, {
+                    "data": "project.name"
+
+                }, {
+                    "data": "date",
+                    'render': function (data, type, row) {
+                        return moment(data).fromNow()
+                    }
+                }, {
                     "data": "_id",
                     "searchable": false,
                     "orderable": false,
                     "width": '100px',
                     'className': "text-center",
                     'render': function (data, type, row) {
-                        return '<a href="/profile/' + row.student._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a>';
+                        return row.team ? '<a href="/team/' + row.team._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a>' : '<a href="/profile/' + row.student._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a>';
                     }
             }
         ],

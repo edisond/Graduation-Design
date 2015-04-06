@@ -59,7 +59,7 @@ var DOMCreator = {
         var node = $('<div>');
         var title = $('<h4>').appendTo(node);
         $('<a>').attr('href', '/project/' + project._id).html(project.name).appendTo(title);
-        if (isNull(project.teacher)) {
+        if (!project.teacher) {
             $('<small class="ml10">').html('暂无指导教师').appendTo(title);
         } else {
             $('<small class="ml10">').html('指导教师：' + project.teacher.name).appendTo(title);
