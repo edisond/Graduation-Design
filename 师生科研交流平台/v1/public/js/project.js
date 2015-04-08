@@ -165,6 +165,49 @@ $(document).ready(function () {
             });
         })
 
+    } else if (formIP.size() > 0) {
+
+        formIP.html5Validate(function () {
+            var $this = $(this),
+                post = {
+                    innovationProjectAttr: {
+                        ipDetail: $this.find('#input-ipDetail').html(),
+                        ipKeywords: $this.find('#input-ipKeywords').val(),
+                        ipBasis: $this.find('#input-ipBasis').html(),
+                        ipSchedule: $this.find('#input-ipSchedule').html(),
+                        ipCondition: $this.find('#input-ipCondition').html(),
+                        ipFund: $this.find('#input-ipFund').html()
+                    },
+                    description: $this.find('#input-description').val(),
+                    college: $this.find('#input-college').val(),
+                    name: $this.find('#input-name').val(),
+                    dateStart: new Date($this.find('#input-dateStart').val()),
+                    dateEnd: new Date($this.find('#input-dateEnd').val()),
+                    type: '科技创新工程项目'
+                };
+
+            if (USER.type === '老师') {
+                post.teacher = USER._id
+            } else {
+                post.active = false;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: encodeURI("/api/post/project?action=new"),
+                data: post,
+                success: function () {
+                    notyFacade('成功创建科技创新工程项目', 'success');
+                    model.modal('hide');
+                    fetchProjecs();
+                    $this[0].reset();
+                },
+                error: function () {
+                    notyFacade('抱歉，产生了一个错误，请重试或刷新后重试。（请勿上传总大小超过1MB的图像）', 'error');
+                }
+            });
+        })
+
     }
 
 

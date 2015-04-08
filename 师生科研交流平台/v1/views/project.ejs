@@ -362,7 +362,111 @@
                     </div>
 
 
-                    <%}%>
+                    <%} else if(typeof user!=='undefined' && projectType==='科技创新工程项目' ){%>
+
+                        <div class="modal fade" id="new-project" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h4 class="modal-title">新建科技创新工程项目<small class="text-danger ml20"><%=user.type==='同学'?'注意：同学发布的项目在寻求指导教师后方可激活':'' %></small></h4>
+                                    </div>
+                                    <form class="form-horizontal form-horizontal-label-left" id="new-ip">
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="input-name" class="col-sm-2 control-label">项目名称</label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" class="form-control" id="input-name" maxlength="20" required>
+                                                </div>
+                                                <label for="input-college" class="col-sm-2 control-label">所属学院</label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" class="form-control" id="input-college" maxlength="10" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="input-dateStart" class="col-sm-2 control-label">预期开始时间</label>
+                                                <div class="col-sm-4">
+                                                    <div class="input-group input-append date">
+                                                        <input type="text" class="form-control" id="input-dateStart" required>
+                                                        <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-remove"></i>
+                                                        </div>
+                                                        <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <label for="input-dateEnd" class="col-sm-2 control-label">预期结束时间
+                                                </label>
+                                                <div class="col-sm-4">
+                                                    <div class="input-group input-append date">
+                                                        <input type="text" class="form-control" id="input-dateEnd" required>
+                                                        <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-remove"></i>
+                                                        </div>
+                                                        <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">项目简介<small>（此处内容将显示在列表摘要中）</small>
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <textarea class="form-control" rows="3" id="input-description" required></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">关键词<small>（3~5个，用分号隔开）</small>
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <textarea class="form-control" rows="3" id="input-ipKeywords" required></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">摘要
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-control wysiwyg-textarea" id="input-ipDetail"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">立论依据<small>（研究意义，现状分析，创新之处，参考文献）</small>
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-control wysiwyg-textarea" id="input-ipBasis"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">研究方案<small>（研究目标和内容，拟解决的关键问题，研究进度，预期成果）</small>
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-control wysiwyg-textarea" id="input-ipSchedule"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">研究条件与基础
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-control wysiwyg-textarea" id="input-ipCondition"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">经费预算<small>（科研业务费，实验材料费，其他费用）</small>
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-control wysiwyg-textarea" id="input-ipFund"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                            <button type="submit" class="btn btn-primary" id="submit">保存</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <%}%>
 </body>
 
 </html>

@@ -27,9 +27,9 @@ $(document).ready(function () {
     }
 
     fetchMyTeam();
-
+    console.log(profile.type);
     if (profile.type === '老师') {
-        function fetchProjects() {
+        function fetchProjectsT() {
             projectList.empty();
             var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(projectList);
             $.get(encodeURI('/api/get/project?teacher=' + profile._id), function (data) {
@@ -67,9 +67,9 @@ $(document).ready(function () {
             });
         }
 
-        fetchProjects();
+        fetchProjectsT();
     } else {
-        function fetchProjects() {
+        function fetchProjectsS() {
             projectList.empty();
             var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(projectList);
             $.get(encodeURI('/api/get/select?student=' + profile._id), function (data) {
@@ -108,6 +108,6 @@ $(document).ready(function () {
             })
         }
 
-        fetchProjects();
+        fetchProjectsS();
     }
 })

@@ -244,6 +244,38 @@ $(document).ready(function () {
                 }
             });
         })
+
+        editProjectModal.find('#new-ip').html5Validate(function () {
+            var $this = $(this);
+            var post = {
+                _id: projectId,
+                innovationProjectAttr: {
+                    ipDetail: $this.find('#input-ipDetail').html(),
+                    ipKeywords: $this.find('#input-ipKeywords').val(),
+                    ipBasis: $this.find('#input-ipBasis').html(),
+                    ipSchedule: $this.find('#input-ipSchedule').html(),
+                    ipCondition: $this.find('#input-ipCondition').html(),
+                    ipFund: $this.find('#input-ipFund').html()
+                },
+                description: $this.find('#input-description').val(),
+                college: $this.find('#input-college').val(),
+                name: $this.find('#input-name').val(),
+                dateStart: new Date($this.find('#input-dateStart').val()),
+                dateEnd: new Date($this.find('#input-dateEnd').val()),
+                dateUpdate: Date.now()
+            };
+            $.ajax({
+                type: "POST",
+                url: encodeURI("/api/post/project?action=update"),
+                data: post,
+                success: function () {
+                    window.location.reload()
+                },
+                error: function () {
+                    notyFacade('抱歉，产生了一个错误，请重试或刷新后重试', 'error');
+                }
+            });
+        })
     }
 
     var selectTeamModal = $('#select-team');
