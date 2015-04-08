@@ -216,6 +216,9 @@ $.fn.extend({
 });
 
 $(document).ready(function () {
+
+
+
     var nav = $('nav.navbar-static-top'),
         pathname = window.location.pathname;
     if (pathname.indexOf('/center') === 0) {

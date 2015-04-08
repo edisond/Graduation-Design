@@ -9,6 +9,53 @@
 <body>
     <% include parts/nav.ejs %>
 
+
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1" class=""></li>
+                <li data-target="#myCarousel" data-slide-to="2" class=""></li>
+            </ol>
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                    <div class="container">
+                        <div class="carousel-caption">
+                            <h1>学习</h1>
+                            <p>加入教师主导的各种项目
+                                <br/>或者有自己的想法？
+                            </p>
+                            <p><a class="btn btn-lg btn-info" href="#" role="button">了解</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="container">
+                        <div class="carousel-caption">
+                            <h1>发展</h1>
+                            <p>通过实践与交流
+                                <br/>实现自我提高</p>
+                            <p><a class="btn btn-lg btn-info" href="#" role="button">了解</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="container">
+                        <div class="carousel-caption">
+                            <h1>开始</h1>
+                            <p>申请账号
+                                <br/>然后加入感兴趣的项目吧！</p>
+                            <p><a class="btn btn-lg btn-success" href="/register" role="button">注册</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a>
+            <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a>
+        </div>
         <div class="container-fluid">
         </div>
         <% include parts/include.js.html %>

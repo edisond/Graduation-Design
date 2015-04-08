@@ -49,7 +49,8 @@ $(document).ready(function () {
     }
 
     fetchComments();
-    fetchSelector();
+    if (projectType === '开放实验项目')
+        fetchSelector();
 
     commentList.delegate('a[href="#input-comment"]', 'click', function () {
         var $this = $(this);
@@ -327,6 +328,4 @@ $(document).ready(function () {
 
         })
     }
-
-
 });

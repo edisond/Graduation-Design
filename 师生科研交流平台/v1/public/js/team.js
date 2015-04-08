@@ -76,7 +76,6 @@ $(document).ready(function () {
             error: function () {
                 notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
             }
-
         });
     });
 })

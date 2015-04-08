@@ -106,3 +106,20 @@ img.head.head-sm {
     width: 50px;
     height: 50px;
 }
+
+.carousel {
+    height: 392px;
+    margin-bottom: 0px;
+}
+
+.carousel-caption {
+    z-index: 10;
+}
+
+.carousel .item {
+    height: 392px;
+}
+
+.carousel-inner {
+    background-color: #364967;
+}
