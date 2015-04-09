@@ -3,11 +3,8 @@
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-main">
                 <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">师生科研交流平台</a>
+            <a class="navbar-brand" href="/">暨南大学师生科研交流平台</a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-main">
             <ul class="nav navbar-nav">
@@ -65,23 +62,22 @@
                                 <li>
                                     <form class="p20 pb10">
                                         <div class="form-group">
-                                            <label for="nav-input-id">学号/工号</label>
-                                            <input type="text" class="form-control" id="nav-input-id">
+                                            <input type="text" class="form-control input-sm" id="nav-input-id" placeholder="学号/工号">
                                         </div>
                                         <div class="form-group">
-                                            <label for="nav-input-pwd">密码</label>
-                                            <input type="password" class="form-control" id="nav-input-pwd">
-                                            <h6 class="text-muted">忘记密码？</h6>
+                                            <input type="password" class="form-control input-sm" id="nav-input-pwd" placeholder="密码">
                                         </div>
-                                        <button type="button" class="btn btn-primary" id="nav-input-sub">登录</button>
-                                        <a href="/register" class="btn btn-default ml10">注册</a>
-                                        <label class="checkbox-inline pull-right">
-                                            <input type="checkbox" id="nav-input-rem">记住我
+                                        <label class="checkbox" for="nav-input-rem">
+                                            <input type="checkbox" data-toggle="checkbox" id="nav-input-rem" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                                            <span class="text-muted">记住我</span>
                                         </label>
+                                        <button type="button" class="btn btn-primary btn-sm" id="nav-input-sub">登录</button>
+                                        <a href="/register" class="btn btn-default btn-sm ml10">注册</a>
+
                                     </form>
                                 </li>
                                 <li class="divider"></li>
-                                <li><a href="#" id="nav-input-admin"><h6 class="text-muted m0 mb5">管理员入口</h6></a>
+                                <li><a href="#" id="nav-input-admin"><span class="text-muted m0 mb5">管理员入口</span></a>
                                 </li>
                             </ul>
                         </li>

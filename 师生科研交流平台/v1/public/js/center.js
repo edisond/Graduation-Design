@@ -173,9 +173,9 @@ $(document).ready(function () {
                         return row.team ? row.team.name : row.student.name
                     }
                 }, {
-                    "data": "project.type"
-                }, {
                     "data": "project.name"
+                }, {
+                    "data": "project.type"
 
                 }, {
                     "data": "date",
