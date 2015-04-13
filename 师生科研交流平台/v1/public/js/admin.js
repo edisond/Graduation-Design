@@ -6,8 +6,7 @@ $(document).ready(function () {
         deleteStudentModel = $('#delete-student'),
         deleteTeacherModel = $('#delete-teacher'),
         tableTeacher = $('#table-teacher'),
-        tableStudent = $('#table-student'),
-        changePasswordForm = $('#form-change-password');
+        tableStudent = $('#table-student');
     //init table teacher
     $('#table-teacher').on('init.dt', function () {
         $('#teacher-reg').html($(this).DataTable().data().length);
@@ -100,11 +99,6 @@ $(document).ready(function () {
         tableTeacher.find('tbody  input[data-action=select]:checked').click();
     });
 
-    newTeacherModel.keypress(function (e) {
-        if (e.which === 13) {
-            newTeacherModel.find('#submit').click();
-        }
-    });
 
     newTeacherModel.find('form').html5Validate(function () {
         var teacher = {
@@ -152,12 +146,6 @@ $(document).ready(function () {
 
     editTeacherModel.find('#input-reset-password').click(function () {
         editTeacherModel.find('#input-password').attr('disabled', !$(this).is(':checked'));
-    });
-
-    editTeacherModel.keypress(function (e) {
-        if (e.which === 13) {
-            editTeacherModel.find('#submit').click();
-        }
     });
 
     editTeacherModel.find('form').html5Validate(function () {
@@ -350,12 +338,6 @@ $(document).ready(function () {
         tableStudent.find('tbody  input[data-action=select]:checked').click();
     });
 
-    newStudentModel.keypress(function (e) {
-        if (e.which === 13) {
-            newStudentModel.find('#submit').click();
-        }
-    });
-
     newStudentModel.find('form').html5Validate(function () {
         var student = {
             type: '同学',
@@ -408,12 +390,6 @@ $(document).ready(function () {
 
     editStudentModel.find('#input-reset-password').click(function () {
         editStudentModel.find('#input-password').attr('disabled', !$(this).is(':checked'));
-    });
-
-    editStudentModel.keypress(function (e) {
-        if (e.which === 13) {
-            editStudentModel.find('#submit').click();
-        }
     });
 
     editStudentModel.find('form').html5Validate(function () {
@@ -502,14 +478,12 @@ $(document).ready(function () {
         });
     });
 
-    changePasswordForm.find('#button-submit-password').click(function () {
-        var originPassword = changePasswordForm.find('#input-orign-password').val(),
-            newPassword = changePasswordForm.find('#input-new-password').val(),
-            confirmPassword = changePasswordForm.find('#input-confirm-password').val();
-        if (originPassword === '' || newPassword === '') {
-            notyFacade('请输入原密码与新密码', 'warning');
-            return false;
-        } else if (newPassword !== confirmPassword) {
+    $('#password-setting').find('form').html5Validate(function () {
+        var $this = $(this);
+        var originPassword = $this.find('#input-orign-password').val(),
+            newPassword = $this.find('#input-new-password').val(),
+            confirmPassword = $this.find('#input-confirm-password').val();
+        if (newPassword !== confirmPassword) {
             notyFacade('新密码与确认密码不一致', 'warning');
         } else {
             var post = {
@@ -521,20 +495,15 @@ $(document).ready(function () {
                 url: encodeURI("/api/post/update/admin"),
                 data: post,
                 success: function () {
-                    changePasswordForm[0].reset();
+                    $('a[href=#password-setting]').click();
+                    $this[0].reset();
                     notyFacade('修改成功', 'success');
                 },
                 error: function () {
-                    changePasswordForm[0].reset();
+                    $this[0].reset();
                     notyFacade('原密码不正确，请重试', 'error');
                 }
             })
-        }
-    });
-
-    changePasswordForm.keypress(function (e) {
-        if (e.which === 13) {
-            changePasswordForm.find('#button-submit-password').click();
         }
     });
 

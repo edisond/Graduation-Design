@@ -14,7 +14,9 @@ router.get('/', function (req, res) {
 
 /* 注册页 */
 router.get('/register', function (req, res) {
-    res.render('register');
+    res.render('register', {
+        user: req.session.user
+    });
 })
 
 /* 开放实验列表页 */
@@ -200,11 +202,11 @@ router.get('/team/:id', function (req, res) {
 /* 管理员页 */
 router.get('/admin', function (req, res) {
     if (req.session.admin) {
-        res.render('admin');
+        res.render('admin', {
+            email: req.session.admin
+        });
     } else {
-        //        res.redirect('/');
-        req.session.admin = 'admin';
-        res.render('admin');
+        res.redirect('/');
     }
 })
 

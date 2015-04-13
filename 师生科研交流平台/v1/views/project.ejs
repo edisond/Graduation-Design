@@ -132,21 +132,17 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">项目来源</label>
                                         <div class="col-sm-7">
-                                            <label class="radio radio-inline" for="input-source-1">
-                                                <input checked value="教师科研课题" type="radio" name="input-source" data-toggle="radio" id="input-source-1" class="custom-radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                                                教师科研课题
+                                            <label class="radio-inline" for="input-source-1">
+                                                <input checked value="教师科研课题" type="radio" name="input-source" id="input-source-1">教师科研课题
                                             </label>
-                                            <label class="radio radio-inline" for="input-source-2">
-                                                <input value="实验室自拟" type="radio" name="input-source" data-toggle="radio" id="input-source-2" class="custom-radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                                                实验室自拟
+                                            <label class="radio-inline" for="input-source-2">
+                                                <input value="实验室自拟" type="radio" name="input-source" id="input-source-2">实验室自拟
                                             </label>
-                                            <label class="radio radio-inline" for="input-source-3">
-                                                <input value="综合素质提高型" type="radio" name="input-source" data-toggle="radio" id="input-source-3" class="custom-radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                                                综合素质提高型
+                                            <label class="radio-inline" for="input-source-3">
+                                                <input value="综合素质提高型" type="radio" name="input-source" id="input-source-3">综合素质提高型
                                             </label>
-                                            <label class="radio radio-inline" for="input-source-4">
-                                                <input value="其它" type="radio" name="input-source" data-toggle="radio" id="input-source-4" class="custom-radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                                                其它
+                                            <label class="radio-inline" for="input-source-4">
+                                                <input value="其它" type="radio" name="input-source" id="input-source-4">其它
                                             </label>
                                         </div>
                                         <div class="col-sm-3">
@@ -156,25 +152,20 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">结题或成果形式</label>
                                         <div class="col-sm-7">
-                                            <label class="radio radio-inline" for="input-result-1">
-                                                <input checked value="实验报告" type="radio" name="input-result" data-toggle="radio" id="input-result-1" class="custom-radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                                                实验报告
+                                            <label class="radio-inline" for="input-result-1">
+                                                <input checked value="实验报告" type="radio" name="input-result" id="input-result-1">实验报告
                                             </label>
-                                            <label class="radio radio-inline" for="input-result-2">
-                                                <input value="论文" type="radio" name="input-result" data-toggle="radio" id="input-result-2" class="custom-radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                                                论文
+                                            <label class="radio-inline" for="input-result-2">
+                                                <input value="论文" type="radio" name="input-result" id="input-result-2">论文
                                             </label>
-                                            <label class="radio radio-inline" for="input-result-3">
-                                                <input value="实物作品" type="radio" name="input-result" data-toggle="radio" id="input-result-3" class="custom-radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                                                实物作品
+                                            <label class="radio-inline" for="input-result-3">
+                                                <input value="实物作品" type="radio" name="input-result" id="input-result-3">实物作品
                                             </label>
-                                            <label class="radio radio-inline" for="input-result-4">
-                                                <input value="专利" type="radio" name="input-result" data-toggle="radio" id="input-result-4" class="custom-radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                                                专利
+                                            <label class="radio-inline" for="input-result-4">
+                                                <input value="专利" type="radio" name="input-result" id="input-result-4">专利
                                             </label>
-                                            <label class="radio radio-inline" for="input-result-5">
-                                                <input value="其它" type="radio" name="input-result" data-toggle="radio" id="input-result-5" class="custom-radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                                                其它
+                                            <label class="radio-inline" for="input-result-5">
+                                                <input value="其它" type="radio" name="input-result" id="input-result-5">其它
                                             </label>
                                         </div>
                                         <div class="col-sm-3">
@@ -218,7 +209,7 @@
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                                     </button>
-                                    <h4 class="modal-title">新建挑战杯项目<small class="text-danger ml20"><%=user.type==='同学'?'注意：同学发布的项目在寻求指导教师后方可激活':'' %></small></h4>
+                                    <h4 class="modal-title">新建挑战杯项目<small class="text-danger ml20"><%=user.type==='同学'?'注意：同学发布的项目在寻求指导教师后方可激活，激活后项目所有权归指导教师。':'' %></small></h4>
                                 </div>
                                 <form class="form-horizontal form-horizontal-label-left" id="new-cc">
                                     <div class="modal-body">
@@ -258,24 +249,18 @@
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">项目类别</label>
                                             <div class="col-sm-10">
-                                                <label class="radio radio-inline" for="input-type-1">
-                                                    <input value="哲学社会科学类社会调查报告和学术论文" type="radio" name="input-type" data-toggle="radio" id="input-type-1" class="custom-radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                                                    哲学社会科学类社会调查报告和学术论文
+                                                <label class="radio-inline" for="input-type-1">
+                                                    <input value="哲学社会科学类社会调查报告和学术论文" type="radio" name="input-type" id="input-type-1">哲学社会科学类社会调查报告和学术论文
                                                 </label>
-                                                <label class="radio radio-inline" for="input-type-2">
-                                                    <input value="自然科学类学术论文" type="radio" name="input-type" data-toggle="radio" id="input-type-2" class="custom-radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                                                    自然科学类学术论文
+                                                <label class="radio-inline" for="input-type-2">
+                                                    <input value="自然科学类学术论文" type="radio" name="input-type" id="input-type-2">自然科学类学术论文
                                                 </label>
-                                                <label class="radio radio-inline" for="input-type-3">
-                                                    <input value="科技发明制作类" type="radio" name="input-type" data-toggle="radio" id="input-type-3" class="custom-radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                                                    科技发明制作类
+                                                <label class="radio-inline" for="input-type-3">
+                                                    <input value="科技发明制作类" type="radio" name="input-type" id="input-type-3">科技发明制作类
                                                 </label>
-                                                <%if(user.type==='同学' ){%>
-                                                    <label class="radio radio-inline" for="input-type-4">
-                                                        <input value="创业计划类" type="radio" name="input-type" data-toggle="radio" id="input-type-4" class="custom-radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                                                        创业计划类
-                                                    </label>
-                                                    <%}%>
+                                                <label class="radio-inline" for="input-type-4">
+                                                    <input value="创业计划类" type="radio" name="input-type" id="input-type-4">创业计划类
+                                                </label>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -342,29 +327,27 @@
                                                 <div class="form-control wysiwyg-textarea" id="input-ccFund"></div>
                                             </div>
                                         </div>
-                                        <%if(user.type==='同学' ){%>
-                                            <div class="form-group">
-                                                <label class="col-sm-12 control-label">创业项目概述、产品和服务介绍<small class="ml10">（创业计划类项目填写）</small>
-                                                </label>
-                                                <div class="col-sm-12">
-                                                    <div class="form-control wysiwyg-textarea" id="input-ccDBasic"></div>
-                                                </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label">创业项目概述、产品和服务介绍<small class="ml10">（创业计划类项目填写）</small>
+                                            </label>
+                                            <div class="col-sm-12">
+                                                <div class="form-control wysiwyg-textarea" id="input-ccDBasic"></div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-12 control-label">创业公司市场、竞争和营销概述<small class="ml10">（创业计划类项目填写）</small>
-                                                </label>
-                                                <div class="col-sm-12">
-                                                    <div class="form-control wysiwyg-textarea" id="input-ccDMarket"></div>
-                                                </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label">创业公司市场、竞争和营销概述<small class="ml10">（创业计划类项目填写）</small>
+                                            </label>
+                                            <div class="col-sm-12">
+                                                <div class="form-control wysiwyg-textarea" id="input-ccDMarket"></div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-12 control-label">创业公司财务、经营和组织概述<small class="ml10">（创业计划类项目填写）</small>
-                                                </label>
-                                                <div class="col-sm-12">
-                                                    <div class="form-control wysiwyg-textarea" id="input-ccDManage"></div>
-                                                </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label">创业公司财务、经营和组织概述<small class="ml10">（创业计划类项目填写）</small>
+                                            </label>
+                                            <div class="col-sm-12">
+                                                <div class="form-control wysiwyg-textarea" id="input-ccDManage"></div>
                                             </div>
-                                            <%}%>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -384,7 +367,7 @@
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                                         </button>
-                                        <h4 class="modal-title">新建科技创新工程项目<small class="text-danger ml20"><%=user.type==='同学'?'注意：同学发布的项目在寻求指导教师后方可激活':'' %></small></h4>
+                                        <h4 class="modal-title">新建科技创新工程项目<small class="text-danger ml20"><%=user.type==='同学'?'注意：同学发布的项目在寻求指导教师后方可激活，激活后项目所有权归指导教师。':'' %></small></h4>
                                     </div>
                                     <form class="form-horizontal form-horizontal-label-left" id="new-ip">
                                         <div class="modal-body">

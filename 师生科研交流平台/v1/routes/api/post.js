@@ -27,9 +27,10 @@ router.post('/update/admin', function (req, res) {
 /* 登录 */
 router.post('/signin', function (req, res) {
     if (req.query.type === 'admin') {
-        Dao.checkAdminPassword(req.body.password, function (match) {
+        Dao.checkAdminPassword(req.body.password, function (match, email) {
             if (match) {
-                req.session.admin = 'admin';
+                email = typeof email === 'undefined' ? 'undefined' : email;
+                req.session.admin = email;
                 res.sendStatus(200);
             } else {
                 res.sendStatus(401);

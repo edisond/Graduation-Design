@@ -17,9 +17,13 @@ $(document).ready(function () {
         var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(commentList)
         $.get(encodeURI('/api/get/comment?project=' + projectId), function (data) {
             if (data.length === 0) {
-                loadstate.html('<i class="fa fa-frown-o"></i>&nbsp;暂无讨论')
+                loadstate.html('对项目有任何疑问都可以在这里与老师或同学交流。')
             } else {
+                $('#comment-num').html('共有' + data.length + '条评论');
                 commentList.empty().hide();
+                data.sort(function (a, b) {
+                    return new Date(a.date) > new Date(b.date)
+                });
                 for (var i = 0, j = data.length; i < j; i++) {
                     DOMCreator.comment(data[i]).appendTo(commentList);
                     if (i < j - 1) {
@@ -102,8 +106,9 @@ $(document).ready(function () {
         });
     });
 
-    $('#btn-teacher-apply').click(function () {
-        if (confirm('1')) {
+    var guideProjectModal = $('#guide-project');
+    if (guideProjectModal.size()) {
+        guideProjectModal.find('#submit').click(function () {
             var post = {
                 _id: projectId
             };
@@ -118,8 +123,10 @@ $(document).ready(function () {
                     notyFacade('抱歉，产生了一个错误，请重试或刷新后重试', 'error');
                 }
             });
-        }
-    })
+        })
+    }
+
+
 
     $('button[data-action=ask]').click(function () {
         commentBox.focus();

@@ -33,62 +33,22 @@
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="tab-project">
                                 <br/>
-                                <form class="form-inline" id="tab-project-filter">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="输入项目名...">
-                                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <span class="hidden-xs ml30"></span>
-                                        <div class="input-group text-center pull-center">
-                                            <label class="checkbox mr10" for="pj-oe">
-                                                <input type="checkbox" data-toggle="checkbox" id="pj-oe" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                                                开放实验
-                                            </label>
-                                            <label class="checkbox mr10" for="pj-cc">
-                                                <input type="checkbox" data-toggle="checkbox" id="pj-cc" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                                                挑战杯
-                                            </label>
-                                            <label class="checkbox" for="pj-ip">
-                                                <input type="checkbox" data-toggle="checkbox" id="pj-ip" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                                                创新项目
-                                            </label>
-                                        </div>
-                                    </div>
-                                </form>
-                                <hr class="hr-dark" />
                                 <div id="projects">
                                     <p class="text-muted" id="load-state">加载中</p>
                                 </div>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="tab-team">
                                 <br/>
-                                <form class="form-inline " id="tab-team-filter">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="输入团队名..." aria-describedby="addon-search">
-                                            <span class="input-group-addon" id="addon-search"><i class="fa fa-search"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <span class="hidden-xs ml30"></span>
-                                        <label class="checkbox" for="team-leader">
-                                            <input type="checkbox" data-toggle="checkbox" id="team-leader" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                                            我是负责人
-                                        </label>
-                                    </div>
-                                    <div class="form-group pull-right">
-                                        <div class="input-group">
-                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#new-team"><i class="fa fa-plus"></i>&nbsp;创建团队</button>
-                                        </div>
-                                    </div>
-                                </form>
-                                <hr class="hr-dark" />
-                                <div id="teams">
-                                    <p class="text-muted" id="load-state">加载中</p>
-                                </div>
+                                <%if(user.type==='同学' ){%>
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#new-team"><i class="fa fa-plus mr10"></i>创建团队</button>
+                                    <%} else if(user.type==='老师' ){%>
+                                        <p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;<small>只有学生可作为团队负责人，教师可选择学生创建的团队并加入。</small>
+                                        </p>
+                                        <%}%>
+                                            <hr class="hr-dark" />
+                                            <div id="teams">
+                                                <p class="text-muted" id="load-state">加载中</p>
+                                            </div>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="tab-apply">
                                 <br/>
@@ -316,13 +276,13 @@
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <h3 id="oe-num">-</h3>
+                                                    <h2 id="oe-num">-</h2>
                                                 </td>
                                                 <td>
-                                                    <h3 id="cc-num">-</h3>
+                                                    <h2 id="cc-num">-</h2>
                                                 </td>
                                                 <td>
-                                                    <h3 id="ip-num">-</h3>
+                                                    <h2 id="ip-num">-</h2>
                                                 </td>
                                             </tr>
                                             <tr>

@@ -97,7 +97,7 @@ var Dao = {
                 callback(false);
             } else {
                 if (md5.md5(password + docs.key) === docs.password) {
-                    callback(true);
+                    callback(true, docs.email);
                 } else {
                     callback(false);
                 }

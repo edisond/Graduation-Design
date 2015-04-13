@@ -19,8 +19,9 @@ $(document).ready(function () {
     case '#apply':
         $('#apply').tab('show');
         break;
-
-
+    case '#team':
+        $('#team').tab('show');
+        break;
     }
 
 
@@ -189,7 +190,7 @@ $(document).ready(function () {
                     "width": '200px',
                     'className': "text-center",
                     'render': function (data, type, row) {
-                        return row.team ? '<a href="/team/' + row.team._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a>' : '<a href="/profile/' + row.student._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a>';
+                        return row.team ? '<a href="/team/' + row.team._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a><a class="ml20" href="#" data-id="' + data + '" data-action="reject"><i class="fa fa-times"></i>&nbsp;拒绝</a>' : '<a href="/profile/' + row.student._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a><a class="ml20" href="#" data-id="' + data + '" data-action="reject"><i class="fa fa-times"></i>&nbsp;拒绝</a>';
                     }
             }
         ],
@@ -201,8 +202,8 @@ $(document).ready(function () {
                 "sSearch": "搜索",
                 "infoFiltered": "(正从 _MAX_ 条记录中过滤)",
                 "paginate": {
-                    "previous": "上一页",
-                    "next": "下一页"
+                    "previous": "<i class='fa fa-chevron-left'></i>",
+                    "next": "<i class='fa fa-chevron-right'></i>"
                 }
             }
         });
@@ -296,7 +297,7 @@ $(document).ready(function () {
                     "data": "_id",
                     "searchable": false,
                     "orderable": false,
-                    "width": '200px',
+                    "width": '100px',
                     'className': "text-center",
                     'render': function (data, type, row) {
                         return '<a href="/profile/' + row.user._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a>';
@@ -311,8 +312,8 @@ $(document).ready(function () {
                 "sSearch": "搜索",
                 "infoFiltered": "(正从 _MAX_ 条记录中过滤)",
                 "paginate": {
-                    "previous": "上一页",
-                    "next": "下一页"
+                    "previous": "<i class='fa fa-chevron-left'></i>",
+                    "next": "<i class='fa fa-chevron-right'></i>"
                 }
             }
         });
@@ -432,12 +433,6 @@ $(document).ready(function () {
                 notyFacade('该学号/工号已被使用', 'error')
             }
         })
-    })
-
-    $('button[data-target=#new-team]').click(function () {
-        if (USER.type === '老师') {
-            notyFacade('只有学生可以作为团队负责人（创建团队）。', 'information')
-        }
     })
 
     $('#new-team').find('form').html5Validate(function () {
