@@ -12,12 +12,19 @@ router.post('/update/admin', function (req, res) {
     if (req.body.op && req.body.np) {
         Dao.checkAdminPassword(req.body.op, function (match) {
             if (match) {
-                Dao.updateAdmin(req.body.np, function (err) {
+                var admin = {
+                    password: req.body.np
+                }
+                Dao.updateAdmin(admin, function (err) {
                     res.sendStatus(err ? 500 : 200);
                 })
             } else {
                 res.sendStatus(401);
             }
+        })
+    } else if (req.body.email) {
+        Dao.updateAdmin(req.body, function (err) {
+            res.sendStatus(err ? 500 : 200);
         })
     } else {
         res.sendStatus(404);

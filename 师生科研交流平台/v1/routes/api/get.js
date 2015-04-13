@@ -3,6 +3,17 @@ var router = express.Router();
 var db = require('../../model/db');
 var Dao = db.Dao;
 
+/* Get admin email */
+router.get('/admin', function (req, res) {
+    Dao.getAdmin(function (err, doc) {
+        if (err) {
+            res.sendStatus(500)
+        } else {
+            res.status(200).send(doc);
+        }
+    })
+})
+
 /* Get user list */
 router.get('/user', function (req, res) {
     if (req.session.admin) {

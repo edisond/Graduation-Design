@@ -31,6 +31,7 @@ var Dao = {
 
     /* 更新一个用户 */
     updateUser: function (user, callback) {
+        delete user.key;
         if (user.password) {
             user.key = md5.md5(new Date());
             user.password = md5.md5(user.password + user.key);
@@ -64,7 +65,6 @@ var Dao = {
 
     /* 删除用户 */
     deleteUsers: function (idList, callback) {
-        console.log(idList)
         User.update({
             _id: {
                 $in: idList
@@ -108,13 +108,17 @@ var Dao = {
     /* 更新管理员密码 */
     /* 参数：admin，callback(err) */
     /* @password-新密码，@err-将要返回的错误 */
-    updateAdmin: function (password, callback) {
-        var key = md5.md5(new Date());
-        var admin = {
-            password: md5.md5(password + key),
-            key: key
+    updateAdmin: function (admin, callback) {
+        delete admin.key;
+        if (admin.password) {
+            admin.key = md5.md5(new Date());
+            admin.password = md5.md5(admin.password + admin.key);
         }
         Admin.findOneAndUpdate({}, admin, callback)
+    },
+
+    getAdmin: function (callback) {
+        Admin.findOne({}, 'email -_id').lean().exec(callback)
     },
 
     /* 新建项目 */

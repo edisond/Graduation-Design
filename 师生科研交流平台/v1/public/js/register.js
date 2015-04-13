@@ -1,5 +1,12 @@
 $(document).ready(function () {
     var register = $('#register');
+
+    $.get(encodeURI('/api/get/admin'), function (data) {
+        if (data) {
+            $('<a href="mailto:' + data.email + '">' + data.email + '</a>').appendTo($('#admin-email'))
+        }
+    })
+
     register.html5Validate(function () {
         var user = {
             id: register.find('#input-id').val(),
@@ -18,7 +25,7 @@ $(document).ready(function () {
                 }, 3000)
             },
             error: function () {
-                notyFacade('该学号/工号已被使用，如有疑问，请联系管理员', 'error');
+                notyFacade('该学号/工号已被使用', 'error');
             }
         })
     })

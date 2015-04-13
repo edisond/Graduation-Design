@@ -497,7 +497,7 @@ $(document).ready(function () {
                 success: function () {
                     $('a[href=#password-setting]').click();
                     $this[0].reset();
-                    notyFacade('修改成功', 'success');
+                    notyFacade('修改成功，重新登录后生效', 'success');
                 },
                 error: function () {
                     $this[0].reset();
@@ -505,6 +505,25 @@ $(document).ready(function () {
                 }
             })
         }
+    });
+
+    $('#account-setting').find('form').html5Validate(function () {
+        var $this = $(this);
+        var post = {
+            email: $this.find('#input-email').val()
+        };
+        $.ajax({
+            type: "POST",
+            url: encodeURI("/api/post/update/admin"),
+            data: post,
+            success: function () {
+                $('a[href=#account-setting]').click();
+                notyFacade('修改成功，重新登录后生效', 'success');
+            },
+            error: function () {
+                notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
+            }
+        })
     });
 
     $('#active-select-student').click(function () {

@@ -165,8 +165,6 @@ var DOMCreator = {
         $('<small class="text-muted">' + apply.team.desc + '</small>').appendTo(div);
         return div
     }
-
-
 }
 
 $.fn.extend({
@@ -235,10 +233,9 @@ $.fn.extend({
 
 $(document).ready(function () {
 
-
-
     var nav = $('nav.navbar-static-top'),
         pathname = window.location.pathname;
+
     if (pathname.indexOf('/center') === 0) {
         nav.find('#nav-link-to-center').addClass('active');
     } else if (pathname.indexOf('/open-experiment') === 0) {
@@ -248,6 +245,7 @@ $(document).ready(function () {
     } else if (pathname.indexOf('/innovation-project') === 0) {
         nav.find('#nav-link-to-ip').addClass('active');
     }
+
     nav.find('form').html5Validate(function () {
         var $this = $(this);
         var post = {
@@ -266,6 +264,7 @@ $(document).ready(function () {
             }
         });
     });
+
     nav.find('#nav-sign-out').click(function () {
         $.ajax({
             type: "POST",
@@ -275,6 +274,7 @@ $(document).ready(function () {
             }
         });
     });
+
     nav.find('#nav-input-admin').click(function () {
         var password = prompt('请输入管理员密码');
         if (password && password !== '') {
@@ -295,5 +295,46 @@ $(document).ready(function () {
             return false;
         }
     });
+
     $('[data-toggle="tooltip"]').tooltip();
+
+    var inputBindCollege = $('select[data-bind=college]');
+
+    if (inputBindCollege.length) {
+        $.get(encodeURI('/data/colleges.json'), function (data) {
+            data = data.data;
+
+            inputBindCollege.each(function () {
+                var $this = $(this);
+                $this.empty();
+                $('<option></option>').appendTo($this);
+                for (var i = 0, j = data.length; i < j; i++) {
+                    $('<option>' + data[i].name + '</option>').appendTo($this);
+                }
+            })
+
+            inputBindCollege.change(function () {
+                var $this = $(this),
+                    parent = $this.parents('.form-group');
+                if (parent.length) {
+                    parent = $(parent[0]);
+                    var bindMajor = parent.find('select[data-bind=major]');
+                    if (bindMajor.length) {
+                        bindMajor.empty();
+                        var selectedCollege = $this.val();
+                        for (var i = 0, j = data.length; i < j; i++) {
+                            if (data[i].name === selectedCollege) {
+                                $('<option></option>').appendTo(bindMajor);
+                                for (var m = 0, n = data[i].majors.length; m < n; m++) {
+                                    $('<option>' + data[i].majors[m] + '</option>').appendTo(bindMajor);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            })
+        })
+    }
+
 })

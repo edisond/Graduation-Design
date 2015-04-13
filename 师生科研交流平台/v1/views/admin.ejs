@@ -101,8 +101,8 @@
                                     <div class="row">
                                         <form class="col-xs-12 col-sm-6">
                                             <div class="form-group">
-                                                <label for="input-orign-password">邮箱</label>
-                                                <input type="text" class="form-control" id="input-orign-password" required value="<%=email%>">
+                                                <label for="input-email">邮箱</label>
+                                                <input type="email" class="form-control" id="input-email" required value="<%=email%>">
                                             </div>
                                             <button type="submit" class="col-xs-12 btn btn-primary">保存</button>
                                         </form>
@@ -208,7 +208,7 @@
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-sex">性别</label>
                             <div class="col-xs-12 col-sm-4">
-                                <select class="form-control" type="text" id="input-sex">
+                                <select class="form-control" type="text" id="input-sex" required>
                                     <option>男</option>
                                     <option>女</option>
                                     <option>其它</option>
@@ -218,7 +218,7 @@
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-department">部门</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-department" maxlength="10" />
+                                <select class="form-control" type="text" id="input-department" data-bind="college" required></select>
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-title">职称</label>
                             <div class="col-xs-12 col-sm-4">
@@ -281,7 +281,7 @@
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-sex">性别</label>
                             <div class="col-xs-12 col-sm-4">
-                                <select class="form-control" type="text" id="input-sex">
+                                <select class="form-control" type="text" id="input-sex" required>
                                     <option>男</option>
                                     <option>女</option>
                                     <option>其它</option>
@@ -291,7 +291,7 @@
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-department">部门</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-department" maxlength="10" />
+                                <select class="form-control" type="text" id="input-department" data-bind="college" required></select>
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-title">职称</label>
                             <div class="col-xs-12 col-sm-4">
@@ -372,7 +372,7 @@
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-sex">性别</label>
                             <div class="col-xs-12 col-sm-4">
-                                <select class="form-control" type="text" id="input-sex">
+                                <select class="form-control" type="text" id="input-sex" required>
                                     <option>男</option>
                                     <option>女</option>
                                     <option>其它</option>
@@ -382,11 +382,11 @@
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-college">学院</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-college" maxlength="10">
+                                <select class="form-control" type="text" id="input-college" data-bind="college" required></select>
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-major">专业</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-major" maxlength="10">
+                                <select class="form-control" type="text" id="input-major" data-bind="major" required></select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -464,7 +464,7 @@
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-sex">性别</label>
                             <div class="col-xs-12 col-sm-4">
-                                <select class="form-control" type="text" id="input-sex">
+                                <select class="form-control" type="text" id="input-sex" required>
                                     <option>男</option>
                                     <option>女</option>
                                     <option>其它</option>
@@ -474,11 +474,11 @@
                         <div class="form-group">
                             <label class="col-xs-12 col-sm-2 control-label" for="input-college">学院</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-college" maxlength="10">
+                                <select class="form-control" type="text" id="input-college" data-bind="college" required></select>
                             </div>
                             <label class="col-xs-12 col-sm-2 control-label" for="input-major">专业</label>
                             <div class="col-xs-12 col-sm-4">
-                                <input class="form-control" type="text" id="input-major" maxlength="10">
+                                <select class="form-control" type="text" id="input-major" data-bind="major" required></select>
                             </div>
                         </div>
                         <div class="form-group">
