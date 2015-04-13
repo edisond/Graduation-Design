@@ -54,7 +54,7 @@ $(document).ready(function () {
                         } else if (data[i].type === '科技创新工程项目') {
                             ipNum++;
                         }
-                        DOMCreator.project(data[i]).appendTo(projectList);
+                        DOMCreator.myProjectT(data[i]).appendTo(projectList);
                         if (i < j - 1) {
                             $('<hr>').appendTo(projectList);
                         }

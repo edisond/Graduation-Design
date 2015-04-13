@@ -142,7 +142,7 @@ $(document).ready(function () {
                         } else if (data[i].type === '科技创新工程项目') {
                             ipNum++;
                         }
-                        DOMCreator.project(data[i]).appendTo(projectList);
+                        DOMCreator.myProjectT(data[i]).appendTo(projectList);
                         if (i < j - 1) {
                             $('<hr>').appendTo(projectList);
                         }
@@ -186,7 +186,7 @@ $(document).ready(function () {
                     "data": "_id",
                     "searchable": false,
                     "orderable": false,
-                    "width": '100px',
+                    "width": '200px',
                     'className': "text-center",
                     'render': function (data, type, row) {
                         return row.team ? '<a href="/team/' + row.team._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a>' : '<a href="/profile/' + row.student._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a>';
@@ -296,7 +296,7 @@ $(document).ready(function () {
                     "data": "_id",
                     "searchable": false,
                     "orderable": false,
-                    "width": '100px',
+                    "width": '200px',
                     'className': "text-center",
                     'render': function (data, type, row) {
                         return '<a href="/profile/' + row.user._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a>';
@@ -392,7 +392,7 @@ $(document).ready(function () {
             setProfileForm.find('#input-college').val(data.studentAttr.college);
             setProfileForm.find('#input-major').val(data.studentAttr.major);
             setProfileForm.find('#input-grade').val(data.studentAttr.grade);
-            setProfileForm.find('#input-studentType').val(data.studentAttr.studentType);
+            setProfileForm.find('#input-type').val(data.studentAttr.studentType);
             setProfileForm.find('#input-address').val(data.studentAttr.address);
         }
     })

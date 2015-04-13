@@ -10,15 +10,23 @@
 <body>
     <% include parts/nav.ejs %>
         <input type="hidden" value="<%=team._id%>" id="team-_id">
-        <div class="container mt20">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="page-header">
-                        <h1><%=team.name %></h1>
-                        <h5 class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;创建于<%=team.date %><i class="fa fa-user ml20"></i>&nbsp;负责人：<%=team.leader.name %></h5>
+
+        <div class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h2><%=team.name %></h2>
+                        <p class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;创建于
+                            <%=team.dateCreate %><i class="fa fa-user ml20"></i>&nbsp;负责人：
+                                <%=team.leader.name %>
+                        </p>
                     </div>
                 </div>
             </div>
+        </div>
+
+
+        <div class="container mt20">
             <div class="row">
                 <div class="col-sm-9 col-xs-12">
 

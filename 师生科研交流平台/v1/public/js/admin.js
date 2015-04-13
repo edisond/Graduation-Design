@@ -82,8 +82,8 @@ $(document).ready(function () {
             "sSearch": "搜索",
             "infoFiltered": "(正从 _MAX_ 条记录中过滤)",
             "paginate": {
-                "previous": "上一页",
-                "next": "下一页"
+                "previous": '<i class="fa fa-chevron-left"></i>',
+                "next": '<i class="fa fa-chevron-right"></i>'
             }
         }
     });
@@ -335,8 +335,8 @@ $(document).ready(function () {
             "sSearch": "搜索",
             "infoFiltered": "(正从 _MAX_ 条记录中过滤)",
             "paginate": {
-                "previous": "上一页",
-                "next": "下一页"
+                "previous": '<i class="fa fa-chevron-left"></i>',
+                "next": '<i class="fa fa-chevron-right"></i>'
             }
         }
     });

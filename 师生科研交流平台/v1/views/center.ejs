@@ -33,24 +33,27 @@
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="tab-project">
                                 <br/>
-                                <form class="form-inline " id="tab-project-filter">
+                                <form class="form-inline" id="tab-project-filter">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="输入项目名..." aria-describedby="addon-search">
-                                            <span class="input-group-addon" id="addon-search"><i class="fa fa-search"></i></span>
+                                            <input type="text" class="form-control" placeholder="输入项目名...">
+                                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <span class="hidden-xs ml30"></span>
                                         <div class="input-group text-center pull-center">
-                                            <label class="checkbox-inline mr10">
-                                                <input type="checkbox" id="inlineCheckbox1" value="option1"><i class="fa fa-flask"></i>&nbsp;开放实验
+                                            <label class="checkbox mr10" for="pj-oe">
+                                                <input type="checkbox" data-toggle="checkbox" id="pj-oe" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                                                开放实验
                                             </label>
-                                            <label class="checkbox-inline mr10">
-                                                <input type="checkbox" id="inlineCheckbox2" value="option2"><i class="fa fa-trophy"></i>&nbsp;挑战杯
+                                            <label class="checkbox mr10" for="pj-cc">
+                                                <input type="checkbox" data-toggle="checkbox" id="pj-cc" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                                                挑战杯
                                             </label>
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox3" value="option3"><i class="fa fa-lightbulb-o"></i>&nbsp;创新项目
+                                            <label class="checkbox" for="pj-ip">
+                                                <input type="checkbox" data-toggle="checkbox" id="pj-ip" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                                                创新项目
                                             </label>
                                         </div>
                                     </div>
@@ -71,14 +74,10 @@
                                     </div>
                                     <div class="form-group">
                                         <span class="hidden-xs ml30"></span>
-                                        <div class="input-group text-center pull-center">
-                                            <label class="checkbox-inline mr10">
-                                                <input type="checkbox" id="inlineCheckbox1" value="option1"><i class="fa fa-user"></i>&nbsp;我是负责人
-                                            </label>
-                                            <label class="checkbox-inline mr10">
-                                                <input type="checkbox" id="inlineCheckbox2" value="option2"><i class="fa fa-users"></i>&nbsp;我是团员
-                                            </label>
-                                        </div>
+                                        <label class="checkbox" for="team-leader">
+                                            <input type="checkbox" data-toggle="checkbox" id="team-leader" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                                            我是负责人
+                                        </label>
                                     </div>
                                     <div class="form-group pull-right">
                                         <div class="input-group">
@@ -122,184 +121,158 @@
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="tab-settings">
                                 <br/>
-
                                 <fieldset>
                                     <legend>
-                                        <a data-toggle="collapse" href="#account-setting" aria-expanded="false" aria-controls="account-setting">详细信息</a>
+                                        <span data-toggle="tooltip" title="点击以展开/收回">
+                                            <a data-toggle="collapse" href="#account-setting" aria-expanded="false" aria-controls="account-setting">详细信息</a>
+                                        </span>
                                     </legend>
                                     <div id="account-setting" class="collapse">
                                         <%if(user.type==='同学' ){%>
-                                            <form class="form-horizontal">
-                                                <div class="form-group">
-                                                    <label class="col-xs-12 col-sm-2 control-label" for="input-id">学号</label>
-                                                    <div class="col-xs-12 col-sm-4">
+                                            <div class="row">
+                                                <form class="col-xs-12 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label" for="input-id">学号</label>
                                                         <input class="form-control" type="text" id="input-id" maxlength="10" required pattern="^[0-9]*$" placeholder="请填写十位以下数字">
                                                     </div>
-                                                    <label class="col-xs-12 col-sm-2 control-label" for="input-address">地址</label>
-                                                    <div class="col-xs-12 col-sm-4">
-                                                        <input class="form-control" type="text" id="input-address" maxlength="20">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-xs-12 col-sm-2 control-label control-label" for="input-name">姓名</label>
-                                                    <div class="col-xs-12 col-sm-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label control-label" for="input-name">姓名</label>
                                                         <input class="form-control form-control" type="text" id="input-name" maxlength="10" required>
                                                     </div>
-                                                    <label class="col-xs-12 col-sm-2 control-label" for="input-sex">性别</label>
-                                                    <div class="col-xs-12 col-sm-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label" for="input-sex">性别</label>
                                                         <select class="form-control" type="text" id="input-sex">
                                                             <option>男</option>
                                                             <option>女</option>
                                                             <option>其它</option>
                                                         </select>
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-xs-12 col-sm-2 control-label" for="input-college">学院</label>
-                                                    <div class="col-xs-12 col-sm-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label" for="input-college">学院</label>
                                                         <input class="form-control" type="text" id="input-college" maxlength="10">
                                                     </div>
-                                                    <label class="col-xs-12 col-sm-2 control-label" for="input-major">专业</label>
-                                                    <div class="col-xs-12 col-sm-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label" for="input-major">专业</label>
                                                         <input class="form-control" type="text" id="input-major" maxlength="10">
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-xs-12 col-sm-2 control-label" for="input-grade">年级</label>
-                                                    <div class="col-xs-12 col-sm-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label" for="input-grade">年级</label>
                                                         <input class="form-control" type="number" id="input-grade" min="1" max="9999">
                                                     </div>
-                                                    <label class="col-xs-12 col-sm-2 control-label" for="input-type">类型</label>
-                                                    <div class="col-xs-12 col-sm-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label" for="input-type">类型</label>
                                                         <select class="form-control" type="text" id="input-type">
                                                             <option>本科生</option>
                                                             <option>硕士研究生</option>
                                                             <option>博士研究生</option>
                                                         </select>
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-xs-12 col-sm-2 control-label" for="input-email">邮箱</label>
-                                                    <div class="col-xs-12 col-sm-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label" for="input-address">地址</label>
+                                                        <input class="form-control" type="text" id="input-address" maxlength="20">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label" for="input-email">邮箱</label>
                                                         <input class="form-control" type="email" id="input-email" maxlength="50">
                                                     </div>
-                                                    <label class="col-xs-12 col-sm-2 control-label" for="input-phone">电话</label>
-                                                    <div class="col-xs-12 col-sm-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label" for="input-phone">电话</label>
                                                         <input class="form-control" type="tel" id="input-phone" maxlength="20">
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <div class="col-xs-12">
-                                                        <button type="submit" class="btn btn-primary pull-right" id="input-submit">保存</button>
-                                                    </div>
-                                                </div>
-                                            </form>
+                                                    <button type="submit" class="col-xs-12 btn btn-primary" id="input-submit">保存</button>
+                                                </form>
+                                            </div>
                                             <%} else if(user.type==='老师' ){%>
-
-                                                <form class="form-horizontal">
-                                                    <div class="form-group">
-                                                        <label class="col-xs-12 col-sm-2 control-label" for="input-id">工号</label>
-                                                        <div class="col-xs-12 col-sm-4">
+                                                <div class="row">
+                                                    <form class="col-xs-12 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="ontrol-label" for="input-id">工号</label>
                                                             <input class="form-control" type="text" id="input-id" maxlength="10" required pattern="^[0-9]*$" placeholder="请填写十位以下数字">
                                                         </div>
-                                                        <label class="col-xs-12 col-sm-2 control-label" for="input-department">部门</label>
-                                                        <div class="col-xs-12 col-sm-4">
-                                                            <input class="form-control" type="text" id="input-department" maxlength="10" />
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-xs-12 col-sm-2 control-label control-label" for="input-name">姓名</label>
-                                                        <div class="col-xs-12 col-sm-4">
+                                                        <div class="form-group">
+                                                            <label class="control-label control-label" for="input-name">姓名</label>
                                                             <input class="form-control form-control" type="text" id="input-name" maxlength="10" required>
                                                         </div>
-                                                        <label class="col-xs-12 col-sm-2 control-label" for="input-sex">性别</label>
-                                                        <div class="col-xs-12 col-sm-4">
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="input-sex">性别</label>
                                                             <select class="form-control" type="text" id="input-sex">
                                                                 <option>男</option>
                                                                 <option>女</option>
                                                                 <option>其它</option>
                                                             </select>
                                                         </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-xs-12 col-sm-2 control-label" for="input-email">邮箱</label>
-                                                        <div class="col-xs-12 col-sm-4">
-                                                            <input class="form-control" type="email" id="input-email" maxlength="50">
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="input-department">部门</label>
+                                                            <input class="form-control" type="text" id="input-department" maxlength="10" />
                                                         </div>
-                                                        <label class="col-xs-12 col-sm-2 control-label" for="input-phone">电话</label>
-                                                        <div class="col-xs-12 col-sm-4">
-                                                            <input class="form-control" type="tel" id="input-phone" maxlength="20">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-xs-12 col-sm-2 control-label" for="input-title">职称</label>
-                                                        <div class="col-xs-12 col-sm-4">
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="input-title">职称</label>
                                                             <input class="form-control" type="text" id="input-title" maxlength="10" />
                                                         </div>
-                                                        <div class="col-sm-6">
-                                                            <button type="submit" class="btn btn-primary pull-right" id="input-submit">保存</button>
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="input-email">邮箱</label>
+                                                            <input class="form-control" type="email" id="input-email" maxlength="50">
                                                         </div>
-                                                    </div>
-                                                </form>
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="input-phone">电话</label>
+                                                            <input class="form-control" type="tel" id="input-phone" maxlength="20">
+                                                        </div>
+                                                        <button type="submit" class="col-xs-12 btn btn-primary " id="input-submit">保存</button>
+                                                    </form>
+                                                </div>
                                                 <%}%>
+                                                    <br/>
                                     </div>
                                 </fieldset>
                                 <fieldset>
                                     <legend>
-                                        <a data-toggle="collapse" href="#head-setting" aria-expanded="false" aria-controls="head-setting">更换头像</a>
+                                        <span data-toggle="tooltip" title="点击以展开/收回">
+                                            <a data-toggle="collapse" href="#head-setting" aria-expanded="false" aria-controls="head-setting">更换头像</a>
+                                        </span>
                                     </legend>
                                     <div id="head-setting" class="collapse">
-                                        <form class="form-horizontal">
-                                            <div class="form-group">
-                                                <div class="col-sm-6">
+                                        <div class="row">
+                                            <form class="col-xs-12 col-sm-6">
+                                                <div class="form-group">
                                                     <input class="form-control" type="file" id="input-head">
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="col-sm-12">
+                                                <div class="form-group">
                                                     <img id="head-setting-preview-big" class="head head-lg" />
                                                     <img id="head-setting-preview-small" class="head head-sm" style="vertical-align: bottom" />
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="col-sm-12 text-right">
-                                                    <button type="button" class="btn btn-primary" id="submit-head">保存</button>
+                                                <div class="form-group">
+                                                    <button type="button" class="col-xs-12 btn btn-primary" id="submit-head">保存</button>
                                                 </div>
-                                            </div>
-                                        </form>
+                                            </form>
+                                        </div>
+                                        <br/>
                                     </div>
                                 </fieldset>
                                 <fieldset>
                                     <legend>
-                                        <a data-toggle="collapse" href="#password-setting" aria-expanded="false" aria-controls="password-setting">更改密码</a>
+                                        <span data-toggle="tooltip" title="点击以展开/收回">
+                                            <a data-toggle="collapse" href="#password-setting" aria-expanded="false" aria-controls="password-setting">更改密码</a>
+                                        </span>
                                     </legend>
                                     <div id="password-setting" class="collapse">
-                                        <form class="form-horizontal">
-                                            <div class="form-group">
-                                                <label class="col-sm-2" for="input-orign-password">原密码</label>
-                                                <div class="col-sm-4">
-                                                    <input type="password" class="form-control" id="input-orign-password" required>
+                                        <div class="row">
+                                            <form class="col-xs-12 col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="input-orign-password">原密码</label>
+                                                    <input type="password" class="form-control" id="input-orign-password">
                                                 </div>
-
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-2" for="input-new-password">新密码</label>
-                                                <div class="col-sm-4">
-                                                    <input type="password" class="form-control" id="input-new-password" required>
+                                                <div class="form-group">
+                                                    <label for="input-new-password">新密码</label>
+                                                    <input type="password" class="form-control" id="input-new-password">
                                                 </div>
-                                                <label class="col-sm-2" for="input-confirm-password">确认</label>
-                                                <div class="col-sm-4">
-                                                    <input type="password" class="form-control" id="input-confirm-password" required>
+                                                <div class="form-group">
+                                                    <label for="input-confirm-password">确认</label>
+                                                    <input type="password" class="form-control" id="input-confirm-password">
                                                 </div>
-
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="col-sm-12">
-                                                    <button type="submit" class="btn btn-primary pull-right" id="input-submit">保存</button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                                <button type="submit" class="col-xs-12 btn btn-primary">保存</button>
+                                            </form>
+                                        </div>
+                                        <br/>
                                     </div>
                                 </fieldset>
                             </div>
@@ -310,41 +283,57 @@
                 </div>
                 <div class="col-sm-3 col-xs-12">
                     <div class="aside aside-left">
+
                         <img src="<%=user.img%>" class="head head-lg" />
                         <h3><%=user.name%><br/><small><%=user.id%></small></h3>
+
                         <hr/>
                         <%if(user.type==='同学' ){%>
-                            <h5><i class="fa fa-tag"></i><%=user.studentAttr?user.studentAttr.major:''%></h5>
-                            <h5><i class="fa fa-clock-o"></i><%=user.studentAttr?user.studentAttr.grade:''%></h5>
-                            <h5><i class="fa fa-graduation-cap"></i><%=user.studentAttr?user.studentAttr.studentType:''%></h5>
-                            <h5><i class="fa fa-envelope"></i><a href="mailto:<%=user.email%>"><%=user.email%></a></h5>
+                            <p><i class="fa fa-tag"></i>
+                                <%=user.studentAttr?user.studentAttr.major: ''%>
+                            </p>
+                            <p><i class="fa fa-clock-o"></i>
+                                <%=user.studentAttr?user.studentAttr.grade: ''%>
+                            </p>
+                            <p><i class="fa fa-graduation-cap"></i>
+                                <%=user.studentAttr?user.studentAttr.studentType: ''%>
+                            </p>
+                            <p><i class="fa fa-envelope"></i>
+                                <a href="mailto:<%=user.email%>">
+                                    <%=user.email%>
+                                </a>
+                            </p>
                             <%} else if (user.type==='老师' ){%>
-                                <h5><i class="fa fa-institution"></i><%=user.teacherAttr?user.teacherAttr.department:''%></h5>
-                                <h5><i class="fa fa-tag"></i><%=user.teacherAttr?user.teacherAttr.title:''%></h5>
+                                <p><i class="fa fa-institution"></i>
+                                    <%=user.teacherAttr?user.teacherAttr.department: ''%>
+                                </p>
+                                <p><i class="fa fa-tag"></i>
+                                    <%=user.teacherAttr?user.teacherAttr.title: ''%>
+                                </p>
                                 <%}%>
                                     <hr/>
                                     <table class="table table-condensed table-none-bordered text-center">
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <h2 id="oe-num">-</h2>
+                                                    <h3 id="oe-num">-</h3>
                                                 </td>
                                                 <td>
-                                                    <h2 id="cc-num">-</h2>
+                                                    <h3 id="cc-num">-</h3>
                                                 </td>
                                                 <td>
-                                                    <h2 id="ip-num">-</h2>
+                                                    <h3 id="ip-num">-</h3>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <h5><small>开放实验</small></h5>
+                                                    <h6><small>开放实验</small></h6>
                                                 </td>
                                                 <td>
-                                                    <h5><small>挑战杯</small></h5>
+                                                    <h6><small>挑战杯</small></h6>
                                                 </td>
                                                 <td>
-                                                    <h5><small>创新项目</small></h5>
+                                                    <h6><small>创新项目</small></h6>
                                                 </td>
                                             </tr>
                                         </tbody>

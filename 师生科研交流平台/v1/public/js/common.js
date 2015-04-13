@@ -60,9 +60,9 @@ var DOMCreator = {
         var title = $('<h6>').appendTo(node);
         $('<a>').attr('href', '/project/' + project._id).html(project.name).appendTo(title);
         if (!project.teacher) {
-            $('<small class="ml10">').html('暂无指导教师').appendTo(title);
+            $('<small class="ml20">').html('暂无指导教师').appendTo(title);
         } else {
-            $('<small class="ml10">').html('指导教师：' + project.teacher.name).appendTo(title);
+            $('<small class="ml20">').html('指导教师：' + project.teacher.name).appendTo(title);
         }
         var tag = $('<span class="label ml10">').appendTo(title),
             dateStart = new Date(project.dateStart),
@@ -82,7 +82,7 @@ var DOMCreator = {
 
     myProject: function (select) {
         var div = $('<div>');
-        var title = $('<h6><a href="/project/' + select.project._id + '">' + select.project.name + '</a><small class="=ml20">' + select.project.type + '</small></h6>').appendTo(div);
+        var title = $('<h6><a href="/project/' + select.project._id + '">' + select.project.name + '</a><small class="ml20">' + select.project.type + '</small></h6>').appendTo(div);
         var tag = $('<span class="label ml10">').appendTo(title);
         if (select.active) {
             if (new Date(select.project.dateStart) > Date.now()) {
@@ -96,6 +96,21 @@ var DOMCreator = {
             tag.addClass('label-warning').html('申请中');
         }
         $('<small class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;更新于' + moment(select.project.dateUpdate).fromNow() + '</small>').appendTo(div);
+        return div
+    },
+
+    myProjectT: function (project) {
+        var div = $('<div>');
+        var title = $('<h6><a href="/project/' + project._id + '">' + project.name + '</a><small class="ml20">' + project.type + '</small></h6>').appendTo(div);
+        var tag = $('<span class="label ml10">').appendTo(title);
+        if (new Date(project.dateStart) > Date.now()) {
+            tag.addClass('label-success').html('未开始');
+        } else if (new Date(project.dateStart) < Date.now() && new Date(project.dateEnd) > Date.now()) {
+            tag.addClass('label-primary').html('进行中');
+        } else if (new Date(project.dateEnd) < Date.now()) {
+            tag.addClass('label-default').html('已结束');
+        }
+        $('<small class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;更新于' + moment(project.dateUpdate).fromNow() + '</small>').appendTo(div);
         return div
     },
 
@@ -215,6 +230,8 @@ $.fn.extend({
 
 });
 
+
+
 $(document).ready(function () {
 
 
@@ -287,4 +304,19 @@ $(document).ready(function () {
         }
     });
     $('[data-toggle="tooltip"]').tooltip();
+
+    // Focus state for append/prepend inputs
+    $('.input-group').on('focus', '.form-control', function () {
+        $(this).closest('.input-group, .form-group').addClass('focus');
+    }).on('blur', '.form-control', function () {
+        $(this).closest('.input-group, .form-group').removeClass('focus');
+    });
+
+    // Switches
+    if ($('input[data-toggle="switch"]').length) {
+        $('input[data-toggle="switch"]').bootstrapSwitch();
+    }
+
+
+
 })

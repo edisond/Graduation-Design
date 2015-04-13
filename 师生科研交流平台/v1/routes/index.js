@@ -162,7 +162,8 @@ router.get('/team/:id', function (req, res) {
     if (req.session.user) {
         Dao.getTeam(req.params.id, function (err, docs) {
             if (docs) {
-                docs.date = moment(docs.date).fromNow();
+                docs.dateCreate = moment(docs.dateCreate).fromNow();
+
                 var isSelected = false,
                     isApplied = false,
                     condition = {

@@ -118,6 +118,10 @@ img {
     max-width: 300px !important
 }
 
+.minw25 {
+    min-width: 25px !important
+}
+
 .minw250 {
     min-width: 250px !important
 }
