@@ -10,8 +10,8 @@ var express = require('express'),
     routes = require('./routes/index'),
     apiGet = require('./routes/api/get'),
     apiPost = require('./routes/api/post'),
-    app = express(),
-    xssFilters = require('xss-filters');
+    app = express();
+
 
 mongoose.connect('mongodb://localhost/test');
 moment.locale('zh-cn');
@@ -27,7 +27,6 @@ app.use(bodyParser.urlencoded({
     extended: true,
     limit: 1000000
 }));
-
 app.use(session({
     secret: '666',
     resave: false,
@@ -35,18 +34,15 @@ app.use(session({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/', routes);
 app.use('/api/get', apiGet);
 app.use('/api/post', apiPost);
-
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
-
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
@@ -58,7 +54,6 @@ if (app.get('env') === 'development') {
         });
     });
 }
-
 // production error handler
 // no stacktraces leaked to user
 app.use(function (err, req, res, next) {

@@ -1,11 +1,77 @@
-var express = require('express');
-var router = express.Router();
-var session = require('express-session');
-var db = require('../../model/db');
-var fs = require('fs');
-var path = require('path');
-var Dao = db.Dao;
-var md5 = require('../../lib/md5');
+var express = require('express'),
+    router = express.Router(),
+    session = require('express-session'),
+    db = require('../../model/db'),
+    fs = require('fs'),
+    path = require('path'),
+    Dao = db.Dao,
+    md5 = require('../../lib/md5'),
+    xss = require('xss');
+
+xss.whiteList['strike'] = [];
+
+function xssUser(user) {
+    if (user.id) user.id = xss(user.id);
+    if (user.name) user.name = xss(user.name);
+    if (user.img) user.img = xss(user.img);
+    if (user.email) user.email = xss(user.email);
+    if (user.phone) user.phone = xss(user.phone);
+    if (user.studentAttr) {
+        if (user.studentAttr.college) user.studentAttr.college = xss(user.studentAttr.college);
+        if (user.studentAttr.major) user.studentAttr.major = xss(user.studentAttr.major);
+        if (user.studentAttr.grade) user.studentAttr.grade = xss(user.studentAttr.grade);
+        if (user.studentAttr.studentType) user.studentAttr.studentType = xss(user.studentAttr.studentType);
+        if (user.studentAttr.address) user.studentAttr.address = xss(user.studentAttr.address);
+    }
+    if (user.teacherAttr) {
+        if (user.teacherAttr.department) user.teacherAttr.department = xss(user.teacherAttr.department);
+        if (user.teacherAttr.title) user.teacherAttr.title = xss(user.teacherAttr.title);
+    }
+}
+
+function xssProject(project) {
+    if (project.name) project.name = xss(project.name);
+    if (project.description) project.description = xss(project.description);
+    if (project.college) project.college = xss(project.college);
+    if (project.openExperimentAttr) {
+        if (project.openExperimentAttr.detail) project.openExperimentAttr.detail = xss(project.openExperimentAttr.detail);
+        if (project.openExperimentAttr.requirement) project.openExperimentAttr.requirement = xss(project.openExperimentAttr.requirement);
+        if (project.openExperimentAttr.lab) project.openExperimentAttr.lab = xss(project.openExperimentAttr.lab);
+        if (project.openExperimentAttr.source) project.openExperimentAttr.source = xss(project.openExperimentAttr.source);
+        if (project.openExperimentAttr.result) project.openExperimentAttr.result = xss(project.openExperimentAttr.result);
+        if (project.openExperimentAttr.object) project.openExperimentAttr.object = xss(project.openExperimentAttr.object);
+    }
+    if (project.challengeCupAttr) {
+        if (project.challengeCupAttr.ccBasis) project.challengeCupAttr.ccBasis = xss(project.challengeCupAttr.ccBasis);
+        if (project.challengeCupAttr.ccGoal) project.challengeCupAttr.ccGoal = xss(project.challengeCupAttr.ccGoal);
+        if (project.challengeCupAttr.ccStatus) project.challengeCupAttr.ccStatus = xss(project.challengeCupAttr.ccStatus);
+        if (project.challengeCupAttr.ccUsage) project.challengeCupAttr.ccUsage = xss(project.challengeCupAttr.ccUsage);
+        if (project.challengeCupAttr.ccCondition) project.challengeCupAttr.ccCondition = xss(project.challengeCupAttr.ccCondition);
+        if (project.challengeCupAttr.ccSchedule) project.challengeCupAttr.ccSchedule = xss(project.challengeCupAttr.ccSchedule);
+        if (project.challengeCupAttr.ccTeam) project.challengeCupAttr.ccTeam = xss(project.challengeCupAttr.ccTeam);
+        if (project.challengeCupAttr.ccFund) project.challengeCupAttr.ccFund = xss(project.challengeCupAttr.ccFund);
+        if (project.challengeCupAttr.ccDBasic) project.challengeCupAttr.ccDBasic = xss(project.challengeCupAttr.ccDBasic);
+        if (project.challengeCupAttr.ccDMarket) project.challengeCupAttr.ccDMarket = xss(project.challengeCupAttr.ccDMarket);
+        if (project.challengeCupAttr.ccDManage) project.challengeCupAttr.ccDManage = xss(project.challengeCupAttr.ccDManage);
+    }
+    if (project.innovationProjectAttr) {
+        if (project.innovationProjectAttr.ipDetail) project.innovationProjectAttr.ipDetail = xss(project.innovationProjectAttr.ipDetail);
+        if (project.innovationProjectAttr.ipKeywords) project.innovationProjectAttr.ipKeywords = xss(project.innovationProjectAttr.ipKeywords);
+        if (project.innovationProjectAttr.ipBasis) project.innovationProjectAttr.ipBasis = xss(project.innovationProjectAttr.ipBasis);
+        if (project.innovationProjectAttr.ipSchedule) project.innovationProjectAttr.ipSchedule = xss(project.innovationProjectAttr.ipSchedule);
+        if (project.innovationProjectAttr.ipCondition) project.innovationProjectAttr.ipCondition = xss(project.innovationProjectAttr.ipCondition);
+        if (project.innovationProjectAttr.ipFund) project.innovationProjectAttr.ipFund = xss(project.innovationProjectAttr.ipFund);
+    }
+}
+
+function xssTeam(team) {
+    if (team.name) team.name = xss(team.name);
+    if (team.desc) team.desc = xss(team.desc);
+}
+
+function xssComment(comment) {
+    if (comment.body) comment.body = xss(comment.body);
+}
 
 /* 更新管理员 */
 router.post('/update/admin', function (req, res) {
@@ -23,6 +89,7 @@ router.post('/update/admin', function (req, res) {
             }
         })
     } else if (req.body.email) {
+        req.body.email = xss(req.body.email);
         Dao.updateAdmin(req.body, function (err) {
             res.sendStatus(err ? 500 : 200);
         })
@@ -67,10 +134,12 @@ router.post('/user', function (req, res) {
     var user = req.body;
     if (req.session.admin) {
         if (req.query.action === "new") {
+            xssUser(user);
             Dao.newUser(user, function (err) {
                 res.sendStatus(err ? 500 : 200);
             })
         } else if (req.query.action === "update") {
+            xssUser(user);
             Dao.updateUser(user, function (err) {
                 res.sendStatus(err ? 500 : 200);
             });
@@ -93,6 +162,7 @@ router.post('/user', function (req, res) {
             Dao.checkUserPassword(user, function (match) {
                 if (match) {
                     user.password = req.body.np;
+                    xssUser(user);
                     Dao.updateUser(user, function (err) {
                         res.sendStatus(err ? 500 : 200);
                     })
@@ -109,12 +179,14 @@ router.post('/user', function (req, res) {
                         res.sendStatus(500);
                     } else {
                         user.img = "/img/heads/" + req.session.user._id + ".jpeg";
+                        xssUser(user);
                         Dao.updateUser(user, function (err, docs) {
                             res.sendStatus(err ? 500 : 200);
                         })
                     }
                 })
             } else {
+                xssUser(user);
                 Dao.updateUser(user, function (err, docs) {
                     res.sendStatus(err ? 500 : 200);
                 })
@@ -125,6 +197,7 @@ router.post('/user', function (req, res) {
     } else {
         if (req.query.action && req.query.action === 'new') {
             user.active = false;
+            xssUser(user);
             Dao.newUser(user, function (err) {
                 res.sendStatus(err ? 500 : 200);
             })
@@ -140,6 +213,7 @@ router.post('/project', function (req, res) {
     if (req.query.action && req.session.user) {
         if (req.session.user.type === '老师') {
             if (req.query.action === 'new') {
+                xssProject(req.body);
                 req.body.creator = req.body.teacher = req.session.user._id;
                 Dao.newProject(req.body, function (err, doc) {
                     res.sendStatus(err ? 500 : 200);
@@ -150,6 +224,7 @@ router.post('/project', function (req, res) {
                         res.sendStatus(500)
                     } else {
                         if (doc.teacher._id.toString() === req.session.user._id.toString()) {
+                            xssProject(req.body);
                             Dao.updateProject(req.body, function (err) {
                                 res.sendStatus(err ? 500 : 200);
                             })
@@ -163,10 +238,13 @@ router.post('/project', function (req, res) {
                     if (err || !docs || docs.teacher) {
                         res.sendStatus(500)
                     } else {
-                        req.body.teacher = req.session.user._id;
-                        req.body.creator = req.session.user._id;
-                        req.body.active = true;
-                        Dao.updateProject(req.body, function (err) {
+                        var project = {
+                            _id: req.body._id,
+                            teacher: req.session.user._id,
+                            creator: req.session.user._id,
+                            active: true
+                        }
+                        Dao.updateProject(project, function (err) {
                             res.sendStatus(err ? 500 : 200);
                         })
                     }
@@ -176,6 +254,7 @@ router.post('/project', function (req, res) {
             }
         } else if (req.session.user.type === '同学') {
             if (req.query.action === 'new') {
+                xssProject(req.body);
                 req.body.active = false;
                 req.body.creator = req.session.user._id;
                 Dao.newProject(req.body, function (err, doc) {
@@ -188,6 +267,7 @@ router.post('/project', function (req, res) {
                         res.sendStatus(500)
                     } else {
                         if (doc.creator._id.toString() === req.session.user._id.toString()) {
+                            xssProject(req.body);
                             Dao.updateProject(req.body, function (err) {
                                 res.sendStatus(err ? 500 : 200);
                             })
@@ -211,6 +291,7 @@ router.post('/project', function (req, res) {
 router.post('/comment', function (req, res) {
     if (req.session.user._id === req.body.from) {
         if (req.query.action === "new") {
+            xssComment(req.body);
             Dao.newComment(req.body, function (err) {
                 res.sendStatus(err ? 500 : 200)
             })
@@ -294,6 +375,7 @@ router.post('/team', function (req, res) {
                     res.sendStatus(500)
                 } else {
                     if (docs.length < 5) {
+                        xssTeam(team);
                         Dao.newTeam(team, function (err, docs) {
                             if (err) {
                                 res.sendStatus(500)

@@ -15,7 +15,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12">
-                        <h2><%=team.name %></h2>
+                        <h2><%-team.name %></h2>
                         <p class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;创建于
                             <%=team.dateCreate %><i class="fa fa-user ml20"></i>&nbsp;负责人：
                                 <%=team.leader.name %>
@@ -29,7 +29,12 @@
         <div class="container mt20">
             <div class="row">
                 <div class="col-sm-9 col-xs-12">
-
+                    <fieldset>
+                        <legend>团队简介</legend>
+                        <p>
+                            <%-team.desc%>
+                        </p>
+                    </fieldset>
                     <fieldset>
                         <legend>参与项目</legend>
                         <div id="projects">
