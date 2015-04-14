@@ -24,52 +24,12 @@
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade in active" id="tab-project">
                                 <br/>
-                                <form class="form-inline " id="tab-project-filter">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="输入项目名..." aria-describedby="addon-search">
-                                            <span class="input-group-addon" id="addon-search"><i class="fa fa-search"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <span class="hidden-xs ml30"></span>
-                                        <div class="input-group text-center pull-center">
-                                            <label class="checkbox-inline mr10">
-                                                <input type="checkbox" id="inlineCheckbox1" value="option1"><i class="fa fa-flask"></i>&nbsp;开放实验
-                                            </label>
-                                            <label class="checkbox-inline mr10">
-                                                <input type="checkbox" id="inlineCheckbox2" value="option2"><i class="fa fa-trophy"></i>&nbsp;挑战杯
-                                            </label>
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox3" value="option3"><i class="fa fa-lightbulb-o"></i>&nbsp;创新项目
-                                            </label>
-                                        </div>
-                                    </div>
-                                </form>
-                                <hr class="hr-dark" />
                                 <div id="projects">
                                     <p class="text-muted" id="load-state">加载中</p>
                                 </div>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="tab-team">
                                 <br/>
-                                <form class="form-inline " id="tab-team-filter">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="输入团队名..." aria-describedby="addon-search">
-                                            <span class="input-group-addon" id="addon-search"><i class="fa fa-search"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <span class="hidden-xs ml30"></span>
-                                        <div class="input-group text-center pull-center">
-                                            <label class="checkbox-inline mr10">
-                                                <input type="checkbox" id="inlineCheckbox1" value="option1"><i class="fa fa-user"></i>&nbsp;负责人
-                                            </label>
-                                        </div>
-                                    </div>
-                                </form>
-                                <hr class="hr-dark" />
                                 <div id="teams">
                                     <p class="text-muted" id="load-state">加载中</p>
                                 </div>
@@ -83,11 +43,14 @@
                         <h3><%=profile.name%><br/><small><%=profile.id%></small></h3>
                         <hr/>
                         <%if(profile.type==='同学' ){%>
+                            <p><i class="fa fa-institution"></i>
+                                <%=profile.studentAttr?profile.studentAttr.college: ''%>
+                            </p>
                             <p><i class="fa fa-tag"></i>
                                 <%=profile.studentAttr?profile.studentAttr.major: ''%>
                             </p>
                             <p><i class="fa fa-clock-o"></i>
-                                <%=profile.studentAttr?profile.studentAttr.grade: ''%>
+                                <%=profile.studentAttr?profile.studentAttr.grade+ '级': ''%>
                             </p>
                             <p><i class="fa fa-graduation-cap"></i>
                                 <%=profile.studentAttr?profile.studentAttr.studentType: ''%>
@@ -110,13 +73,13 @@
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <h3 id="oe-num">-</h3>
+                                                    <h2 id="oe-num">-</h2>
                                                 </td>
                                                 <td>
-                                                    <h3 id="cc-num">-</h3>
+                                                    <h2 id="cc-num">-</h2>
                                                 </td>
                                                 <td>
-                                                    <h3 id="ip-num">-</h3>
+                                                    <h2 id="ip-num">-</h2>
                                                 </td>
                                             </tr>
                                             <tr>

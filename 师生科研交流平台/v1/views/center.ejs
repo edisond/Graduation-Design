@@ -107,13 +107,15 @@
                                                             <option>其它</option>
                                                         </select>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label class="control-label" for="input-college">学院</label>
-                                                        <input class="form-control" type="text" id="input-college" maxlength="10">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="control-label" for="input-major">专业</label>
-                                                        <input class="form-control" type="text" id="input-major" maxlength="10">
+                                                    <div data-role="selector">
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="input-college">学院</label>
+                                                            <select class="form-control" id="input-college" required data-bind="college"></select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="input-major">专业</label>
+                                                            <select class="form-control" id="input-major" required data-bind="major"></select>
+                                                        </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="control-label" for="input-grade">年级</label>
@@ -161,9 +163,9 @@
                                                                 <option>其它</option>
                                                             </select>
                                                         </div>
-                                                        <div class="form-group">
+                                                        <div class="form-group" data-role="selector">
                                                             <label class="control-label" for="input-department">部门</label>
-                                                            <input class="form-control" type="text" id="input-department" maxlength="10" />
+                                                            <select class="form-control" id="input-department" required data-bind="college"></select>
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="control-label" for="input-title">职称</label>
@@ -249,11 +251,14 @@
 
                         <hr/>
                         <%if(user.type==='同学' ){%>
+                            <p><i class="fa fa-institution"></i>
+                                <%=user.studentAttr?user.studentAttr.college: ''%>
+                            </p>
                             <p><i class="fa fa-tag"></i>
                                 <%=user.studentAttr?user.studentAttr.major: ''%>
                             </p>
                             <p><i class="fa fa-clock-o"></i>
-                                <%=user.studentAttr?user.studentAttr.grade: ''%>
+                                <%=user.studentAttr?user.studentAttr.grade+ '级': ''%>
                             </p>
                             <p><i class="fa fa-graduation-cap"></i>
                                 <%=user.studentAttr?user.studentAttr.studentType: ''%>

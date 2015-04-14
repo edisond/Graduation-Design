@@ -382,7 +382,7 @@ $(document).ready(function () {
             setProfileForm.find('#input-phone').val(data.phone);
             setProfileForm.find('#input-sex').val(data.sex);
             setProfileForm.find('#input-name').val(data.name);
-            setProfileForm.find('#input-department').val(data.teacherAttr.department);
+            setProfileForm.find('#input-department').attr('selectedItem', data.teacherAttr.department);
             setProfileForm.find('#input-title').val(data.teacherAttr.title);
         } else if (data.type === '同学') {
             setProfileForm.find('#input-id').val(data.id);
@@ -390,8 +390,8 @@ $(document).ready(function () {
             setProfileForm.find('#input-phone').val(data.phone);
             setProfileForm.find('#input-sex').val(data.sex);
             setProfileForm.find('#input-name').val(data.name);
-            setProfileForm.find('#input-college').val(data.studentAttr.college);
-            setProfileForm.find('#input-major').val(data.studentAttr.major);
+            setProfileForm.find('#input-college').attr('selectedItem', data.studentAttr.college);
+            setProfileForm.find('#input-major').attr('selectedItem', data.studentAttr.major);
             setProfileForm.find('#input-grade').val(data.studentAttr.grade);
             setProfileForm.find('#input-type').val(data.studentAttr.studentType);
             setProfileForm.find('#input-address').val(data.studentAttr.address);

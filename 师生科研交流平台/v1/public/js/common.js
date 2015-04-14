@@ -298,43 +298,44 @@ $(document).ready(function () {
 
     $('[data-toggle="tooltip"]').tooltip();
 
-    var inputBindCollege = $('select[data-bind=college]');
+    $(function () {
+        var selectList = $('[data-role=selector]');
+        if (selectList.length) {
+            $.get(encodeURI('/data/colleges.json'), function (data) {
+                var data = data.data;
+                selectList.each(function () {
+                    var sCollege = $(this).find('select[data-bind=college]'),
+                        sMajor = $(this).find('select[data-bind=major]'),
+                        sCollegeSelected = sCollege.attr('selectedItem'),
+                        sMajorSelected = sMajor.attr('selectedItem');
 
-    if (inputBindCollege.length) {
-        $.get(encodeURI('/data/colleges.json'), function (data) {
-            data = data.data;
-
-            inputBindCollege.each(function () {
-                var $this = $(this);
-                $this.empty();
-                $('<option></option>').appendTo($this);
-                for (var i = 0, j = data.length; i < j; i++) {
-                    $('<option>' + data[i].name + '</option>').appendTo($this);
-                }
-            })
-
-            inputBindCollege.change(function () {
-                var $this = $(this),
-                    parent = $this.parents('.form-group');
-                if (parent.length) {
-                    parent = $(parent[0]);
-                    var bindMajor = parent.find('select[data-bind=major]');
-                    if (bindMajor.length) {
-                        bindMajor.empty();
-                        var selectedCollege = $this.val();
+                    function college() {
+                        var html = '<option></option>';
                         for (var i = 0, j = data.length; i < j; i++) {
-                            if (data[i].name === selectedCollege) {
-                                $('<option></option>').appendTo(bindMajor);
-                                for (var m = 0, n = data[i].majors.length; m < n; m++) {
-                                    $('<option>' + data[i].majors[m] + '</option>').appendTo(bindMajor);
+                            html += ('<option ' + (sCollegeSelected === data[i].name ? 'selected' : '') + '>' + data[i].name + '</option>');
+                        }
+                        sCollege.html(html);
+                        major();
+                    }
+
+                    function major() {
+                        if (sMajor.length) {
+                            var html = '<option></option>';
+                            var n = sCollege[0].selectedIndex - 1;
+                            if (n >= 0) {
+                                for (var i = 0, j = data[n].majors.length; i < j; i++) {
+                                    html += ('<option ' + (sMajorSelected === data[n].majors[i] ? 'selected' : '') + '>' + data[n].majors[i] + '</option>');
                                 }
-                                break;
                             }
+                            sMajor.html(html);
                         }
                     }
-                }
+                    college();
+                    sCollege.change(function () {
+                        major();
+                    })
+                })
             })
-        })
-    }
-
+        }
+    })
 })
