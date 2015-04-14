@@ -3,7 +3,8 @@
 
 <head>
     <title>
-        <%=projectType%> - 师生科研互动平台</title>
+        项目列表 -
+        <%=projectType%> - 暨南大学师生科研互动平台</title>
     <% include parts/include.css.html %>
 </head>
 
@@ -24,23 +25,46 @@
         <div class="container mt20">
             <div class="row">
                 <div class="col-sm-9 col-xs-12">
-                    <span>项目列表</span>
-                    <div class="btn-group pull-right">
-                        <% if(typeof user!=='undefined' && ((user.type==='老师' && projectType==='开放实验项目' ) || projectType==='挑战杯项目' || projectType==='科技创新工程项目' )){%>
-                            <a href='#' data-toggle="modal" data-target="#new-project"><i class="fa fa-plus"></i>&nbsp;新建</a>
-                            <% } %>
-                                <a class="cursor-pointer ml10" data-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa fa-sort"></i>&nbsp;排序&nbsp;<span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">发布时间</a>
-                                    </li>
-                                    <li><a href="#">名称</a>
-                                    </li>
-                                    <li><a href="#">指导教师</a>
-                                    </li>
-                                </ul>
+                    <ol class="breadcrumb">
+                        <li><a href="/">主页</a>
+                        </li>
+                        <li class="active">
+                            <%=projectType%>
+                        </li>
+                    </ol>
+                    <div class="row">
+                        <div class="col-sm-6 col-xs-12 text-left mb10">
+                            <form class="form-inline">
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control" id="aside-input-search" placeholder="项目名，教师">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default" id="aside-input-search-btn"><i class="fa fa-search"></i>&nbsp;搜索
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-sm-6 col-xs-12 text-right">
+                            <% if(typeof user!=='undefined' && ((user.type==='老师' && projectType==='开放实验项目' ) || projectType==='挑战杯项目' || projectType==='科技创新工程项目' )){%>
+                                <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#new-project"><i class="fa fa-plus"></i>&nbsp;新建</button>
+                                <% } %>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa fa-sort"></i>&nbsp;排序
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">发布时间</a>
+                                            </li>
+                                            <li><a href="#">名称</a>
+                                            </li>
+                                            <li><a href="#">指导教师</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                        </div>
                     </div>
+
                     <hr class="hr-dark" />
                     <div id="list">
                         <span class="text-muted" id="load-state"></span>
@@ -48,14 +72,7 @@
                 </div>
                 <div class="col-sm-3 col-xs-12">
                     <div class="aside aside-right">
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="aside-input-search" placeholder="搜索项目，教师等">
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-default" id="aside-input-search-btn"><i class="fa fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <hr/>没想好这里放什么
+                        没想好这里放什么
                     </div>
                 </div>
             </div>

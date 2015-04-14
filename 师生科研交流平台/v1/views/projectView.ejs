@@ -3,7 +3,8 @@
 
 <head>
     <title>
-        <%=project.name%> - 师生科研互动平台</title>
+        <%=project.name%> -
+            <%=project.type%> - 暨南大学师生科研互动平台</title>
     <% include parts/include.css.html %>
 </head>
 
@@ -35,6 +36,31 @@
         <div class="container mt20">
             <div class="row">
                 <div class="col-sm-9 col-xs-12">
+
+                    <ol class="breadcrumb">
+                        <li><a href="/">主页</a>
+                        </li>
+                        <li>
+                            <a href="/<%=projectFix%>">
+                                <%=project.type%>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <%=project.name%>
+                        </li>
+                    </ol>
+
+                    <div class="bdsharebuttonbox custom-share">
+                        <span class="share-text">分享到：&nbsp;</span>
+                        <a href="#" class="bds_more" data-cmd="more"></a>
+                        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+                        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+                        <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+                        <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+                        <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+                    </div>
+
+                    <br/>
                     <fieldset>
                         <legend>项目简介</legend>
                         <p>
@@ -184,271 +210,197 @@
                 </div>
                 <div class="col-sm-3 col-xs-12">
                     <div class="aside aside-right">
-                        <%if(project.type==='开放实验项目' ){%>
+                        <%if(project.type==='开放实验项目' ){ if(typeof user!=='undefined' ){%>
+
                             <button type="button" class="btn btn-block btn-primary <%=user.type==='同学'&&isSelected?'':'dhidden'%>" id="btn-submit-report"><i class="fa fa-folder-open"></i>&nbsp;提交实验报告</button>
                             <button type="button" class="btn btn-block btn-warning <%=user.type==='同学'&&isApplied?'':'dhidden'%>" id="btn-cancel-select"><i class="fa fa-times"></i>&nbsp;取消申请</button>
                             <button type="button" class="btn btn-block btn-success <%=(user.type==='同学'&&!isApplied&&!isSelected)?'':'dhidden'%>" id="btn-apply"><i class="fa fa-check"></i>&nbsp;我要选课</button>
                             <button type="button" class="btn btn-block btn-primary <%=(user._id.toString()===project.creator._id.toString())?'':'dhidden'%>" id="btn-update-content" data-toggle="modal" data-target="#edit-project"><i class="fa fa-edit"></i>&nbsp;更新实验</button>
                             <button type="button" class="btn btn-block btn-default" data-action="ask"><i class="fa fa-comments"></i>&nbsp;参与讨论</button>
-                            <hr/>
-                            <p class="text-muted">选课情况&nbsp;(
-                                <span id="project-selects-num">-</span>/
-                                <%=project.openExperimentAttr.capacity%>)
+                            <%}else{%>
+                                <p class="text-info">您目前尚未登录，登录后可以：</p>
+                                <ul class="text-info">
+                                    <li>参与选课</li>
+                                    <li>参与讨论</li>
+                                </ul>
+                                <%}%>
+                                    <hr/>
+                                    <p class="text-muted">选课情况&nbsp;(
+                                        <span id="project-selects-num">-</span>/
+                                        <%=project.openExperimentAttr.capacity%>)
 
-                            </p>
-                            <p id="project-selects" class="mt10">
-                                <span class="text-muted">加载中</span>
-                            </p>
-                            <hr/>
-                            <p class="text-muted">所属学院</p>
-                            <p>
-                                <%=project.college%>
-                            </p>
-                            <p class="text-muted">面向专业</p>
-                            <p>
-                                <%=project.openExperimentAttr.object%>
-                            </p>
-                            <p class="text-muted">实验室</p>
-                            <p>
-                                <%=project.openExperimentAttr.lab%>
-                            </p>
-                            <hr/>
-                            <p class="text-muted">项目来源</p>
-                            <p>
-                                <%=project.openExperimentAttr.source%>
-                            </p>
-                            <p class="text-muted">结题形式</p>
-                            <p>
-                                <%=project.openExperimentAttr.result%>
-                            </p>
-                            <hr/>
-                            <p class="text-muted">开始时间</p>
-                            <p>
-                                <%=project.dateStart%>
-                            </p>
-                            <p class="text-muted">结束时间</p>
-                            <p>
-                                <%=project.dateEnd%>
-                            </p>
-                            <p class="text-muted">需要学时</p>
-                            <p>
-                                <%=project.openExperimentAttr.effort%>
-                            </p>
-                            <hr/>
-                            <p class="text-muted">教师信息</p>
-                            <p><i class="fa fa-street-view"></i>
-                                <%=project.teacher.name%>
-                            </p>
-                            <p><i class="fa fa-institution"></i>
-                                <%=project.teacher.department%>
-                            </p>
-                            <p><i class="fa fa-envelope"></i>
-                                <a href="mailto:<%=project.teacher.email%>">
-                                    <%=project.teacher.email%>
-                                </a>
-                            </p>
-                            <p><i class="fa fa-phone"></i>
-                                <%=project.teacher.phone%>
-                            </p>
-                            <%} else if(project.type==='挑战杯项目' || project.type==='科技创新工程项目' ){%>
-                                <button type="button" class="btn btn-block btn-primary <%=user._id.toString()===project.creator._id.toString() ?'':'dhidden'%>" id="btn-update-content" data-toggle="modal" data-target="#edit-project"><i class="fa fa-edit"></i>&nbsp;更新项目</button>
-                                <button type="button" class="btn btn-block btn-success <%=(user.type==='老师'&&!project.teacher)?'':'dhidden'%>" id="btn-teacher-apply" data-toggle="modal" data-target="#guide-project"><i class="fa fa-child"></i>&nbsp;指导项目</button>
-                                <button type="button" class="btn btn-block btn-success <%=user.type==='同学'&&project.teacher&&!team?'':'dhidden'%>" id="btn-team-apply" data-toggle="modal" data-target="#select-team"><i class="fa fa-check"></i>&nbsp;加入项目</button>
-                                <button type="button" class="btn btn-block btn-default" data-action="ask"><i class="fa fa-comments"></i>&nbsp;参与讨论</button>
-                                <hr/>
-                                <p class="text-muted">参与团队</p>
-                                <%if(team){%>
+                                    </p>
+                                    <p id="project-selects" class="mt10">
+                                        <span class="text-muted">加载中</span>
+                                    </p>
+                                    <hr/>
+                                    <p class="text-muted">所属学院</p>
                                     <p>
-                                        <a target="_blank" href="/team/<%=team._id%>">
-                                            <%=team.name%>
+                                        <%=project.college%>
+                                    </p>
+                                    <p class="text-muted">面向专业</p>
+                                    <p>
+                                        <%=project.openExperimentAttr.object%>
+                                    </p>
+                                    <p class="text-muted">实验室</p>
+                                    <p>
+                                        <%=project.openExperimentAttr.lab%>
+                                    </p>
+                                    <hr/>
+                                    <p class="text-muted">项目来源</p>
+                                    <p>
+                                        <%=project.openExperimentAttr.source%>
+                                    </p>
+                                    <p class="text-muted">结题形式</p>
+                                    <p>
+                                        <%=project.openExperimentAttr.result%>
+                                    </p>
+                                    <hr/>
+                                    <p class="text-muted">开始时间</p>
+                                    <p>
+                                        <%=project.dateStart%>
+                                    </p>
+                                    <p class="text-muted">结束时间</p>
+                                    <p>
+                                        <%=project.dateEnd%>
+                                    </p>
+                                    <p class="text-muted">需要学时</p>
+                                    <p>
+                                        <%=project.openExperimentAttr.effort%>
+                                    </p>
+                                    <hr/>
+                                    <p class="text-muted">教师信息</p>
+                                    <p><i class="fa fa-street-view"></i>
+                                        <%=project.teacher.name%>
+                                    </p>
+                                    <p><i class="fa fa-institution"></i>
+                                        <%=project.teacher.department%>
+                                    </p>
+                                    <p><i class="fa fa-envelope"></i>
+                                        <a href="mailto:<%=project.teacher.email%>">
+                                            <%=project.teacher.email%>
                                         </a>
                                     </p>
-                                    <%} else {%>
-                                        <p class="text-muted">暂无团队</p>
-                                        <%}%>
-                                            <hr/>
-                                            <p class="text-muted">所属学院</p>
-                                            <p>
-                                                <%=project.college%>
-                                            </p>
-                                            <%if(project.type==='挑战杯项目' ){%>
-                                                <p class="text-muted">项目类型</p>
-                                                <p>
-                                                    <%=project.challengeCupAttr.ccType%>
-                                                </p>
-                                                <%}%>
-                                                    <hr/>
-                                                    <p class="text-muted">开始时间</p>
+                                    <p><i class="fa fa-phone"></i>
+                                        <%=project.teacher.phone%>
+                                    </p>
+                                    <%} else if(project.type==='挑战杯项目' || project.type==='科技创新工程项目' ){ if(typeof user!=='undefined' ){%>
+                                        <button type="button" class="btn btn-block btn-primary <%=user._id.toString()===project.creator._id.toString() ?'':'dhidden'%>" id="btn-update-content" data-toggle="modal" data-target="#edit-project"><i class="fa fa-edit"></i>&nbsp;更新项目</button>
+                                        <button type="button" class="btn btn-block btn-success <%=(user.type==='老师'&&!project.teacher)?'':'dhidden'%>" id="btn-teacher-apply" data-toggle="modal" data-target="#guide-project"><i class="fa fa-child"></i>&nbsp;指导项目</button>
+                                        <button type="button" class="btn btn-block btn-success <%=user.type==='同学'&&project.teacher&&!team?'':'dhidden'%>" id="btn-team-apply" data-toggle="modal" data-target="#select-team"><i class="fa fa-check"></i>&nbsp;加入项目</button>
+                                        <button type="button" class="btn btn-block btn-default" data-action="ask"><i class="fa fa-comments"></i>&nbsp;参与讨论</button>
+                                        <%}else{%>
+                                            <p class="text-info">您目前尚未登录，登录后可以：</p>
+                                            <ul class="text-info">
+                                                <li>参与选课</li>
+                                                <li>参与讨论</li>
+                                            </ul>
+
+                                            <%}%>
+                                                <hr/>
+                                                <p class="text-muted">参与团队</p>
+                                                <%if(team){%>
                                                     <p>
-                                                        <%=project.dateStart%>
+                                                        <a target="_blank" href="/team/<%=team._id%>">
+                                                            <%=team.name%>
+                                                        </a>
                                                     </p>
-                                                    <p class="text-muted">结束时间</p>
-                                                    <p>
-                                                        <%=project.dateEnd%>
-                                                    </p>
-                                                    <hr/>
-                                                    <p class="text-muted">教师信息</p>
-                                                    <%if(project.teacher){%>
-                                                        <p><i class="fa fa-street-view"></i>
-                                                            <%=project.teacher.name%>
-                                                        </p>
-                                                        <p><i class="fa fa-institution"></i>
-                                                            <%=project.teacher.department%>
-                                                        </p>
-                                                        <p><i class="fa fa-envelope"></i>
-                                                            <a href="mailto:<%=project.teacher.email%>">
-                                                                <%=project.teacher.email%>
-                                                            </a>
-                                                        </p>
-                                                        <p><i class="fa fa-phone"></i>
-                                                            <%=project.teacher.phone%>
-                                                        </p>
-                                                        <%} else {%>
-                                                            <p>暂无指导教师</p>
-                                                            <%}}%>
+                                                    <%} else {%>
+                                                        <p class="text-muted">暂无团队</p>
+                                                        <%}%>
+                                                            <hr/>
+                                                            <p class="text-muted">所属学院</p>
+                                                            <p>
+                                                                <%=project.college%>
+                                                            </p>
+                                                            <%if(project.type==='挑战杯项目' ){%>
+                                                                <p class="text-muted">项目类型</p>
+                                                                <p>
+                                                                    <%=project.challengeCupAttr.ccType%>
+                                                                </p>
+                                                                <%}%>
+                                                                    <hr/>
+                                                                    <p class="text-muted">开始时间</p>
+                                                                    <p>
+                                                                        <%=project.dateStart%>
+                                                                    </p>
+                                                                    <p class="text-muted">结束时间</p>
+                                                                    <p>
+                                                                        <%=project.dateEnd%>
+                                                                    </p>
+                                                                    <hr/>
+                                                                    <p class="text-muted">教师信息</p>
+                                                                    <%if(project.teacher){%>
+                                                                        <p><i class="fa fa-street-view"></i>
+                                                                            <%=project.teacher.name%>
+                                                                        </p>
+                                                                        <p><i class="fa fa-institution"></i>
+                                                                            <%=project.teacher.department%>
+                                                                        </p>
+                                                                        <p><i class="fa fa-envelope"></i>
+                                                                            <a href="mailto:<%=project.teacher.email%>">
+                                                                                <%=project.teacher.email%>
+                                                                            </a>
+                                                                        </p>
+                                                                        <p><i class="fa fa-phone"></i>
+                                                                            <%=project.teacher.phone%>
+                                                                        </p>
+                                                                        <%} else {%>
+                                                                            <p>暂无指导教师</p>
+                                                                            <%}}%>
                     </div>
                 </div>
             </div>
         </div>
 
-        <%if(project.teacher && project.type==='开放实验项目' ){%>
-            <div class="modal fade" id="edit-project" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                            </button>
-                            <h4 class="modal-title">更新开放实验项目</h4>
-                        </div>
-                        <form class="form-horizontal form-horizontal-label-left" id="new-oe">
-                            <input type="hidden" value="<%=project._id%>" id="input-_id">
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="input-college" class="col-sm-2 control-label">所属学院</label>
-                                    <div class="col-sm-4" data-role="selector">
-                                        <select class="form-control" id="input-college" required data-bind="college" selectedItem="<%=project.college%>"></select>
-                                    </div>
-                                    <label for="input-lab" class="col-sm-2 control-label">所在实验室
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="input-lab" maxlength="10" required value="<%=project.openExperimentAttr.lab %>">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="input-name" class="col-sm-2 control-label">项目名称</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="input-name" maxlength="20" required value="<%=project.name %>">
-                                    </div>
-                                    <label for="input-object" class="col-sm-2 control-label">面向对象&nbsp;<a href="#" tabindex="-1"><i class="fa fa-question-circle" data-toggle="tooltip" title="学生专业"></i></a>
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="input-object" maxlength="10" required value="<%=project.openExperimentAttr.object %>">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="input-capacity" class="col-sm-2 control-label">拟定参与学生数</label>
-                                    <div class="col-sm-4">
-                                        <input type="number" class="form-control" id="input-capacity" min="1" max="9999" value="<%=project.openExperimentAttr.capacity %>">
-                                    </div>
-                                    <label for="input-effort" class="col-sm-2 control-label">预期总学时数
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <input type="number" class="form-control" id="input-effort" min="1" max="9999" value="<%=project.openExperimentAttr.effort %>">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="input-datestart" class="col-sm-2 control-label">开始时间</label>
-                                    <div class="col-sm-4">
-                                        <div class="input-group input-append date">
-                                            <input type="text" class="form-control" id="input-dateStart" required value="<%=project.dateStart %>">
-                                            <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-remove"></i>
-                                            </div>
-                                            <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-calendar"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <label for="input-dateend" class="col-sm-2 control-label">结束时间
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <div class="input-group input-append date">
-                                            <input type="text" class="form-control" id="input-dateEnd" required value="<%=project.dateEnd %>">
-                                            <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-remove"></i>
-                                            </div>
-                                            <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-calendar"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">项目来源</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" maxlength="20" class="form-control" id="input-source" value="<%=project.openExperimentAttr.source %>">
-                                    </div>
-                                    <label class="col-sm-2 control-label">结题或成果形式</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" maxlength="20" class="form-control" id="input-result" value="<%=project.openExperimentAttr.result %>">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-12 control-label">项目简介<small>（此处内容将显示在列表摘要中）</small>
-                                    </label>
-                                    <div class="col-sm-12">
-                                        <textarea class="form-control" rows="3" id="input-description" required>
-                                            <%=project.description %>
-                                        </textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-12 control-label">项目细节<small>（请按以下内容填写1.设计思路及实验目的；2.涉及的内容或知识点；3.采用的方法和手段；4.考察点）</small>
-                                    </label>
-                                    <div class="col-sm-12">
-                                        <div class="form-control wysiwyg-textarea" id="input-detail">
-                                            <%-project.openExperimentAttr.detail %>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-12 control-label">需要的主要仪器设备及实验材料
-                                    </label>
-                                    <div class="col-sm-12">
-                                        <div class="form-control wysiwyg-textarea" id="input-requirement">
-                                            <%-project.openExperimentAttr.requirement %>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                <button type="submit" class="btn btn-primary" id="submit">保存</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <%} else if(user._id==project.creator._id && project.type==='挑战杯项目' ){%>
+        <%if(typeof user!=='undefined' ){%>
+            <%if(project.teacher._id==user._id && project.type==='开放实验项目' ){%>
                 <div class="modal fade" id="edit-project" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                                 </button>
-                                <h4 class="modal-title">更新挑战杯项目</h4>
+                                <h4 class="modal-title">更新开放实验项目</h4>
                             </div>
-                            <form class="form-horizontal form-horizontal-label-left" id="new-cc">
+                            <form class="form-horizontal form-horizontal-label-left" id="new-oe">
                                 <input type="hidden" value="<%=project._id%>" id="input-_id">
                                 <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="input-college" class="col-sm-2 control-label">所属学院</label>
+                                        <div class="col-sm-4" data-role="selector">
+                                            <select class="form-control" id="input-college" required data-bind="college" selectedItem="<%=project.college%>"></select>
+                                        </div>
+                                        <label for="input-lab" class="col-sm-2 control-label">所在实验室
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" id="input-lab" maxlength="10" required value="<%=project.openExperimentAttr.lab %>">
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <label for="input-name" class="col-sm-2 control-label">项目名称</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control" id="input-name" maxlength="20" required value="<%=project.name %>">
                                         </div>
-                                        <label for="input-college" class="col-sm-2 control-label">所属学院</label>
-                                        <div class="col-sm-4" data-role="selector">
-                                            <select class="form-control" id="input-college" required data-bind="college" selectedItem="<%=project.college%>"></select>
+                                        <label for="input-object" class="col-sm-2 control-label">面向对象&nbsp;<a href="#" tabindex="-1"><i class="fa fa-question-circle" data-toggle="tooltip" title="学生专业"></i></a>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" id="input-object" maxlength="10" required value="<%=project.openExperimentAttr.object %>">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="input-dateStart" class="col-sm-2 control-label">预期开始时间</label>
+                                        <label for="input-capacity" class="col-sm-2 control-label">拟定参与学生数</label>
+                                        <div class="col-sm-4">
+                                            <input type="number" class="form-control" id="input-capacity" min="1" max="9999" value="<%=project.openExperimentAttr.capacity %>">
+                                        </div>
+                                        <label for="input-effort" class="col-sm-2 control-label">预期总学时数
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="number" class="form-control" id="input-effort" min="1" max="9999" value="<%=project.openExperimentAttr.effort %>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="input-datestart" class="col-sm-2 control-label">开始时间</label>
                                         <div class="col-sm-4">
                                             <div class="input-group input-append date">
                                                 <input type="text" class="form-control" id="input-dateStart" required value="<%=project.dateStart %>">
@@ -458,7 +410,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <label for="input-dateEnd" class="col-sm-2 control-label">预期结束时间
+                                        <label for="input-dateend" class="col-sm-2 control-label">结束时间
                                         </label>
                                         <div class="col-sm-4">
                                             <div class="input-group input-append date">
@@ -471,20 +423,13 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">项目类别</label>
-                                        <div class="col-sm-10">
-                                            <label class="radio-inline" for="input-type-1">
-                                                <input <%=project.challengeCupAttr.ccType==='哲学社会科学类社会调查报告和学术论文' ? 'checked': ''%> value="哲学社会科学类社会调查报告和学术论文" type="radio" name="input-type" id="input-type-1">哲学社会科学类社会调查报告和学术论文
-                                            </label>
-                                            <label class="radio-inline" for="input-type-2">
-                                                <input <%=project.challengeCupAttr.ccType==='自然科学类学术论文' ? 'checked': ''%> value="自然科学类学术论文" type="radio" name="input-type" id="input-type-2">自然科学类学术论文
-                                            </label>
-                                            <label class="radio-inline" for="input-type-3">
-                                                <input <%=project.challengeCupAttr.ccType==='科技发明制作类' ? 'checked': ''%> value="科技发明制作类" type="radio" name="input-type" id="input-type-3">科技发明制作类
-                                            </label>
-                                            <label class="radio-inline" for="input-type-4">
-                                                <input <%=project.challengeCupAttr.ccType==='创业计划类' ? 'checked': ''%> value="创业计划类" type="radio" name="input-type" id="input-type-4">创业计划类
-                                            </label>
+                                        <label class="col-sm-2 control-label">项目来源</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" maxlength="20" class="form-control" id="input-source" value="<%=project.openExperimentAttr.source %>">
+                                        </div>
+                                        <label class="col-sm-2 control-label">结题或成果形式</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" maxlength="20" class="form-control" id="input-result" value="<%=project.openExperimentAttr.result %>">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -492,107 +437,25 @@
                                         </label>
                                         <div class="col-sm-12">
                                             <textarea class="form-control" rows="3" id="input-description" required>
-                                                <%=project.description%>
+                                                <%=project.description %>
                                             </textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-12 control-label">项目的基本内容、意义摘要、研究思路和方法
+                                        <label class="col-sm-12 control-label">项目细节<small>（请按以下内容填写1.设计思路及实验目的；2.涉及的内容或知识点；3.采用的方法和手段；4.考察点）</small>
                                         </label>
                                         <div class="col-sm-12">
-                                            <div class="form-control wysiwyg-textarea" id="input-ccBasis">
-                                                <%-project.challengeCupAttr.ccBasis%>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-12 control-label">项目拟解决的技术难点以及预期达到的目标、主要技术指标和水平
-                                        </label>
-                                        <div class="col-sm-12">
-                                            <div class="form-control wysiwyg-textarea" id="input-ccGoal">
-                                                <%-project.challengeCupAttr.ccGoal%>
+                                            <div class="form-control wysiwyg-textarea" id="input-detail">
+                                                <%-project.openExperimentAttr.detail %>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-12 control-label">项目研究内容的发展现状与趋势，与项目有关研究领域的基础以及专利申请和授权情况
+                                        <label class="col-sm-12 control-label">需要的主要仪器设备及实验材料
                                         </label>
                                         <div class="col-sm-12">
-                                            <div class="form-control wysiwyg-textarea" id="input-ccStatus">
-                                                <%-project.challengeCupAttr.ccStatus%>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-12 control-label">预期研究成果应用、转化的前景预测及分析
-                                        </label>
-                                        <div class="col-sm-12">
-                                            <div class="form-control wysiwyg-textarea" id="input-ccUsage">
-                                                <%-project.challengeCupAttr.ccUsage%>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-12 control-label">研究工作条件与基础
-                                        </label>
-                                        <div class="col-sm-12">
-                                            <div class="form-control wysiwyg-textarea" id="input-ccCondition">
-                                                <%-project.challengeCupAttr.ccCondition%>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-12 control-label">研究工作计划及进度（各实施阶段目标和内容）
-                                        </label>
-                                        <div class="col-sm-12">
-                                            <div class="form-control wysiwyg-textarea" id="input-ccSchedule">
-                                                <%-project.challengeCupAttr.ccSchedule%>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-12 control-label">团队的学科搭配和梯队建设情况
-                                        </label>
-                                        <div class="col-sm-12">
-                                            <div class="form-control wysiwyg-textarea" id="input-ccTeam">
-                                                <%-project.challengeCupAttr.ccTeam%>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-12 control-label">经费申请金额、经费用途和使用计划
-                                        </label>
-                                        <div class="col-sm-12">
-                                            <div class="form-control wysiwyg-textarea" id="input-ccFund">
-                                                <%-project.challengeCupAttr.ccFund%>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-12 control-label">创业项目概述、产品和服务介绍<small class="ml10">（创业计划类项目填写）</small>
-                                        </label>
-                                        <div class="col-sm-12">
-                                            <div class="form-control wysiwyg-textarea" id="input-ccDBasic">
-                                                <%-project.challengeCupAttr.ccDBasic%>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-12 control-label">创业公司市场、竞争和营销概述<small class="ml10">（创业计划类项目填写）</small>
-                                        </label>
-                                        <div class="col-sm-12">
-                                            <div class="form-control wysiwyg-textarea" id="input-ccDMarket">
-                                                <%-project.challengeCupAttr.ccDMarket%>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-12 control-label">创业公司财务、经营和组织概述<small class="ml10">（创业计划类项目填写）</small>
-                                        </label>
-                                        <div class="col-sm-12">
-                                            <div class="form-control wysiwyg-textarea" id="input-ccDManage">
-                                                <%-project.challengeCupAttr.ccDManage%>
+                                            <div class="form-control wysiwyg-textarea" id="input-requirement">
+                                                <%-project.openExperimentAttr.requirement %>
                                             </div>
                                         </div>
                                     </div>
@@ -605,21 +468,22 @@
                         </div>
                     </div>
                 </div>
-                <%} else if(user._id==project.creator._id && project.type==='科技创新工程项目' ){%>
+                <%} else if(user._id==project.creator._id && project.type==='挑战杯项目' ){%>
                     <div class="modal fade" id="edit-project" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                                     </button>
-                                    <h4 class="modal-title">更新科技创新工程项目</h4>
+                                    <h4 class="modal-title">更新挑战杯项目</h4>
                                 </div>
-                                <form class="form-horizontal form-horizontal-label-left" id="new-ip">
+                                <form class="form-horizontal form-horizontal-label-left" id="new-cc">
+                                    <input type="hidden" value="<%=project._id%>" id="input-_id">
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <label for="input-name" class="col-sm-2 control-label">项目名称</label>
                                             <div class="col-sm-4">
-                                                <input type="text" class="form-control" id="input-name" maxlength="20" required value="<%=project.name%>">
+                                                <input type="text" class="form-control" id="input-name" maxlength="20" required value="<%=project.name %>">
                                             </div>
                                             <label for="input-college" class="col-sm-2 control-label">所属学院</label>
                                             <div class="col-sm-4" data-role="selector">
@@ -630,7 +494,7 @@
                                             <label for="input-dateStart" class="col-sm-2 control-label">预期开始时间</label>
                                             <div class="col-sm-4">
                                                 <div class="input-group input-append date">
-                                                    <input type="text" class="form-control" id="input-dateStart" required value="<%=project.dateStart%>">
+                                                    <input type="text" class="form-control" id="input-dateStart" required value="<%=project.dateStart %>">
                                                     <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-remove"></i>
                                                     </div>
                                                     <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-calendar"></i>
@@ -641,12 +505,29 @@
                                             </label>
                                             <div class="col-sm-4">
                                                 <div class="input-group input-append date">
-                                                    <input type="text" class="form-control" id="input-dateEnd" required value="<%=project.dateEnd%>">
+                                                    <input type="text" class="form-control" id="input-dateEnd" required value="<%=project.dateEnd %>">
                                                     <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-remove"></i>
                                                     </div>
                                                     <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-calendar"></i>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">项目类别</label>
+                                            <div class="col-sm-10">
+                                                <label class="radio-inline" for="input-type-1">
+                                                    <input <%=project.challengeCupAttr.ccType==='哲学社会科学类社会调查报告和学术论文' ? 'checked': ''%> value="哲学社会科学类社会调查报告和学术论文" type="radio" name="input-type" id="input-type-1">哲学社会科学类社会调查报告和学术论文
+                                                </label>
+                                                <label class="radio-inline" for="input-type-2">
+                                                    <input <%=project.challengeCupAttr.ccType==='自然科学类学术论文' ? 'checked': ''%> value="自然科学类学术论文" type="radio" name="input-type" id="input-type-2">自然科学类学术论文
+                                                </label>
+                                                <label class="radio-inline" for="input-type-3">
+                                                    <input <%=project.challengeCupAttr.ccType==='科技发明制作类' ? 'checked': ''%> value="科技发明制作类" type="radio" name="input-type" id="input-type-3">科技发明制作类
+                                                </label>
+                                                <label class="radio-inline" for="input-type-4">
+                                                    <input <%=project.challengeCupAttr.ccType==='创业计划类' ? 'checked': ''%> value="创业计划类" type="radio" name="input-type" id="input-type-4">创业计划类
+                                                </label>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -659,57 +540,102 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-12 control-label">关键词<small>（3~5个，用分号隔开）</small>
+                                            <label class="col-sm-12 control-label">项目的基本内容、意义摘要、研究思路和方法
                                             </label>
                                             <div class="col-sm-12">
-                                                <textarea class="form-control" rows="3" id="input-ipKeywords" required>
-                                                    <%=project.innovationProjectAttr.ipKeywords%>
-                                                </textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-12 control-label">摘要
-                                            </label>
-                                            <div class="col-sm-12">
-                                                <div class="form-control wysiwyg-textarea" id="input-ipDetail">
-                                                    <%-project.innovationProjectAttr.ipDetail%>
+                                                <div class="form-control wysiwyg-textarea" id="input-ccBasis">
+                                                    <%-project.challengeCupAttr.ccBasis%>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="col-sm-12 control-label">立论依据<small>（研究意义，现状分析，创新之处，参考文献）</small>
+                                            <label class="col-sm-12 control-label">项目拟解决的技术难点以及预期达到的目标、主要技术指标和水平
                                             </label>
                                             <div class="col-sm-12">
-                                                <div class="form-control wysiwyg-textarea" id="input-ipBasis">
-                                                    <%-project.innovationProjectAttr.ipBasis%>
+                                                <div class="form-control wysiwyg-textarea" id="input-ccGoal">
+                                                    <%-project.challengeCupAttr.ccGoal%>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-12 control-label">研究方案<small>（研究目标和内容，拟解决的关键问题，研究进度，预期成果）</small>
+                                            <label class="col-sm-12 control-label">项目研究内容的发展现状与趋势，与项目有关研究领域的基础以及专利申请和授权情况
                                             </label>
                                             <div class="col-sm-12">
-                                                <div class="form-control wysiwyg-textarea" id="input-ipSchedule">
-                                                    <%-project.innovationProjectAttr.ipSchedule%>
+                                                <div class="form-control wysiwyg-textarea" id="input-ccStatus">
+                                                    <%-project.challengeCupAttr.ccStatus%>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-12 control-label">研究条件与基础
+                                            <label class="col-sm-12 control-label">预期研究成果应用、转化的前景预测及分析
                                             </label>
                                             <div class="col-sm-12">
-                                                <div class="form-control wysiwyg-textarea" id="input-ipCondition">
-                                                    <%-project.innovationProjectAttr.ipCondition%>
+                                                <div class="form-control wysiwyg-textarea" id="input-ccUsage">
+                                                    <%-project.challengeCupAttr.ccUsage%>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-12 control-label">经费预算<small>（科研业务费，实验材料费，其他费用）</small>
+                                            <label class="col-sm-12 control-label">研究工作条件与基础
                                             </label>
                                             <div class="col-sm-12">
-                                                <div class="form-control wysiwyg-textarea" id="input-ipFund">
-                                                    <%-project.innovationProjectAttr.ipFund%>
+                                                <div class="form-control wysiwyg-textarea" id="input-ccCondition">
+                                                    <%-project.challengeCupAttr.ccCondition%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label">研究工作计划及进度（各实施阶段目标和内容）
+                                            </label>
+                                            <div class="col-sm-12">
+                                                <div class="form-control wysiwyg-textarea" id="input-ccSchedule">
+                                                    <%-project.challengeCupAttr.ccSchedule%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label">团队的学科搭配和梯队建设情况
+                                            </label>
+                                            <div class="col-sm-12">
+                                                <div class="form-control wysiwyg-textarea" id="input-ccTeam">
+                                                    <%-project.challengeCupAttr.ccTeam%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label">经费申请金额、经费用途和使用计划
+                                            </label>
+                                            <div class="col-sm-12">
+                                                <div class="form-control wysiwyg-textarea" id="input-ccFund">
+                                                    <%-project.challengeCupAttr.ccFund%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label">创业项目概述、产品和服务介绍<small class="ml10">（创业计划类项目填写）</small>
+                                            </label>
+                                            <div class="col-sm-12">
+                                                <div class="form-control wysiwyg-textarea" id="input-ccDBasic">
+                                                    <%-project.challengeCupAttr.ccDBasic%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label">创业公司市场、竞争和营销概述<small class="ml10">（创业计划类项目填写）</small>
+                                            </label>
+                                            <div class="col-sm-12">
+                                                <div class="form-control wysiwyg-textarea" id="input-ccDMarket">
+                                                    <%-project.challengeCupAttr.ccDMarket%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label">创业公司财务、经营和组织概述<small class="ml10">（创业计划类项目填写）</small>
+                                            </label>
+                                            <div class="col-sm-12">
+                                                <div class="form-control wysiwyg-textarea" id="input-ccDManage">
+                                                    <%-project.challengeCupAttr.ccDManage%>
                                                 </div>
                                             </div>
                                         </div>
@@ -722,62 +648,180 @@
                             </div>
                         </div>
                     </div>
-                    <%}%>
-
-                        <%if(user.type==='同学' &&project.teacher){%>
-                            <div class="modal fade" id="select-team" tabindex="-1" role="dialog" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                                            </button>
-                                            <h4 class="modal-title">选择团队</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <h5>请从下列你拥有的团队中选择一个，点击“确定”以申请加入本项目。</h5>
-                                            <p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;<small>只能选择自己作为负责人的团队，在“个人中心-我的团队”中创建。</small>
-                                            </p>
-                                            <div id="selector"></div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                            <button type="button" class="btn btn-primary" id="submit">确定</button>
-                                        </div>
+                    <%} else if(user._id==project.creator._id && project.type==='科技创新工程项目' ){%>
+                        <div class="modal fade" id="edit-project" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h4 class="modal-title">更新科技创新工程项目</h4>
                                     </div>
-                                </div>
-                            </div>
-                            <%}%>
+                                    <form class="form-horizontal form-horizontal-label-left" id="new-ip">
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="input-name" class="col-sm-2 control-label">项目名称</label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" class="form-control" id="input-name" maxlength="20" required value="<%=project.name%>">
+                                                </div>
+                                                <label for="input-college" class="col-sm-2 control-label">所属学院</label>
+                                                <div class="col-sm-4" data-role="selector">
+                                                    <select class="form-control" id="input-college" required data-bind="college" selectedItem="<%=project.college%>"></select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="input-dateStart" class="col-sm-2 control-label">预期开始时间</label>
+                                                <div class="col-sm-4">
+                                                    <div class="input-group input-append date">
+                                                        <input type="text" class="form-control" id="input-dateStart" required value="<%=project.dateStart%>">
+                                                        <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-remove"></i>
+                                                        </div>
+                                                        <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <label for="input-dateEnd" class="col-sm-2 control-label">预期结束时间
+                                                </label>
+                                                <div class="col-sm-4">
+                                                    <div class="input-group input-append date">
+                                                        <input type="text" class="form-control" id="input-dateEnd" required value="<%=project.dateEnd%>">
+                                                        <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-remove"></i>
+                                                        </div>
+                                                        <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">项目简介<small>（此处内容将显示在列表摘要中）</small>
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <textarea class="form-control" rows="3" id="input-description" required>
+                                                        <%=project.description%>
+                                                    </textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">关键词<small>（3~5个，用分号隔开）</small>
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <textarea class="form-control" rows="3" id="input-ipKeywords" required>
+                                                        <%=project.innovationProjectAttr.ipKeywords%>
+                                                    </textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">摘要
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-control wysiwyg-textarea" id="input-ipDetail">
+                                                        <%-project.innovationProjectAttr.ipDetail%>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                <%if(user.type==='老师' &&!project.teacher){%>
-                                    <div class="modal fade" id="guide-project" tabindex="-1" role="dialog" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                    <h4 class="modal-title">指导项目</h4>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">立论依据<small>（研究意义，现状分析，创新之处，参考文献）</small>
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-control wysiwyg-textarea" id="input-ipBasis">
+                                                        <%-project.innovationProjectAttr.ipBasis%>
+                                                    </div>
                                                 </div>
-                                                <div class="modal-body">
-                                                    <h5>点击“确定”后，将成为本项目的指导教师，获得本项目的所有权，可以执行更新、删除等操作。</h5>
-                                                    <p><i class="fa fa-exclamation-triangle text-danger"></i>&nbsp;注意：</p>
-                                                    <p class="ml20">与此同时，创建本项目的同学将：</p>
-                                                    <ol>
-                                                        <li>失去对项目的所有权；</li>
-                                                        <li>可以与其它同学组建团队参与本项目（需要通过您的审批）。</li>
-                                                    </ol>
-                                                    <p>因此，请老师在<b>确认参与指导前务必与学生进行沟通</b>，在取得学生同意后，执行此操作。</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">研究方案<small>（研究目标和内容，拟解决的关键问题，研究进度，预期成果）</small>
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-control wysiwyg-textarea" id="input-ipSchedule">
+                                                        <%-project.innovationProjectAttr.ipSchedule%>
+                                                    </div>
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                                    <button type="button" class="btn btn-primary" id="submit">确定</button>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">研究条件与基础
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-control wysiwyg-textarea" id="input-ipCondition">
+                                                        <%-project.innovationProjectAttr.ipCondition%>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">经费预算<small>（科研业务费，实验材料费，其他费用）</small>
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-control wysiwyg-textarea" id="input-ipFund">
+                                                        <%-project.innovationProjectAttr.ipFund%>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                            <button type="submit" class="btn btn-primary" id="submit">保存</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <%}%>
+
+                            <%if(user.type==='同学' &&project.teacher){%>
+                                <div class="modal fade" id="select-team" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <h4 class="modal-title">选择团队</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h5>请从下列你拥有的团队中选择一个，点击“确定”以申请加入本项目。</h5>
+                                                <p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;<small>只能选择自己作为负责人的团队，在“个人中心-我的团队”中创建。</small>
+                                                </p>
+                                                <div id="selector"></div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                                <button type="button" class="btn btn-primary" id="submit">确定</button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <%}%>
-                                        <% include parts/include.js.html %>
-                                            <script type="text/javascript" src="/js/projectView.js"></script>
-                                            <script type="text/javascript" src="/js/baidu.share.js"></script>
+                                </div>
+                                <%}%>
+
+                                    <%if(user.type==='老师' &&!project.teacher){%>
+                                        <div class="modal fade" id="guide-project" tabindex="-1" role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                        <h4 class="modal-title">指导项目</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <h5>点击“确定”后，将成为本项目的指导教师，获得本项目的所有权，可以执行更新、删除等操作。</h5>
+                                                        <p><i class="fa fa-exclamation-triangle text-danger"></i>&nbsp;注意：</p>
+                                                        <p class="ml20">与此同时，创建本项目的同学将：</p>
+                                                        <ol>
+                                                            <li>失去对项目的所有权；</li>
+                                                            <li>可以与其它同学组建团队参与本项目（需要通过您的审批）。</li>
+                                                        </ol>
+                                                        <p>因此，请老师在<b>确认参与指导前务必与学生进行沟通</b>，在取得学生同意后，执行此操作。</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                                        <button type="button" class="btn btn-primary" id="submit">确定</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <%}}%>
+
+                                            <% include parts/include.js.html %>
+                                                <script type="text/javascript" src="/js/projectView.js"></script>
+                                                <script type="text/javascript" src="/js/baidu.share.js"></script>
 
 
 </body>

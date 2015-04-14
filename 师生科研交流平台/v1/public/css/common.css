@@ -162,3 +162,13 @@ img.head.head-sm {
 .carousel-inner {
     background-color: #364967;
 }
+
+.custom-share {
+    line-height: 30px;
+    height: 30px;
+}
+
+.custom-share>.share-text {
+    line-height: 30px;
+    float: left;
+}

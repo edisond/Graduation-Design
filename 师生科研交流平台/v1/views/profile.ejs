@@ -3,7 +3,7 @@
 
 <head>
     <title>
-        <%=profile.name%> - 用户资料 - 师生科研互动平台</title>
+        <%=profile.name%> - 用户资料 - 暨南大学师生科研互动平台</title>
     <%include parts/include.css.html%>
 </head>
 
@@ -14,6 +14,14 @@
         <div class="container mt20">
             <div class="row">
                 <div class="col-sm-9 col-xs-12 pull-right">
+                    <ol class="breadcrumb">
+                        <li><a href="/">主页</a>
+                        </li>
+                        <li class="active">
+                            <%=profile.name%>
+                                <%=profile.type%>的个人资料
+                        </li>
+                    </ol>
                     <div role="tabpanel">
                         <ul class="nav nav-tabs" role="tablist">
                             <li role="presentation" class="active"><a id="project" href="#tab-project" aria-controls="tab-project" role="tab" data-toggle="tab"><i class="fa fa-book"></i>&nbsp;参与项目</a>

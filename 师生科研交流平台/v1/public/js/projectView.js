@@ -56,14 +56,19 @@ $(document).ready(function () {
     if (projectType === '开放实验项目')
         fetchSelector();
 
-    commentList.delegate('a[href="#input-comment"]', 'click', function () {
-        var $this = $(this);
-        $('#reply-object').html('正在回复' + $this.attr('data-name') + $this.attr('data-type'));
-        commentBox.attr({
-            'data-id': $this.attr('data-id'),
-            'data-name': $this.attr('data-name'),
-            'data-type': $this.attr('data-type')
-        }).focus()
+    commentList.delegate('a[href="#input-comment"]', 'click', function (e) {
+        if (USER) {
+            var $this = $(this);
+            $('#reply-object').html('正在回复' + $this.attr('data-name') + $this.attr('data-type'));
+            commentBox.attr({
+                'data-id': $this.attr('data-id'),
+                'data-name': $this.attr('data-name'),
+                'data-type': $this.attr('data-type')
+            }).focus()
+        } else {
+            notyFacade('请先登录', 'information');
+            e.preventDefault();
+        }
     })
 
     $('#btn-apply').click(function () {
@@ -133,33 +138,38 @@ $(document).ready(function () {
     });
 
     $('#form-comment').html5Validate(function () {
-        var comment = {
-            body: commentBox.html(),
-            from: USER._id,
-            project: projectId,
-            date: Date.now()
-        };
-        if (comment.body === '') {
-            notyFacade('请填写讨论内容', 'warning');
+        if (USER) {
+            var comment = {
+                body: commentBox.html(),
+                from: USER._id,
+                project: projectId,
+                date: Date.now()
+            };
+            if (comment.body === '') {
+                notyFacade('请填写讨论内容', 'warning');
+                return false;
+            }
+            if (commentBox.attr('data-id')) {
+                comment.to = commentBox.attr('data-id')
+            }
+            $.ajax({
+                url: encodeURI('/api/post/comment?action=new'),
+                data: comment,
+                type: 'POST',
+                success: function () {
+                    fetchComments();
+                    commentBox.html('');
+                    $('#input-cancel').click();
+                    notyFacade('发布成功', 'success');
+                },
+                error: function () {
+                    notyFacade('发布失败，请重试或刷新后重试', 'error');
+                }
+            });
+        } else {
+            notyFacade('请先登录', 'information');
             return false;
         }
-        if (commentBox.attr('data-id')) {
-            comment.to = commentBox.attr('data-id')
-        }
-        $.ajax({
-            url: encodeURI('/api/post/comment?action=new'),
-            data: comment,
-            type: 'POST',
-            success: function () {
-                fetchComments();
-                commentBox.html('');
-                $('#input-cancel').click();
-                notyFacade('发布成功', 'success');
-            },
-            error: function () {
-                notyFacade('发布失败，请重试或刷新后重试', 'error');
-            }
-        });
     });
 
     $('#input-cancel').click(function () {

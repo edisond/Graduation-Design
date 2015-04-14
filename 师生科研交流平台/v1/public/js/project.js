@@ -3,14 +3,6 @@ $(document).ready(function () {
     var projectType = $('#projectType').val(),
         list = $('#list');
 
-    list.delegate('a', 'click', function (e) {
-        if (!USER) {
-            notyFacade('请先登录', 'information')
-            return false
-        }
-
-    })
-
     function fetchProjecs() {
         list.empty();
         var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(list)

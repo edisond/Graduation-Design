@@ -123,7 +123,56 @@ router.get('/project/:id', function (req, res) {
             }
         })
     } else {
-        res.redirect('/');
+        Dao.getProject(req.params.id, function (err, docs) {
+            if (docs) {
+                docs.dateUpdate = moment(docs.dateUpdate).fromNow();
+                docs.dateStart = moment(docs.dateStart).format('l');
+                docs.dateEnd = moment(docs.dateEnd).format('l');
+                if (docs.type === '开放实验项目') {
+                    res.render('projectView', {
+                        project: docs,
+                        projectFix: 'open-experiment'
+                    })
+                } else if (docs.type === '挑战杯项目') {
+                    var projectFix = 'challenge-cup',
+                        condition = {
+                            project: docs._id,
+                            active: true
+                        };
+                    Dao.getSelects(condition, function (err, doc) {
+                        if (err) {
+                            res.sendStatus(500);
+                        } else {
+                            res.render('projectView', {
+                                project: docs,
+                                team: (doc.length && doc[0].team) ? doc[0].team : undefined,
+                                projectFix: projectFix
+                            })
+                        }
+                    })
+                } else if (docs.type === '科技创新工程项目') {
+                    var projectFix = 'innovation-project',
+                        condition = {
+                            project: docs._id,
+                            active: true
+                        };
+                    Dao.getSelects(condition, function (err, doc) {
+                        if (err) {
+                            res.sendStatus(500);
+                        } else {
+                            res.render('projectView', {
+                                project: docs,
+                                team: (doc.length && doc[0].team) ? doc[0].team : undefined,
+                                projectFix: projectFix
+                            })
+                        }
+                    })
+                }
+
+            } else {
+                res.sendStatus(404);
+            }
+        })
     }
 })
 
