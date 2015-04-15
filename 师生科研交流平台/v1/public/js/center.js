@@ -69,54 +69,61 @@ $(document).ready(function () {
     fetchComments();
     fetchMyTeam();
 
-    $('#head-setting-preview-big, #head-setting-preview-small').attr('src', USER.img);
 
-    $('#input-head').change(function () {
-        var file = this.files[0];
-        if (/^image\//.test(file.type)) {
-            var reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = function (e) {
-                $('#head-setting-preview-big, #head-setting-preview-small').attr('src', this.result);
-            }
-        } else {
-            notyFacade('请上传图片类型文件', 'warning')
-        }
-    })
 
-    $('#submit-head').click(function () {
-        var file = $('#input-head')[0].files[0];
-        if (/^image\//.test(file.type)) {
-            var reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = function (e) {
-                var img = this.result,
-                    post = {
-                        _id: USER._id,
-                        img: img
-                    };
-                $.ajax({
-                    url: encodeURI('/api/post/user?action=update'),
-                    data: post,
-                    type: 'POST',
-                    success: function () {
-                        $('a[href=#head-setting]').click();
-                        notyFacade('修改成功，重新登录后生效', 'success')
-                    },
-                    error: function (XMLHttpRequest) {
-                        notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试。（请勿上传大于1MB的头像）', 'error')
-                    }
-                })
+    if (typeof FileReader === 'undefined') {
+        $('#lower-ie-warning').removeClass('hidden');
+        $('#head-setting-preview-big, #head-setting-preview-small').hide();
+        $('#submit-head').addClass('disabled');
+    } else {
+
+        $('#head-setting-preview-big, #head-setting-preview-small').attr('src', USER.img);
+
+        $('#input-head').change(function () {
+            var file = this.files[0];
+            if (/^image\//.test(file.type)) {
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function (e) {
+                    $('#head-setting-preview-big, #head-setting-preview-small').attr('src', this.result);
+                }
+            } else {
+                notyFacade('请上传图片类型文件', 'warning')
             }
-        } else {
-            notyFacade('请上传图片类型文件', 'warning')
-        }
-    })
+        })
+
+        $('#submit-head').click(function () {
+            var file = $('#input-head')[0].files[0];
+            if (/^image\//.test(file.type)) {
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function (e) {
+                    var img = this.result,
+                        post = {
+                            _id: USER._id,
+                            img: img
+                        };
+                    $.ajax({
+                        url: encodeURI('/api/post/user?action=update'),
+                        data: post,
+                        type: 'POST',
+                        success: function () {
+                            $('a[href=#head-setting]').click();
+                            notyFacade('修改成功，重新登录后生效', 'success')
+                        },
+                        error: function (XMLHttpRequest) {
+                            notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试。（请勿上传大于1MB的头像）', 'error')
+                        }
+                    })
+                }
+            } else {
+                notyFacade('请上传图片类型文件', 'warning')
+            }
+        })
+    }
 
     if (USER.type === '老师') {
-
         var tableApply = $('#table-apply');
-
 
         function fetchTeacherProjects() {
             projectList.empty();
@@ -297,10 +304,10 @@ $(document).ready(function () {
                     "data": "_id",
                     "searchable": false,
                     "orderable": false,
-                    "width": '100px',
+                    "width": '200px',
                     'className': "text-center",
                     'render': function (data, type, row) {
-                        return '<a href="/profile/' + row.user._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a>';
+                        return '<a href="/profile/' + row.user._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a><a class="ml20" href="#" data-id="' + data + '" data-action="reject"><i class="fa fa-times"></i>&nbsp;拒绝</a>';
                     }
             }
         ],

@@ -8,112 +8,118 @@
 </head>
 
 <body>
-    <% include parts/nav.ejs %>
-        <input type="hidden" value="<%=profile._id%>" id="profile-_id">
-        <input type="hidden" value="<%=profile.type%>" id="profile-type">
-        <div class="container mt20">
-            <div class="row">
-                <div class="col-sm-9 col-xs-12 pull-right">
-                    <ol class="breadcrumb">
-                        <li><a href="/">主页</a>
-                        </li>
-                        <li class="active">
-                            <%=profile.name%>
-                                <%=profile.type%>的个人资料
-                        </li>
-                    </ol>
-                    <div role="tabpanel">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active"><a id="project" href="#tab-project" aria-controls="tab-project" role="tab" data-toggle="tab"><i class="fa fa-book"></i>&nbsp;参与项目</a>
-                            </li>
-                            <li role="presentation"><a id="team" href="#tab-team" aria-controls="tab-team" role="tab" data-toggle="tab"><i class="fa fa-users"></i>&nbsp;参与团队</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane fade in active" id="tab-project">
-                                <br/>
-                                <div id="projects">
-                                    <p class="text-muted" id="load-state">加载中</p>
+    <div class="page-wrapper">
+        <div class="body">
+            <% include parts/nav.ejs %>
+                <input type="hidden" value="<%=profile._id%>" id="profile-_id">
+                <input type="hidden" value="<%=profile.type%>" id="profile-type">
+                <div class="container mt20">
+                    <div class="row">
+                        <div class="col-sm-9 col-xs-12 pull-right">
+                            <ol class="breadcrumb">
+                                <span class="text-muted"><i class="fa fa-map-marker"></i>&nbsp;我的位置：</span>
+                                <li><a href="/">主页</a>
+                                </li>
+                                <li class="active">
+                                    <%=profile.name%>
+                                        <%=profile.type%>的个人资料
+                                </li>
+                            </ol>
+                            <div role="tabpanel">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li role="presentation" class="active"><a id="project" href="#tab-project" aria-controls="tab-project" role="tab" data-toggle="tab"><i class="fa fa-book"></i>&nbsp;参与项目</a>
+                                    </li>
+                                    <li role="presentation"><a id="team" href="#tab-team" aria-controls="tab-team" role="tab" data-toggle="tab"><i class="fa fa-users"></i>&nbsp;参与团队</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade in active" id="tab-project">
+                                        <br/>
+                                        <div id="projects">
+                                            <p class="text-muted" id="load-state">加载中</p>
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="tab-team">
+                                        <br/>
+                                        <div id="teams">
+                                            <p class="text-muted" id="load-state">加载中</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div role="tabpanel" class="tab-pane fade" id="tab-team">
-                                <br/>
-                                <div id="teams">
-                                    <p class="text-muted" id="load-state">加载中</p>
-                                </div>
+                        </div>
+                        <div class="col-sm-3 col-xs-12">
+                            <div class="aside aside-left">
+                                <img src="<%=profile.img%>" class="head head-lg" />
+                                <h3><%=profile.name%><br/><small><%=profile.id%></small></h3>
+                                <hr/>
+                                <%if(profile.type==='同学' ){%>
+                                    <p><i class="fa fa-institution minw25"></i>
+                                        <%=profile.studentAttr?profile.studentAttr.college: ''%>
+                                    </p>
+                                    <p><i class="fa fa-tag minw25"></i>
+                                        <%=profile.studentAttr?profile.studentAttr.major: ''%>
+                                    </p>
+                                    <p><i class="fa fa-clock-o minw25"></i>
+                                        <%=profile.studentAttr?profile.studentAttr.grade+ '级': ''%>
+                                    </p>
+                                    <p><i class="fa fa-graduation-cap minw25"></i>
+                                        <%=profile.studentAttr?profile.studentAttr.studentType: ''%>
+                                    </p>
+                                    <p><i class="fa fa-envelope minw25"></i>
+                                        <a href="mailto:<%=profile.email%>">
+                                            <%=profile.email%>
+                                        </a>
+                                    </p>
+                                    <%} else if (profile.type==='老师' ){%>
+                                        <p><i class="fa fa-institution minw25"></i>
+                                            <%=profile.teacherAttr?profile.teacherAttr.department: ''%>
+                                        </p>
+                                        <p><i class="fa fa-tag minw25"></i>
+                                            <%=profile.teacherAttr?profile.teacherAttr.title: ''%>
+                                        </p>
+                                        <p><i class="fa fa-envelope minw25"></i>
+                                            <a href="mailto:<%=profile.email%>">
+                                                <%=profile.email%>
+                                            </a>
+                                        </p>
+                                        <%}%>
+                                            <hr/>
+                                            <table class="table table-condensed table-none-bordered text-center">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <h2 id="oe-num">-</h2>
+                                                        </td>
+                                                        <td>
+                                                            <h2 id="cc-num">-</h2>
+                                                        </td>
+                                                        <td>
+                                                            <h2 id="ip-num">-</h2>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <h6><small>开放实验</small></h6>
+                                                        </td>
+                                                        <td>
+                                                            <h6><small>挑战杯</small></h6>
+                                                        </td>
+                                                        <td>
+                                                            <h6><small>创新项目</small></h6>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-3 col-xs-12">
-                    <div class="aside aside-left">
-                        <img src="<%=profile.img%>" class="head head-lg" />
-                        <h3><%=profile.name%><br/><small><%=profile.id%></small></h3>
-                        <hr/>
-                        <%if(profile.type==='同学' ){%>
-                            <p><i class="fa fa-institution minw25"></i>
-                                <%=profile.studentAttr?profile.studentAttr.college: ''%>
-                            </p>
-                            <p><i class="fa fa-tag minw25"></i>
-                                <%=profile.studentAttr?profile.studentAttr.major: ''%>
-                            </p>
-                            <p><i class="fa fa-clock-o minw25"></i>
-                                <%=profile.studentAttr?profile.studentAttr.grade+ '级': ''%>
-                            </p>
-                            <p><i class="fa fa-graduation-cap minw25"></i>
-                                <%=profile.studentAttr?profile.studentAttr.studentType: ''%>
-                            </p>
-                            <p><i class="fa fa-envelope minw25"></i>
-                                <a href="mailto:<%=profile.email%>">
-                                    <%=profile.email%>
-                                </a>
-                            </p>
-                            <%} else if (profile.type==='老师' ){%>
-                                <p><i class="fa fa-institution minw25"></i>
-                                    <%=profile.teacherAttr?profile.teacherAttr.department: ''%>
-                                </p>
-                                <p><i class="fa fa-tag minw25"></i>
-                                    <%=profile.teacherAttr?profile.teacherAttr.title: ''%>
-                                </p>
-                                <p><i class="fa fa-envelope minw25"></i>
-                                    <a href="mailto:<%=profile.email%>">
-                                        <%=profile.email%>
-                                    </a>
-                                </p>
-                                <%}%>
-                                    <hr/>
-                                    <table class="table table-condensed table-none-bordered text-center">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <h2 id="oe-num">-</h2>
-                                                </td>
-                                                <td>
-                                                    <h2 id="cc-num">-</h2>
-                                                </td>
-                                                <td>
-                                                    <h2 id="ip-num">-</h2>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <h6><small>开放实验</small></h6>
-                                                </td>
-                                                <td>
-                                                    <h6><small>挑战杯</small></h6>
-                                                </td>
-                                                <td>
-                                                    <h6><small>创新项目</small></h6>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                    </div>
-                </div>
-            </div>
         </div>
-        <% include parts/include.js.html %>
-            <script type="text/javascript" src="/js/profile.js"></script>
+        <% include parts/footer.ejs %>
+    </div>
+    <% include parts/include.js.html %>
+        <script type="text/javascript" src="/js/profile.js"></script>
 </body>
 
 </html>

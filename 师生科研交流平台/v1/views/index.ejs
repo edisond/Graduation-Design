@@ -7,58 +7,126 @@
 </head>
 
 <body>
-    <% include parts/nav.ejs %>
-
-
-        <div id="myCarousel" class="carousel slide" data-ride="carousel">
-            <!-- Indicators -->
-            <ol class="carousel-indicators">
-                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                <li data-target="#myCarousel" data-slide-to="1" class=""></li>
-                <li data-target="#myCarousel" data-slide-to="2" class=""></li>
-            </ol>
-            <div class="carousel-inner" role="listbox">
-                <div class="item active">
-                    <div class="container">
-                        <div class="carousel-caption">
-                            <h1>学习</h1>
-                            <p>加入教师主导的各种项目
-                                <br/>或者有自己的想法？
+    <div class="page-wrapper">
+        <div class="body">
+            <% include parts/nav.ejs %>
+                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1" class=""></li>
+                        <li data-target="#myCarousel" data-slide-to="2" class=""></li>
+                    </ol>
+                    <div class="carousel-inner" role="listbox">
+                        <div class="item active">
+                            <div class="container">
+                                <div class="carousel-caption">
+                                    <h1>学习</h1>
+                                    <p>加入教师主导的各种项目
+                                        <br/>或者发布自己的想法
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="container">
+                                <div class="carousel-caption">
+                                    <h1>发展</h1>
+                                    <p>通过实践与交流
+                                        <br/>实现自我提高</p>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="container">
+                                <div class="carousel-caption">
+                                    <h1>开始</h1>
+                                    <p>申请账号
+                                        <br/>然后加入感兴趣的项目吧！</p>
+                                    <p><a class="btn btn-lg btn-success" href="/register" role="button">注册</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a>
+                    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a>
+                </div>
+                <div class="container text-center">
+                    <div class="row mt100 mb100">
+                        <div class="col-md-4">
+                            <a href="/open-experiment" class="thumbnail dinlineblock">
+                                <img src="/img/jnu-logo.jpg" width="200" height="200">
+                            </a>
+                            <h2>开放实验</h2>
+                            <p class="minh130 text-muted">开放实验项目是指实验室根据自身条件，设计一定数量的命题实验，经学校审批通过的项目。学生对感兴趣的项目提出申请，并由指导教师和相关实验室共同做好录取工作后，在业余的、课外的时间内完成。包括综合性、设计性、研究性和软件开发、网站建设等。</p>
+                            <p><a class="btn btn-default" href="/open-experiment" role="button">查看&nbsp;<i class="fa fa-angle-double-right"></i></a>
                             </p>
-                            <p><a class="btn btn-lg btn-info" href="#" role="button">了解</a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="/challenge-cup" class="thumbnail dinlineblock">
+                                <img src="/img/jnu-logo.jpg" width="200" height="200">
+                            </a>
+                            <h2>挑战杯</h2>
+                            <p class="minh130 text-muted">挑战杯是“挑战杯”全国大学生系列科技学术竞赛的简称，是由共青团中央、中国科协、教育部和全国学联共同主办的全国性的大学生课外学术实践竞赛。“挑战杯”竞赛在中国共有两个并列项目，一个是“挑战杯”中国大学生创业计划竞赛，另一个则是“挑战杯”全国大学生课外学术科技作品竞赛。</p>
+                            <p><a class="btn btn-default" href="/challenge-cup" role="button">查看&nbsp;<i class="fa fa-angle-double-right"></i></a>
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="/innovation-project" class="thumbnail dinlineblock">
+                                <img src="/img/jnu-logo.jpg" width="200" height="200">
+                            </a>
+                            <h2>创新项目</h2>
+                            <p class="minh130 text-muted">本科生科技创新工程旨在培养本科生的创新意识、创新思维和创新能力，培养本科生严谨的科学态度、团结合作的“团队”精神，为我校在各级各类科技创新竞赛中取得优异成绩奠定良好的基础，旨在增强师生间的交流，促进教师的教学和科研的有机结合，达到“教学相长”的目的。</p>
+                            <p><a class="btn btn-default" href="/innovation-project" role="button">查看&nbsp;<i class="fa fa-angle-double-right"></i></a>
                             </p>
                         </div>
                     </div>
-                </div>
-                <div class="item">
-                    <div class="container">
-                        <div class="carousel-caption">
-                            <h1>发展</h1>
-                            <p>通过实践与交流
-                                <br/>实现自我提高</p>
-                            <p><a class="btn btn-lg btn-info" href="#" role="button">了解</a>
-                            </p>
+                    <hr/>
+                    <div class="row mt100 mb100">
+                        <div class="col-xs-12 col-sm-12 col-md-4">
+                            <img src="/img/Pensils.png" />
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-8">
+                            <h1>利用课余时间参与感兴趣的项目</h1>
+                            <h1><small>通过实践项目巩固所学知识与学习新的技能</small></h1>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row mt100 mb100">
+                        <div class="col-xs-12 col-sm-12 col-md-4 pull-right">
+                            <img src="/img/Chat.png" />
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-8">
+                            <h1>在项目过程中学习与交流</h1>
+                            <h1><small>遇到疑问时通过平台随时与指导教师联系</small></h1>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row mt100 mb100">
+                        <div class="col-xs-12 col-sm-12 col-md-4">
+                            <img src="/img/Compas.png" />
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-8">
+                            <h1>发布自己的项目</h1>
+                            <h1><small>同学可以将项目想法发布到平台并寻求指导教师</small></h1>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row mt100 mb100">
+                        <div class="col-xs-12 col-sm-12 col-md-4 pull-right">
+                            <img src="/img/Map.png" />
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-8">
+                            <h1>创建自己的团队</h1>
+                            <h1><small>将喜欢的项目分享给朋友并邀请他们一起来参与吧！</small></h1>
                         </div>
                     </div>
                 </div>
-                <div class="item">
-                    <div class="container">
-                        <div class="carousel-caption">
-                            <h1>开始</h1>
-                            <p>申请账号
-                                <br/>然后加入感兴趣的项目吧！</p>
-                            <p><a class="btn btn-lg btn-success" href="/register" role="button">注册</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a>
-            <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a>
         </div>
-        <div class="container-fluid">
-        </div>
-        <% include parts/include.js.html %>
+        <% include parts/footer.ejs %>
+    </div>
+    <% include parts/include.js.html %>
 </body>
 
 </html>

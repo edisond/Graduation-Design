@@ -9,239 +9,124 @@
 </head>
 
 <body>
-    <% include parts/nav.ejs %>
-        <input type="hidden" id="projectType" value="<%=projectType%>" />
-        <div class="header header-<%=projectFix%>">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <h2><%=projectType%></h2>
-                        <p><i class="fa fa-<%=projectType==='开放实验项目'?'flask':(projectType==='挑战杯项目'?'trophy':'lightbulb-o')%>"></i>&nbsp;<span id="header-project-num">-</span>个项目<i class="fa fa-street-view ml20"></i>&nbsp;<span id="header-teacher-num">-</span>位指导教师<i class="fa fa-clock-o ml20"></i>&nbsp;<span id="header-update-date"></span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container mt20">
-            <div class="row">
-                <div class="col-sm-9 col-xs-12">
-                    <ol class="breadcrumb">
-                        <li><a href="/">主页</a>
-                        </li>
-                        <li class="active">
-                            <%=projectType%>
-                        </li>
-                    </ol>
-                    <div class="row">
-                        <div class="col-sm-6 col-xs-12 text-left mb10">
-                            <form class="form-inline">
-                                <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control" id="aside-input-search" placeholder="项目名，教师">
-                                    <div class="input-group-btn">
-                                        <button type="button" class="btn btn-default" id="aside-input-search-btn"><i class="fa fa-search"></i>&nbsp;搜索
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-sm-6 col-xs-12 text-right">
-                            <% if(typeof user!=='undefined' && ((user.type==='老师' && projectType==='开放实验项目' ) || projectType==='挑战杯项目' || projectType==='科技创新工程项目' )){%>
-                                <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#new-project"><i class="fa fa-plus"></i>&nbsp;新建</button>
-                                <% } %>
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa fa-sort"></i>&nbsp;排序
-                                            <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a href="#">发布时间</a>
-                                            </li>
-                                            <li><a href="#">名称</a>
-                                            </li>
-                                            <li><a href="#">指导教师</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                        </div>
-                    </div>
-
-                    <hr class="hr-dark" />
-                    <div id="list">
-                        <span class="text-muted" id="load-state"></span>
-                    </div>
-                </div>
-                <div class="col-sm-3 col-xs-12">
-                    <div class="aside aside-right">
-                        没想好这里放什么
-                    </div>
-                </div>
-            </div>
-        </div>
-        <% include parts/include.js.html %>
-            <script type="text/javascript" src="/js/project.js"></script>
-            <%if(typeof user !=='undefined' && user.type==='老师' &&projectType==='开放实验项目' ){%>
-                <div class="modal fade" id="new-project" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                                </button>
-                                <h4 class="modal-title">新建开放实验项目</h4>
+    <div class="page-wrapper">
+        <div class="body">
+            <% include parts/nav.ejs %>
+                <input type="hidden" id="projectType" value="<%=projectType%>" />
+                <div class="header header-<%=projectFix%>">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h2><%=projectType%></h2>
+                                <p><i class="fa fa-<%=projectType==='开放实验项目'?'flask':(projectType==='挑战杯项目'?'trophy':'lightbulb-o')%>"></i>&nbsp;<span id="header-project-num">-</span>个项目<i class="fa fa-street-view ml20"></i>&nbsp;<span id="header-teacher-num">-</span>位指导教师<i class="fa fa-clock-o ml20"></i>&nbsp;<span id="header-update-date"></span>
+                                </p>
                             </div>
-                            <form class="form-horizontal form-horizontal-label-left" id="new-oe">
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <label for="input-college" class="col-sm-2 control-label">所属学院</label>
-                                        <div class="col-sm-4" data-role="selector">
-                                            <select class="form-control" id="input-college" required data-bind="college"></select>
-                                        </div>
-                                        <label for="input-lab" class="col-sm-2 control-label">所在实验室
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="input-lab" maxlength="10" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="input-name" class="col-sm-2 control-label">项目名称</label>
-                                        <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="input-name" maxlength="20" required>
-                                        </div>
-                                        <label for="input-object" class="col-sm-2 control-label">面向对象&nbsp;<a href="#" tabindex="-1"><i class="fa fa-question-circle" data-toggle="tooltip" title="学生专业"></i></a>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="input-object" maxlength="10" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="input-capacity" class="col-sm-2 control-label">拟定参与学生数</label>
-                                        <div class="col-sm-4">
-                                            <input type="number" class="form-control" id="input-capacity" min="1" max="9999">
-                                        </div>
-                                        <label for="input-effort" class="col-sm-2 control-label">预期总学时数
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="number" class="form-control" id="input-effort" min="1" max="9999">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="input-dateStart" class="col-sm-2 control-label">开始时间</label>
-                                        <div class="col-sm-4">
-                                            <div class="input-group input-append date">
-                                                <input type="text" class="form-control" id="input-dateStart" required>
-                                                <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-remove"></i>
-                                                </div>
-                                                <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-calendar"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <label for="input-dateEnd" class="col-sm-2 control-label">结束时间
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <div class="input-group input-append date">
-                                                <input type="text" class="form-control" id="input-dateEnd" required>
-                                                <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-remove"></i>
-                                                </div>
-                                                <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-calendar"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">项目来源</label>
-                                        <div class="col-sm-7">
-                                            <label class="radio-inline" for="input-source-1">
-                                                <input checked value="教师科研课题" type="radio" name="input-source" id="input-source-1">教师科研课题
-                                            </label>
-                                            <label class="radio-inline" for="input-source-2">
-                                                <input value="实验室自拟" type="radio" name="input-source" id="input-source-2">实验室自拟
-                                            </label>
-                                            <label class="radio-inline" for="input-source-3">
-                                                <input value="综合素质提高型" type="radio" name="input-source" id="input-source-3">综合素质提高型
-                                            </label>
-                                            <label class="radio-inline" for="input-source-4">
-                                                <input value="其它" type="radio" name="input-source" id="input-source-4">其它
-                                            </label>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control" id="input-source" placeholder="其它来源" disabled maxlength="20">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">结题或成果形式</label>
-                                        <div class="col-sm-7">
-                                            <label class="radio-inline" for="input-result-1">
-                                                <input checked value="实验报告" type="radio" name="input-result" id="input-result-1">实验报告
-                                            </label>
-                                            <label class="radio-inline" for="input-result-2">
-                                                <input value="论文" type="radio" name="input-result" id="input-result-2">论文
-                                            </label>
-                                            <label class="radio-inline" for="input-result-3">
-                                                <input value="实物作品" type="radio" name="input-result" id="input-result-3">实物作品
-                                            </label>
-                                            <label class="radio-inline" for="input-result-4">
-                                                <input value="专利" type="radio" name="input-result" id="input-result-4">专利
-                                            </label>
-                                            <label class="radio-inline" for="input-result-5">
-                                                <input value="其它" type="radio" name="input-result" id="input-result-5">其它
-                                            </label>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control" id="input-result" placeholder="其它形式" disabled maxlength="20">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-12 control-label">项目简介<small>（此处内容将显示在列表摘要中）</small>
-                                        </label>
-                                        <div class="col-sm-12">
-                                            <textarea class="form-control" rows="3" id="input-description" required></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-12 control-label">项目细节<small>（请按以下内容填写1.设计思路及实验目的；2.涉及的内容或知识点；3.采用的方法和手段；4.考察点）</small>
-                                        </label>
-                                        <div class="col-sm-12">
-                                            <div class="form-control wysiwyg-textarea" id="input-detail"></div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-12 control-label">需要的主要仪器设备及实验材料
-                                        </label>
-                                        <div class="col-sm-12">
-                                            <div class="form-control wysiwyg-textarea" id="input-requirement"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                    <button type="submit" class="btn btn-primary" id="submit">保存</button>
-                                </div>
-                            </form>
                         </div>
                     </div>
                 </div>
-                <%} else if(typeof user!=='undefined' && projectType==='挑战杯项目' ){%>
+                <div class="container mt20">
+                    <div class="row">
+                        <div class="col-sm-9 col-xs-12">
+                            <ol class="breadcrumb">
+                                <span class="text-muted"><i class="fa fa-map-marker"></i>&nbsp;我的位置：</span>
+                                <li><a href="/">主页</a>
+                                </li>
+                                <li class="active">
+                                    <%=projectType%>
+                                </li>
+                            </ol>
+                            <div class="row">
+                                <div class="col-sm-6 col-xs-12 text-left mb10">
+                                    <form class="form-inline">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control" id="aside-input-search" placeholder="项目名，教师">
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-default" id="aside-input-search-btn"><i class="fa fa-search"></i>&nbsp;搜索
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-sm-6 col-xs-12 text-right">
+                                    <% if(typeof user!=='undefined' && ((user.type==='老师' && projectType==='开放实验项目' ) || projectType==='挑战杯项目' || projectType==='科技创新工程项目' )){%>
+                                        <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#new-project"><i class="fa fa-plus"></i>&nbsp;新建</button>
+                                        <% } %>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa fa-sort"></i>&nbsp;排序
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li><a href="#">发布时间</a>
+                                                    </li>
+                                                    <li><a href="#">名称</a>
+                                                    </li>
+                                                    <li><a href="#">指导教师</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                </div>
+                            </div>
+
+                            <hr class="hr-dark" />
+                            <div id="list">
+                                <span class="text-muted" id="load-state"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-xs-12">
+                            <div class="aside aside-right">
+                                没想好这里放什么
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <%if(typeof user !=='undefined' && user.type==='老师' &&projectType==='开放实验项目' ){%>
                     <div class="modal fade" id="new-project" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                                     </button>
-                                    <h4 class="modal-title">新建挑战杯项目<small class="text-danger ml20"><%=user.type==='同学'?'注意：同学发布的项目在寻求指导教师后方可激活，激活后项目所有权归指导教师。':'' %></small></h4>
+                                    <h4 class="modal-title">新建开放实验项目</h4>
                                 </div>
-                                <form class="form-horizontal form-horizontal-label-left" id="new-cc">
+                                <form class="form-horizontal form-horizontal-label-left" id="new-oe">
                                     <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="input-college" class="col-sm-2 control-label">所属学院</label>
+                                            <div class="col-sm-4" data-role="selector">
+                                                <select class="form-control" id="input-college" required data-bind="college"></select>
+                                            </div>
+                                            <label for="input-lab" class="col-sm-2 control-label">所在实验室
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" id="input-lab" maxlength="10" required>
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <label for="input-name" class="col-sm-2 control-label">项目名称</label>
                                             <div class="col-sm-4">
                                                 <input type="text" class="form-control" id="input-name" maxlength="20" required>
                                             </div>
-                                            <label for="input-college" class="col-sm-2 control-label">所属学院</label>
-                                            <div class="col-sm-4" data-role="selector">
-                                                <select class="form-control" id="input-college" required data-bind="college"></select>
+                                            <label for="input-object" class="col-sm-2 control-label">面向对象&nbsp;<a href="#" tabindex="-1"><i class="fa fa-question-circle" data-toggle="tooltip" title="学生专业"></i></a>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" id="input-object" maxlength="10" required>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="input-dateStart" class="col-sm-2 control-label">预期开始时间</label>
+                                            <label for="input-capacity" class="col-sm-2 control-label">拟定参与学生数</label>
+                                            <div class="col-sm-4">
+                                                <input type="number" class="form-control" id="input-capacity" min="1" max="9999">
+                                            </div>
+                                            <label for="input-effort" class="col-sm-2 control-label">预期总学时数
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="number" class="form-control" id="input-effort" min="1" max="9999">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="input-dateStart" class="col-sm-2 control-label">开始时间</label>
                                             <div class="col-sm-4">
                                                 <div class="input-group input-append date">
                                                     <input type="text" class="form-control" id="input-dateStart" required>
@@ -251,7 +136,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <label for="input-dateEnd" class="col-sm-2 control-label">预期结束时间
+                                            <label for="input-dateEnd" class="col-sm-2 control-label">结束时间
                                             </label>
                                             <div class="col-sm-4">
                                                 <div class="input-group input-append date">
@@ -264,20 +149,46 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label">项目类别</label>
-                                            <div class="col-sm-10">
-                                                <label class="radio-inline" for="input-type-1">
-                                                    <input value="哲学社会科学类社会调查报告和学术论文" type="radio" name="input-type" id="input-type-1">哲学社会科学类社会调查报告和学术论文
+                                            <label class="col-sm-2 control-label">项目来源</label>
+                                            <div class="col-sm-7">
+                                                <label class="radio-inline" for="input-source-1">
+                                                    <input checked value="教师科研课题" type="radio" name="input-source" id="input-source-1">教师科研课题
                                                 </label>
-                                                <label class="radio-inline" for="input-type-2">
-                                                    <input value="自然科学类学术论文" type="radio" name="input-type" id="input-type-2">自然科学类学术论文
+                                                <label class="radio-inline" for="input-source-2">
+                                                    <input value="实验室自拟" type="radio" name="input-source" id="input-source-2">实验室自拟
                                                 </label>
-                                                <label class="radio-inline" for="input-type-3">
-                                                    <input value="科技发明制作类" type="radio" name="input-type" id="input-type-3">科技发明制作类
+                                                <label class="radio-inline" for="input-source-3">
+                                                    <input value="综合素质提高型" type="radio" name="input-source" id="input-source-3">综合素质提高型
                                                 </label>
-                                                <label class="radio-inline" for="input-type-4">
-                                                    <input value="创业计划类" type="radio" name="input-type" id="input-type-4">创业计划类
+                                                <label class="radio-inline" for="input-source-4">
+                                                    <input value="其它" type="radio" name="input-source" id="input-source-4">其它
                                                 </label>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control" id="input-source" placeholder="其它来源" disabled maxlength="20">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">结题或成果形式</label>
+                                            <div class="col-sm-7">
+                                                <label class="radio-inline" for="input-result-1">
+                                                    <input checked value="实验报告" type="radio" name="input-result" id="input-result-1">实验报告
+                                                </label>
+                                                <label class="radio-inline" for="input-result-2">
+                                                    <input value="论文" type="radio" name="input-result" id="input-result-2">论文
+                                                </label>
+                                                <label class="radio-inline" for="input-result-3">
+                                                    <input value="实物作品" type="radio" name="input-result" id="input-result-3">实物作品
+                                                </label>
+                                                <label class="radio-inline" for="input-result-4">
+                                                    <input value="专利" type="radio" name="input-result" id="input-result-4">专利
+                                                </label>
+                                                <label class="radio-inline" for="input-result-5">
+                                                    <input value="其它" type="radio" name="input-result" id="input-result-5">其它
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control" id="input-result" placeholder="其它形式" disabled maxlength="20">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -288,81 +199,17 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-12 control-label">项目的基本内容、意义摘要、研究思路和方法
+                                            <label class="col-sm-12 control-label">项目细节<small>（请按以下内容填写1.设计思路及实验目的；2.涉及的内容或知识点；3.采用的方法和手段；4.考察点）</small>
                                             </label>
                                             <div class="col-sm-12">
-                                                <div class="form-control wysiwyg-textarea" id="input-ccBasis"></div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-sm-12 control-label">项目拟解决的技术难点以及预期达到的目标、主要技术指标和水平
-                                            </label>
-                                            <div class="col-sm-12">
-                                                <div class="form-control wysiwyg-textarea" id="input-ccGoal"></div>
+                                                <div class="form-control wysiwyg-textarea" id="input-detail"></div>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-12 control-label">项目研究内容的发展现状与趋势，与项目有关研究领域的基础以及专利申请和授权情况
+                                            <label class="col-sm-12 control-label">需要的主要仪器设备及实验材料
                                             </label>
                                             <div class="col-sm-12">
-                                                <div class="form-control wysiwyg-textarea" id="input-ccStatus"></div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-12 control-label">预期研究成果应用、转化的前景预测及分析
-                                            </label>
-                                            <div class="col-sm-12">
-                                                <div class="form-control wysiwyg-textarea" id="input-ccUsage"></div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-12 control-label">研究工作条件与基础
-                                            </label>
-                                            <div class="col-sm-12">
-                                                <div class="form-control wysiwyg-textarea" id="input-ccCondition"></div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-12 control-label">研究工作计划及进度（各实施阶段目标和内容）
-                                            </label>
-                                            <div class="col-sm-12">
-                                                <div class="form-control wysiwyg-textarea" id="input-ccSchedule"></div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-12 control-label">团队的学科搭配和梯队建设情况
-                                            </label>
-                                            <div class="col-sm-12">
-                                                <div class="form-control wysiwyg-textarea" id="input-ccTeam"></div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-12 control-label">经费申请金额、经费用途和使用计划
-                                            </label>
-                                            <div class="col-sm-12">
-                                                <div class="form-control wysiwyg-textarea" id="input-ccFund"></div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-12 control-label">创业项目概述、产品和服务介绍<small class="ml10">（创业计划类项目填写）</small>
-                                            </label>
-                                            <div class="col-sm-12">
-                                                <div class="form-control wysiwyg-textarea" id="input-ccDBasic"></div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-12 control-label">创业公司市场、竞争和营销概述<small class="ml10">（创业计划类项目填写）</small>
-                                            </label>
-                                            <div class="col-sm-12">
-                                                <div class="form-control wysiwyg-textarea" id="input-ccDMarket"></div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-12 control-label">创业公司财务、经营和组织概述<small class="ml10">（创业计划类项目填写）</small>
-                                            </label>
-                                            <div class="col-sm-12">
-                                                <div class="form-control wysiwyg-textarea" id="input-ccDManage"></div>
+                                                <div class="form-control wysiwyg-textarea" id="input-requirement"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -374,19 +221,16 @@
                             </div>
                         </div>
                     </div>
-
-
-                    <%} else if(typeof user!=='undefined' && projectType==='科技创新工程项目' ){%>
-
+                    <%} else if(typeof user!=='undefined' && projectType==='挑战杯项目' ){%>
                         <div class="modal fade" id="new-project" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                                         </button>
-                                        <h4 class="modal-title">新建科技创新工程项目<small class="text-danger ml20"><%=user.type==='同学'?'注意：同学发布的项目在寻求指导教师后方可激活，激活后项目所有权归指导教师。':'' %></small></h4>
+                                        <h4 class="modal-title">新建挑战杯项目<small class="text-danger ml20"><%=user.type==='同学'?'注意：同学发布的项目在寻求指导教师后方可激活，激活后项目所有权归指导教师。':'' %></small></h4>
                                     </div>
-                                    <form class="form-horizontal form-horizontal-label-left" id="new-ip">
+                                    <form class="form-horizontal form-horizontal-label-left" id="new-cc">
                                         <div class="modal-body">
                                             <div class="form-group">
                                                 <label for="input-name" class="col-sm-2 control-label">项目名称</label>
@@ -422,6 +266,23 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
+                                                <label class="col-sm-2 control-label">项目类别</label>
+                                                <div class="col-sm-10">
+                                                    <label class="radio-inline" for="input-type-1">
+                                                        <input value="哲学社会科学类社会调查报告和学术论文" type="radio" name="input-type" id="input-type-1">哲学社会科学类社会调查报告和学术论文
+                                                    </label>
+                                                    <label class="radio-inline" for="input-type-2">
+                                                        <input value="自然科学类学术论文" type="radio" name="input-type" id="input-type-2">自然科学类学术论文
+                                                    </label>
+                                                    <label class="radio-inline" for="input-type-3">
+                                                        <input value="科技发明制作类" type="radio" name="input-type" id="input-type-3">科技发明制作类
+                                                    </label>
+                                                    <label class="radio-inline" for="input-type-4">
+                                                        <input value="创业计划类" type="radio" name="input-type" id="input-type-4">创业计划类
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
                                                 <label class="col-sm-12 control-label">项目简介<small>（此处内容将显示在列表摘要中）</small>
                                                 </label>
                                                 <div class="col-sm-12">
@@ -429,46 +290,81 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-sm-12 control-label">关键词<small>（3~5个，用分号隔开）</small>
+                                                <label class="col-sm-12 control-label">项目的基本内容、意义摘要、研究思路和方法
                                                 </label>
                                                 <div class="col-sm-12">
-                                                    <textarea class="form-control" rows="3" id="input-ipKeywords" required></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-12 control-label">摘要
-                                                </label>
-                                                <div class="col-sm-12">
-                                                    <div class="form-control wysiwyg-textarea" id="input-ipDetail"></div>
+                                                    <div class="form-control wysiwyg-textarea" id="input-ccBasis"></div>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
-                                                <label class="col-sm-12 control-label">立论依据<small>（研究意义，现状分析，创新之处，参考文献）</small>
+                                                <label class="col-sm-12 control-label">项目拟解决的技术难点以及预期达到的目标、主要技术指标和水平
                                                 </label>
                                                 <div class="col-sm-12">
-                                                    <div class="form-control wysiwyg-textarea" id="input-ipBasis"></div>
+                                                    <div class="form-control wysiwyg-textarea" id="input-ccGoal"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-sm-12 control-label">研究方案<small>（研究目标和内容，拟解决的关键问题，研究进度，预期成果）</small>
+                                                <label class="col-sm-12 control-label">项目研究内容的发展现状与趋势，与项目有关研究领域的基础以及专利申请和授权情况
                                                 </label>
                                                 <div class="col-sm-12">
-                                                    <div class="form-control wysiwyg-textarea" id="input-ipSchedule"></div>
+                                                    <div class="form-control wysiwyg-textarea" id="input-ccStatus"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-sm-12 control-label">研究条件与基础
+                                                <label class="col-sm-12 control-label">预期研究成果应用、转化的前景预测及分析
                                                 </label>
                                                 <div class="col-sm-12">
-                                                    <div class="form-control wysiwyg-textarea" id="input-ipCondition"></div>
+                                                    <div class="form-control wysiwyg-textarea" id="input-ccUsage"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-sm-12 control-label">经费预算<small>（科研业务费，实验材料费，其他费用）</small>
+                                                <label class="col-sm-12 control-label">研究工作条件与基础
                                                 </label>
                                                 <div class="col-sm-12">
-                                                    <div class="form-control wysiwyg-textarea" id="input-ipFund"></div>
+                                                    <div class="form-control wysiwyg-textarea" id="input-ccCondition"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">研究工作计划及进度（各实施阶段目标和内容）
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-control wysiwyg-textarea" id="input-ccSchedule"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">团队的学科搭配和梯队建设情况
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-control wysiwyg-textarea" id="input-ccTeam"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">经费申请金额、经费用途和使用计划
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-control wysiwyg-textarea" id="input-ccFund"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">创业项目概述、产品和服务介绍<small class="ml10">（创业计划类项目填写）</small>
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-control wysiwyg-textarea" id="input-ccDBasic"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">创业公司市场、竞争和营销概述<small class="ml10">（创业计划类项目填写）</small>
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-control wysiwyg-textarea" id="input-ccDMarket"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-12 control-label">创业公司财务、经营和组织概述<small class="ml10">（创业计划类项目填写）</small>
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-control wysiwyg-textarea" id="input-ccDManage"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -480,7 +376,119 @@
                                 </div>
                             </div>
                         </div>
-                        <%}%>
+
+
+                        <%} else if(typeof user!=='undefined' && projectType==='科技创新工程项目' ){%>
+
+                            <div class="modal fade" id="new-project" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <h4 class="modal-title">新建科技创新工程项目<small class="text-danger ml20"><%=user.type==='同学'?'注意：同学发布的项目在寻求指导教师后方可激活，激活后项目所有权归指导教师。':'' %></small></h4>
+                                        </div>
+                                        <form class="form-horizontal form-horizontal-label-left" id="new-ip">
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="input-name" class="col-sm-2 control-label">项目名称</label>
+                                                    <div class="col-sm-4">
+                                                        <input type="text" class="form-control" id="input-name" maxlength="20" required>
+                                                    </div>
+                                                    <label for="input-college" class="col-sm-2 control-label">所属学院</label>
+                                                    <div class="col-sm-4" data-role="selector">
+                                                        <select class="form-control" id="input-college" required data-bind="college"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="input-dateStart" class="col-sm-2 control-label">预期开始时间</label>
+                                                    <div class="col-sm-4">
+                                                        <div class="input-group input-append date">
+                                                            <input type="text" class="form-control" id="input-dateStart" required>
+                                                            <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-remove"></i>
+                                                            </div>
+                                                            <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-calendar"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <label for="input-dateEnd" class="col-sm-2 control-label">预期结束时间
+                                                    </label>
+                                                    <div class="col-sm-4">
+                                                        <div class="input-group input-append date">
+                                                            <input type="text" class="form-control" id="input-dateEnd" required>
+                                                            <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-remove"></i>
+                                                            </div>
+                                                            <div class="input-group-addon cursor-pointer"><i class="glyphicon glyphicon-calendar"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-12 control-label">项目简介<small>（此处内容将显示在列表摘要中）</small>
+                                                    </label>
+                                                    <div class="col-sm-12">
+                                                        <textarea class="form-control" rows="3" id="input-description" required></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-12 control-label">关键词<small>（3~5个，用分号隔开）</small>
+                                                    </label>
+                                                    <div class="col-sm-12">
+                                                        <textarea class="form-control" rows="3" id="input-ipKeywords" required></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-12 control-label">摘要
+                                                    </label>
+                                                    <div class="col-sm-12">
+                                                        <div class="form-control wysiwyg-textarea" id="input-ipDetail"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-12 control-label">立论依据<small>（研究意义，现状分析，创新之处，参考文献）</small>
+                                                    </label>
+                                                    <div class="col-sm-12">
+                                                        <div class="form-control wysiwyg-textarea" id="input-ipBasis"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-12 control-label">研究方案<small>（研究目标和内容，拟解决的关键问题，研究进度，预期成果）</small>
+                                                    </label>
+                                                    <div class="col-sm-12">
+                                                        <div class="form-control wysiwyg-textarea" id="input-ipSchedule"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-12 control-label">研究条件与基础
+                                                    </label>
+                                                    <div class="col-sm-12">
+                                                        <div class="form-control wysiwyg-textarea" id="input-ipCondition"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-12 control-label">经费预算<small>（科研业务费，实验材料费，其他费用）</small>
+                                                    </label>
+                                                    <div class="col-sm-12">
+                                                        <div class="form-control wysiwyg-textarea" id="input-ipFund"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                                <button type="submit" class="btn btn-primary" id="submit">保存</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <%}%>
+        </div>
+        <% include parts/footer.ejs %>
+    </div>
+    <% include parts/include.js.html %>
+        <script type="text/javascript" src="/js/project.js"></script>
 </body>
 
 </html>

@@ -285,7 +285,30 @@ $(document).ready(function () {
         }
     });
 
+    function initBackToTop() {
+        var btt = $('<a data-toggle="tooltip" title="返回顶部" class="back-to-top"><i class="fa fa-chevron-up"></i></a>"');
+        btt.appendTo($('body')).click(function () {
+            $('html,body').animate({
+                scrollTop: 0
+            }, 500);
+        });
+
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 300) {
+                btt.fadeIn(500);
+            } else {
+                btt.fadeOut(500);
+            }
+        })
+    }
+
+    initBackToTop();
+
     $('[data-toggle="tooltip"]').tooltip();
+
+    $('#copyright-year').html(new Date().getFullYear());
+
+
 
     $(function () {
         var selectList = $('[data-role=selector]');
