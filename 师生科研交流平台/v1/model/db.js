@@ -129,7 +129,7 @@ var Dao = {
 
     /* 获取项目 */
     getProjects: function (condition, callback) {
-        Project.find(condition).populate('teacher', 'name').populate('creator', 'name').lean().exec(callback);
+        Project.find(condition, '-openExperimentAttr -challengeCupAttr -innovationProjectAttr').populate('teacher', 'name').populate('creator', 'name').lean().exec(callback);
     },
 
     /* 获取一个开放实验 */

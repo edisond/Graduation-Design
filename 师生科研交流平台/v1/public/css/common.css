@@ -47,10 +47,6 @@ h6 small,
     overflow: hidden;
 }
 
-.aside i.fa {
-    width: 25px;
-}
-
 .aside ul>li {
     margin-top: 10px;
 }
@@ -171,4 +167,8 @@ img.head.head-sm {
 .custom-share>.share-text {
     line-height: 30px;
     float: left;
+}
+
+.btn-toolbar a {
+    cursor: pointer;
 }

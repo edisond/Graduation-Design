@@ -194,18 +194,25 @@
                                             <div id="comments">
                                                 <p class="text-muted" id="comments-state">讨论加载中</p>
                                             </div>
-                                            <form class="well mt20" id="form-comment">
-                                                <h4>说点什么</h4>
-                                                <div class="form-group">
-                                                    <div class="form-control wysiwyg-textarea wysiwyg-textarea-sm" id="input-comment"></div>
+
+                                            <div class="panel panel-default mt20">
+                                                <div class="panel-heading">说点什么</div>
+                                                <div class="panel-body">
+                                                    <form id="form-comment">
+                                                        <div class="form-group">
+                                                            <div class="form-control wysiwyg-textarea wysiwyg-textarea-sm" id="input-comment"></div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <span id="reply-object"></span>
+                                                            <span id="reply-info" class="ml10"></span>
+                                                            <button type="submit" class="pull-right btn btn-primary" id="input-submit">发布评论</button>
+                                                            <button type="button" class="pull-right btn btn-default mr10" id="input-cancel">取消</button>
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                                <div class="form-group">
-                                                    <span id="reply-object"></span>
-                                                    <span id="reply-info" class="ml10"></span>
-                                                    <button type="submit" class="pull-right btn btn-primary" id="input-submit">发布评论</button>
-                                                    <button type="button" class="pull-right btn btn-default mr10" id="input-cancel">取消</button>
-                                                </div>
-                                            </form>
+                                            </div>
+
+
                                         </fieldset>
                 </div>
                 <div class="col-sm-3 col-xs-12">
@@ -218,7 +225,7 @@
                             <button type="button" class="btn btn-block btn-primary <%=(user._id.toString()===project.creator._id.toString())?'':'dhidden'%>" id="btn-update-content" data-toggle="modal" data-target="#edit-project"><i class="fa fa-edit"></i>&nbsp;更新实验</button>
                             <button type="button" class="btn btn-block btn-default" data-action="ask"><i class="fa fa-comments"></i>&nbsp;参与讨论</button>
                             <%}else{%>
-                                <p class="text-info">您目前尚未登录，登录后可以：</p>
+                                <p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;您目前尚未登录，登录后可以：</p>
                                 <ul class="text-info">
                                     <li>参与选课</li>
                                     <li>参与讨论</li>
@@ -270,18 +277,18 @@
                                     </p>
                                     <hr/>
                                     <p class="text-muted">教师信息</p>
-                                    <p><i class="fa fa-street-view"></i>
+                                    <p><i class="fa fa-street-view minw25"></i>
                                         <%=project.teacher.name%>
                                     </p>
-                                    <p><i class="fa fa-institution"></i>
+                                    <p><i class="fa fa-institution minw25"></i>
                                         <%=project.teacher.department%>
                                     </p>
-                                    <p><i class="fa fa-envelope"></i>
+                                    <p><i class="fa fa-envelope minw25"></i>
                                         <a href="mailto:<%=project.teacher.email%>">
                                             <%=project.teacher.email%>
                                         </a>
                                     </p>
-                                    <p><i class="fa fa-phone"></i>
+                                    <p><i class="fa fa-phone minw25"></i>
                                         <%=project.teacher.phone%>
                                     </p>
                                     <%} else if(project.type==='挑战杯项目' || project.type==='科技创新工程项目' ){ if(typeof user!=='undefined' ){%>
@@ -290,7 +297,7 @@
                                         <button type="button" class="btn btn-block btn-success <%=user.type==='同学'&&project.teacher&&!team?'':'dhidden'%>" id="btn-team-apply" data-toggle="modal" data-target="#select-team"><i class="fa fa-check"></i>&nbsp;加入项目</button>
                                         <button type="button" class="btn btn-block btn-default" data-action="ask"><i class="fa fa-comments"></i>&nbsp;参与讨论</button>
                                         <%}else{%>
-                                            <p class="text-info">您目前尚未登录，登录后可以：</p>
+                                            <p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;您目前尚未登录，登录后可以：</p>
                                             <ul class="text-info">
                                                 <li>参与选课</li>
                                                 <li>参与讨论</li>
@@ -331,18 +338,18 @@
                                                                     <hr/>
                                                                     <p class="text-muted">教师信息</p>
                                                                     <%if(project.teacher){%>
-                                                                        <p><i class="fa fa-street-view"></i>
+                                                                        <p><i class="fa fa-street-view minw25"></i>
                                                                             <%=project.teacher.name%>
                                                                         </p>
-                                                                        <p><i class="fa fa-institution"></i>
+                                                                        <p><i class="fa fa-institution minw25"></i>
                                                                             <%=project.teacher.department%>
                                                                         </p>
-                                                                        <p><i class="fa fa-envelope"></i>
+                                                                        <p><i class="fa fa-envelope minw25"></i>
                                                                             <a href="mailto:<%=project.teacher.email%>">
                                                                                 <%=project.teacher.email%>
                                                                             </a>
                                                                         </p>
-                                                                        <p><i class="fa fa-phone"></i>
+                                                                        <p><i class="fa fa-phone minw25"></i>
                                                                             <%=project.teacher.phone%>
                                                                         </p>
                                                                         <%} else {%>

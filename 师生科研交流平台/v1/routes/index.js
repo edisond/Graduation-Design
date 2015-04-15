@@ -205,7 +205,15 @@ router.get('/profile/:id', function (req, res) {
             })
         }
     } else {
-        res.redirect('/');
+        Dao.getUser(req.params.id, function (err, docs) {
+            if (err) {
+                res.sendStatus(500)
+            } else {
+                res.render('profile', {
+                    profile: docs
+                });
+            }
+        })
     }
 })
 
@@ -244,7 +252,16 @@ router.get('/team/:id', function (req, res) {
         })
 
     } else {
-        res.redirect('/');
+        Dao.getTeam(req.params.id, function (err, docs) {
+            if (docs) {
+                docs.dateCreate = moment(docs.dateCreate).fromNow();
+                res.render('team', {
+                    team: docs
+                })
+            } else {
+                res.sendStatus(404);
+            }
+        })
     }
 })
 

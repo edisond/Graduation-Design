@@ -258,29 +258,34 @@
 
                         <hr/>
                         <%if(user.type==='同学' ){%>
-                            <p><i class="fa fa-institution"></i>
+                            <p><i class="fa fa-institution minw25"></i>
                                 <%=user.studentAttr?user.studentAttr.college: ''%>
                             </p>
-                            <p><i class="fa fa-tag"></i>
+                            <p><i class="fa fa-tag minw25"></i>
                                 <%=user.studentAttr?user.studentAttr.major: ''%>
                             </p>
-                            <p><i class="fa fa-clock-o"></i>
+                            <p><i class="fa fa-clock-o minw25"></i>
                                 <%=user.studentAttr?user.studentAttr.grade+ '级': ''%>
                             </p>
-                            <p><i class="fa fa-graduation-cap"></i>
+                            <p><i class="fa fa-graduation-cap minw25"></i>
                                 <%=user.studentAttr?user.studentAttr.studentType: ''%>
                             </p>
-                            <p><i class="fa fa-envelope"></i>
+                            <p><i class="fa fa-envelope minw25"></i>
                                 <a href="mailto:<%=user.email%>">
                                     <%=user.email%>
                                 </a>
                             </p>
                             <%} else if (user.type==='老师' ){%>
-                                <p><i class="fa fa-institution"></i>
+                                <p><i class="fa fa-institution minw25"></i>
                                     <%=user.teacherAttr?user.teacherAttr.department: ''%>
                                 </p>
-                                <p><i class="fa fa-tag"></i>
+                                <p><i class="fa fa-tag minw25"></i>
                                     <%=user.teacherAttr?user.teacherAttr.title: ''%>
+                                </p>
+                                <p><i class="fa fa-envelope minw25"></i>
+                                    <a href="mailto:<%=user.email%>">
+                                        <%=user.email%>
+                                    </a>
                                 </p>
                                 <%}%>
                                     <hr/>

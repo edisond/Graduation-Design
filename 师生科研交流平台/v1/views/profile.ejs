@@ -51,29 +51,34 @@
                         <h3><%=profile.name%><br/><small><%=profile.id%></small></h3>
                         <hr/>
                         <%if(profile.type==='同学' ){%>
-                            <p><i class="fa fa-institution"></i>
+                            <p><i class="fa fa-institution minw25"></i>
                                 <%=profile.studentAttr?profile.studentAttr.college: ''%>
                             </p>
-                            <p><i class="fa fa-tag"></i>
+                            <p><i class="fa fa-tag minw25"></i>
                                 <%=profile.studentAttr?profile.studentAttr.major: ''%>
                             </p>
-                            <p><i class="fa fa-clock-o"></i>
+                            <p><i class="fa fa-clock-o minw25"></i>
                                 <%=profile.studentAttr?profile.studentAttr.grade+ '级': ''%>
                             </p>
-                            <p><i class="fa fa-graduation-cap"></i>
+                            <p><i class="fa fa-graduation-cap minw25"></i>
                                 <%=profile.studentAttr?profile.studentAttr.studentType: ''%>
                             </p>
-                            <p><i class="fa fa-envelope"></i>
-                                <a href="mailto:<%=user.email%>">
+                            <p><i class="fa fa-envelope minw25"></i>
+                                <a href="mailto:<%=profile.email%>">
                                     <%=profile.email%>
                                 </a>
                             </p>
                             <%} else if (profile.type==='老师' ){%>
-                                <p><i class="fa fa-institution"></i>
+                                <p><i class="fa fa-institution minw25"></i>
                                     <%=profile.teacherAttr?profile.teacherAttr.department: ''%>
                                 </p>
-                                <p><i class="fa fa-tag"></i>
+                                <p><i class="fa fa-tag minw25"></i>
                                     <%=profile.teacherAttr?profile.teacherAttr.title: ''%>
+                                </p>
+                                <p><i class="fa fa-envelope minw25"></i>
+                                    <a href="mailto:<%=profile.email%>">
+                                        <%=profile.email%>
+                                    </a>
                                 </p>
                                 <%}%>
                                     <hr/>

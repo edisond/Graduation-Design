@@ -27,7 +27,6 @@ $(document).ready(function () {
     }
 
     fetchMyTeam();
-    console.log(profile.type);
     if (profile.type === '老师') {
         function fetchProjectsT() {
             projectList.empty();
