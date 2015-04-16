@@ -17,7 +17,7 @@
                     <div class="row">
                         <div class="col-xs-12 mt20">
                             <h2><%=projectType%></h2>
-                            <p><i class="fa fa-<%=projectType==='开放实验项目'?'flask':(projectType==='挑战杯项目'?'trophy':'lightbulb-o')%>"></i>&nbsp;<span id="header-project-num">-</span>个项目<i class="fa fa-street-view ml20"></i>&nbsp;<span id="header-teacher-num">-</span>位指导教师<i class="fa fa-clock-o ml20"></i>&nbsp;<span id="header-update-date"></span>
+                            <p><i class="fa fa-book"></i>&nbsp;<span id="header-project-num">-</span>个项目<i class="fa fa-street-view ml20"></i>&nbsp;<span id="header-teacher-num">-</span>位指导教师<i class="fa fa-clock-o ml20"></i>&nbsp;<span id="header-update-date"></span>
                             </p>
                             <hr/>
                         </div>
@@ -26,47 +26,58 @@
                 <div class="container mt20">
                     <div class="row">
                         <div class="col-sm-9 col-xs-12">
-                            <div class="row">
-                                <div class="col-sm-6 col-xs-12 text-left mb10">
-                                    <form class="form-inline">
-                                        <div class="input-group input-group-sm">
-                                            <input type="text" class="form-control" id="aside-input-search" placeholder="项目名，教师">
-                                            <div class="input-group-btn">
-                                                <button type="button" class="btn btn-default" id="aside-input-search-btn"><i class="fa fa-search"></i>&nbsp;搜索
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="col-sm-6 col-xs-12 text-right">
-                                    <% if(typeof user!=='undefined' && ((user.type==='老师' && projectType==='开放实验项目' ) || projectType==='挑战杯项目' || projectType==='科技创新工程项目' )){%>
-                                        <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#new-project"><i class="fa fa-plus"></i>&nbsp;新建</button>
-                                        <% } %>
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                    <i class="fa fa-sort"></i>&nbsp;排序
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">发布时间</a>
-                                                    </li>
-                                                    <li><a href="#">名称</a>
-                                                    </li>
-                                                    <li><a href="#">指导教师</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                </div>
-                            </div>
-
-                            <hr/>
                             <div id="list">
                                 <span class="text-muted" id="load-state"></span>
                             </div>
                         </div>
                         <div class="col-sm-3 col-xs-12">
                             <div class="aside aside-right">
-                                没想好这里放什么
+                                <div class="input-group input-group-sm mb10">
+                                    <input type="text" class="form-control" id="input-search-in-result" placeholder="项目名 教师">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default" id="search-in-result">&nbsp;<i class="fa fa-search"></i>&nbsp;
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="btn-group btn-block">
+                                    <button type="button" class="btn btn-sm btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-sort"></i>&nbsp;排序
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#" id="sort-by-date-start">最近发布</a>
+                                        </li>
+                                        <li><a href="#" id="sort-by-date-update">最近更新</a>
+                                        </li>
+                                        <li><a href="#" id="sort-by-name">项目名称</a>
+                                        </li>
+                                        <li><a href="#" id="sort-by-teacher">指导教师</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <% if(typeof user!=='undefined' && ((user.type==='老师' && projectType==='开放实验项目' ) || projectType==='挑战杯项目' || projectType==='科技创新工程项目' )){%>
+                                    <button type="button" class="btn btn-sm btn-success btn-block" data-toggle="modal" data-target="#new-project"><i class="fa fa-plus"></i>&nbsp;创建</button>
+                                    <% } %>
+                                        <br/>
+                                        <br/>
+                                        <h4 class="text-theme"><b><%=projectType%></b></h4>
+                                        <p class="text-muted">
+                                            <%if(projectType==='开放实验项目' ){%>
+                                                开放实验项目是指实验室根据自身条件，设计一定数量的命题实验，经学校审批通过的项目。
+                                                <br/>
+                                                <br/>学生对感兴趣的项目提出申请，并由指导教师和相关实验室共同做好录取工作后，在业余的、课外的时间内完成。
+                                                <br/>
+                                                <br/>包括综合性、设计性、研究性和软件开发、网站建设等。
+                                                <%}else if(projectType==='挑战杯项目' ){%>
+                                                    挑战杯是“挑战杯”全国大学生系列科技学术竞赛的简称，是由共青团中央、中国科协、教育部和全国学联共同主办的全国性的大学生课外学术实践竞赛。
+                                                    <br/>
+                                                    <br/>“挑战杯”竞赛在中国共有两个并列项目，一个是“挑战杯”中国大学生创业计划竞赛，另一个则是“挑战杯”全国大学生课外学术科技作品竞赛。
+                                                    <%}else if(projectType==='科技创新工程项目' ){%>
+                                                        本科生科技创新工程旨在培养本科生的创新意识、创新思维和创新能力，培养本科生严谨的科学态度、团结合作的“团队”精神，为我校在各级各类科技创新竞赛中取得优异成绩奠定良好的基础。
+                                                        <br/>
+                                                        <br/>旨在增强师生间的交流，促进教师的教学和科研的有机结合，达到“教学相长”的目的。
+                                                        <%}%>
+                                        </p>
+
                             </div>
                         </div>
                     </div>

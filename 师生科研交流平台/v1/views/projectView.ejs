@@ -47,121 +47,112 @@
                                 <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
                                 <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
                             </div>
-                            <br/>
                             <h3><b>项目简介</b></h3>
                             <p>
                                 <%-project.description%>
                             </p>
+                            <br/>
                             <%if(project.type==='开放实验项目' && typeof project.openExperimentAttr !=='undefined' ){%>
-                                <h3><b>项目细节</b>&nbsp;<small class="text-muted">思路，目的，涉及的内容或知识点，考察点</small>></h3>
+                                <h3><b>项目细节</b>&nbsp;<small class="text-muted">思路，目的，涉及的内容或知识点，考察点</small></h3>
                                 <p>
                                     <%-project.openExperimentAttr.detail%>
                                 </p>
+                                <br/>
                                 <h3><b>需要的主要仪器设备及实验材料</b></h3>
                                 <p>
                                     <%-project.openExperimentAttr.requirement%>
                                 </p>
+                                <br/>
                                 <%}else if(project.type==='挑战杯项目' && typeof project.challengeCupAttr !=='undefined' ){%>
-                                    <fieldset>
-                                        <legend>项目的基本内容、意义摘要、研究思路和方法</legend>
-                                        <p>
-                                            <%-project.challengeCupAttr.ccBasis%>
-                                        </p>
-                                    </fieldset>
-                                    <fieldset>
-                                        <legend>项目拟解决的技术难点以及预期达到的目标、主要技术指标和水平</legend>
-                                        <p>
-                                            <%-project.challengeCupAttr.ccGoal%>
-                                        </p>
-                                    </fieldset>
-                                    <fieldset>
-                                        <legend>项目研究内容的发展现状与趋势，与项目有关研究领域的基础以及专利申请和授权情况</legend>
-                                        <p>
-                                            <%-project.challengeCupAttr.ccStatus%>
-                                        </p>
-                                    </fieldset>
-                                    <fieldset>
-                                        <legend>预期研究成果应用、转化的前景预测及分析</legend>
-                                        <p>
-                                            <%-project.challengeCupAttr.ccUsage%>
-                                        </p>
-                                    </fieldset>
-                                    <fieldset>
-                                        <legend>研究工作条件与基础</legend>
-                                        <p>
-                                            <%-project.challengeCupAttr.ccCondition%>
-                                        </p>
-                                    </fieldset>
-                                    <fieldset>
-                                        <legend>研究工作计划及进度（各实施阶段目标和内容）</legend>
-                                        <p>
-                                            <%-project.challengeCupAttr.ccSchedule%>
-                                        </p>
-                                    </fieldset>
-                                    <fieldset>
-                                        <legend>团队的学科搭配和梯队建设情况</legend>
-                                        <p>
-                                            <%-project.challengeCupAttr.ccTeam%>
-                                        </p>
-                                    </fieldset>
-                                    <fieldset>
-                                        <legend>经费申请金额、经费用途和使用计划</legend>
-                                        <p>
-                                            <%-project.challengeCupAttr.ccFund%>
-                                        </p>
-                                    </fieldset>
+                                    <h3><b>项目的基本内容、意义摘要、研究思路和方法</b></h3>
+                                    <p>
+                                        <%-project.challengeCupAttr.ccBasis%>
+                                    </p>
+                                    <br/>
+                                    <h3><b>项目拟解决的技术难点以及预期达到的目标、主要技术指标和水平</b></h3>
+                                    <p>
+                                        <%-project.challengeCupAttr.ccGoal%>
+                                    </p>
+                                    <br/>
+                                    <h3><b>项目研究内容的发展现状与趋势，与项目有关研究领域的基础以及专利申请和授权情况</b></h3>
+                                    <p>
+                                        <%-project.challengeCupAttr.ccStatus%>
+                                    </p>
+                                    <br/>
+                                    <h3><b>预期研究成果应用、转化的前景预测及分析</b></h3>
+                                    <p>
+                                        <%-project.challengeCupAttr.ccUsage%>
+                                    </p>
+                                    <br/>
+                                    <h3><b>研究工作条件与基础</b></h3>
+                                    <p>
+                                        <%-project.challengeCupAttr.ccCondition%>
+                                    </p>
+                                    <br/>
+                                    <h3><b>研究工作计划及进度（各实施阶段目标和内容）</b></h3>
+                                    <p>
+                                        <%-project.challengeCupAttr.ccSchedule%>
+                                    </p>
+                                    <br/>
+                                    <h3><b>团队的学科搭配和梯队建设情况</b></h3>
+                                    <p>
+                                        <%-project.challengeCupAttr.ccTeam%>
+                                    </p>
+                                    <br/>
+                                    <h3><b>经费申请金额、经费用途和使用计划</b></h3>
+                                    <p>
+                                        <%-project.challengeCupAttr.ccFund%>
+                                    </p>
+                                    <br/>
                                     <%if(project.challengeCupAttr.ccType==='创业计划类' ){%>
-                                        <fieldset>
-                                            <legend>创业项目概述、产品和服务介绍</legend>
-                                            <p>
-                                                <%-project.challengeCupAttr.ccDBasic%>
-                                            </p>
-                                        </fieldset>
-                                        <fieldset>
-                                            <legend>创业公司市场、竞争和营销概述</legend>
-                                            <p>
-                                                <%-project.challengeCupAttr.ccDMarket%>
-                                            </p>
-                                        </fieldset>
-                                        <fieldset>
-                                            <legend>创业公司财务、经营和组织概述</legend>
-                                            <p>
-                                                <%-project.challengeCupAttr.ccDManage%>
-                                            </p>
-                                        </fieldset>
+                                        <h3><b>创业项目概述、产品和服务介绍</b></h3>
+                                        <p>
+                                            <%-project.challengeCupAttr.ccDBasic%>
+                                        </p>
+                                        <br/>
+                                        <h3><b>创业公司市场、竞争和营销概述</b></h3>
+                                        <p>
+                                            <%-project.challengeCupAttr.ccDMarket%>
+                                        </p>
+                                        <br/>
+                                        <h3><b>创业公司财务、经营和组织概述</b></h3>
+                                        <p>
+                                            <%-project.challengeCupAttr.ccDManage%>
+                                        </p>
+                                        <br/>
                                         <%}}else if(project.type==='科技创新工程项目' && typeof project.innovationProjectAttr !=='undefined' ){%>
-                                            <fieldset>
-                                                <legend>关键词</legend>
-                                                <p>
-                                                    <%-project.innovationProjectAttr.ipKeywords%>
-                                                </p>
-                                            </fieldset>
-                                            <fieldset>
-                                                <legend>项目摘要</legend>
-                                                <p>
-                                                    <%-project.innovationProjectAttr.ipDetail%>
-                                                </p>
-                                            </fieldset>
-                                            <fieldset>
-                                                <legend>立论依据</legend>
-                                                <p>
-                                                    <%-project.innovationProjectAttr.ipBasis%>
-                                                </p>
-                                            </fieldset>
+                                            <h3><b>关键词</b></h3>
+                                            <p>
+                                                <%-project.innovationProjectAttr.ipKeywords%>
+                                            </p>
+                                            <br/>
+                                            <h3><b>项目摘要</b></h3>
+                                            <p>
+                                                <%-project.innovationProjectAttr.ipDetail%>
+                                            </p>
+                                            <br/>
+                                            <h3><b>立论依据</b></h3>
+                                            <p>
+                                                <%-project.innovationProjectAttr.ipBasis%>
+                                            </p>
+                                            <br/>
                                             <h3><b>研究方案</b></h3>
                                             <p>
                                                 <%-project.innovationProjectAttr.ipSchedule%>
                                             </p>
+                                            <br/>
                                             <h3><b>研究条件与基础</b></h3>
                                             <p>
                                                 <%-project.innovationProjectAttr.ipCondition%>
                                             </p>
+                                            <br/>
                                             <h3><b>经费预算</b></h3>
                                             <p>
                                                 <%-project.innovationProjectAttr.ipFund%>
                                             </p>
+                                            <br/>
                                             <%}%>
-
+                                                <hr/>
                                                 <h3><b>讨论</b>&nbsp;<small class="text-muted" id="comment-num">暂无评论</small></h3>
                                                 <div id="comments">
                                                     <p class="text-muted" id="comments-state">讨论加载中</p>

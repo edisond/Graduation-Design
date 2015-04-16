@@ -7243,3 +7243,18 @@ button.close {
         display: none!important
     }
 }
+/** Custom **/
+
+body,
+button,
+input,
+select,
+textarea,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Microsoft YaHei', '宋体', 'Tahoma', 'Helvetica', 'Arial', sans-serif;
+}

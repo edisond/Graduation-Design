@@ -26,9 +26,6 @@ $(document).ready(function () {
                 });
                 for (var i = 0, j = data.length; i < j; i++) {
                     DOMCreator.comment(data[i]).appendTo(commentList);
-                    if (i < j - 1) {
-                        $('<hr>').appendTo(commentList);
-                    }
                 }
                 commentList.fadeIn(250);
             }

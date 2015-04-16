@@ -11,6 +11,22 @@ var md5 = require('../lib/md5');
 
 var Dao = {
 
+
+    countUser: function (condition, callback) {
+        User.count(condition, function (err, count) {
+            callback(err ? 0 : count)
+        })
+    },
+    countProject: function (condition, callback) {
+        Project.count(condition, function (err, count) {
+            callback(err ? 0 : count)
+        })
+    },
+    countTeam: function (condition, callback) {
+        Team.count(condition, function (err, count) {
+            callback(err ? 0 : count)
+        })
+    },
     /* 获取所有用户 */
     getUsers: function (condition, callback) {
         User.find(condition, '-__v -password -key').lean().exec(callback);

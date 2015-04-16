@@ -1,7 +1,6 @@
 html,
 body {
     height: 100%;
-    font-family: 'Microsoft YaHei', "Helvetica Neue", 'Helvetica', 'Arial', 'sans-serif';
 }
 
 .page-wrapper {
@@ -26,19 +25,17 @@ body {
     margin: 0 auto;
 }
 
-.page-wrapper>.footer>table img.logo {
-    max-height: 45px;
-    max-width: 45px;
-}
-
 .page-wrapper>.footer>table td {
-    text-align: left;
     padding: 0 5px;
 }
 
 nav.navbar {
     background-color: #005d6c;
     border: none;
+}
+
+nav.navbar .icon-bar {
+    background: #fff
 }
 
 nav.navbar .nav>li {
@@ -119,43 +116,28 @@ nav.navbar i.fa {
     width: 45px;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6 {
-    font-weight: normal;
-}
-
-h1 small,
-h2 small,
-h3 small,
-h4 small,
-h5 small,
-h6 small,
-.h1 small,
-.h2 small,
-.h3 small,
-.h4 small,
-.h5 small,
-.h6 small {
-    color: #999;
-}
-
 .form-horizontal .control-label {
     text-align: left;
 }
 
+.count-table {
+    margin: 20px auto;
+    text-align: left;
+}
+
+.count-table td {
+    padding: 2px 7px;
+}
+
+.SLIcon {
+    width: 200px;
+    height: 200px;
+    font-size: 200px;
+}
+
 .aside {
     margin: 0 auto;
-    overflow: hidden;
+    min-height: 200px;
 }
 
 .aside ul>li {
@@ -172,19 +154,14 @@ h6 small,
     padding-left: 20px;
 }
 
-fieldset {
-    margin-top: 20px;
-    margin-bottom: 20px;
+a,
+a:hover,
+a:focus {
+    color: #005d6c;
 }
 
-fieldset>legend {
-    border: none;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-fieldset>legend>small {
-    font-weight: normal;
+.text-theme {
+    color: #005d6c;
 }
 
 a.text-muted:hover,
@@ -192,8 +169,10 @@ a.text-muted:focus {
     color: #777;
 }
 
-.text-theme {
-    color: #005d6c;
+a.thumbnail:hover,
+a.thumbnail:focus,
+a.thumbnail.active {
+    border-color: #005d6c;
 }
 
 table.table-none-bordered,
@@ -256,6 +235,8 @@ img.head.head-sm {
     cursor: pointer;
 }
 
+.comment-body {}
+
 .back-to-top {
     font-size: x-large;
     cursor: pointer;
@@ -265,7 +246,7 @@ img.head.head-sm {
     display: none;
 }
 
-@media all and (max-width: 767px) {
+@media (max-width: 767px) {
     .aside.aside-left,
     .aside.aside-right {
         border-left: none;
@@ -276,7 +257,7 @@ img.head.head-sm {
     .back-to-top {
         display: none !important
     }
-    #nav-search {
+    #nav-search-bar {
         margin-top: 40px;
     }
     nav.navbar .nav>li.active>a:after {

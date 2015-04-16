@@ -123,10 +123,10 @@ var DOMCreator = {
         if (comment.to) {
             $('<p class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + '</a>' + comment.from.type + '回复了<a href="/profile/' + comment.to._id + '">' + comment.to.name + '</a>' + comment.to.type + '：</p>').appendTo(mediaBody);
         } else {
-            $('<p class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + '</a>' + comment.from.type + '说：</p>').appendTo(mediaBody);
+            $('<p class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + '</a>' + comment.from.type + '：</p>').appendTo(mediaBody);
         }
-        $('<p>').html(comment.body).appendTo(mediaBody);
         $('<h6><small><i class="fa fa-clock-o"></i>&nbsp;' + moment(comment.date).fromNow() + '</small><a href="#input-comment" data-toggle="tooltip" title="回复" class="ml10" data-id="' + comment.from._id + '" data-name="' + comment.from.name + '" data-type="' + comment.from.type + '"><i class="fa fa-reply"></i></a></h6>').appendTo(mediaBody);
+        $('<div class="comment-body">').html(comment.body).appendTo(mediaBody);
         media.find('[data-toggle=tooltip]').tooltip();
         return media;
     },
@@ -137,8 +137,8 @@ var DOMCreator = {
             mediaBody = $('<div class="media-body">').appendTo(media);
         $('<a href="/profile/' + comment.from._id + '"><img src="' + comment.from.img + '" class="head head-sm"></a>').appendTo(mediaLeft);
         $('<p class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + '</a>' + comment.from.type + '在<a href="/project/' + comment.project._id + '">' + comment.project.name + '</a>回复了我：</p>').appendTo(mediaBody);
-        $('<p>').html(comment.body).appendTo(mediaBody);
         $('<h6><small><i class="fa fa-clock-o"></i>&nbsp;' + moment(comment.date).fromNow() + '</small><a href="#input-comment" data-toggle="tooltip" title="回复" class="ml10" data-id="' + comment.from._id + '" data-name="' + comment.from.name + '" data-type="' + comment.from.type + '"><i class="fa fa-reply"></i></a></h6>').appendTo(mediaBody);
+        $('<div class="comment-body">').html(comment.body).appendTo(mediaBody);
         media.find('[data-toggle=tooltip]').tooltip();
         return media;
     },
@@ -179,7 +179,7 @@ $.fn.extend({
             var toolbar = '<div class="btn-toolbar" data-role="editor-toolbar" data-target="#' + $this.attr('id') + '">';
             toolbar += '<div class="btn-group"><a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="字体"><i class="fa fa-font"></i>&nbsp;<b class="caret"></b></a><ul class="dropdown-menu"></ul></div>';
             toolbar += '<div class="btn-group"><a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="大小"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a><ul class="dropdown-menu"><li><a data-edit="fontSize 5"><font size="5">大</font></a></li><li><a data-edit="fontSize 3"><font size="3">中</font></a></li><li><a data-edit="fontSize 1"><font size="1">小</font></a></li></ul></div>';
-            toolbar += '<div class="btn-group"><a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="颜色"><i class="fa fa-paint-brush"></i>&nbsp;<b class="caret"></b></a><ul class="dropdown-menu"><li><a data-edit="foreColor #000" style="color:#000">Default</a></li><li><a data-edit="foreColor #777" style="color:#777">Muted</a></li><li><a data-edit="foreColor #337ab7" style="color:#337ab7">Primary</a></li><li><a data-edit="foreColor #3c763d" style="color:#3c763d">Success</a></li><li><a data-edit="foreColor #31708f" style="color:#31708f">Info</a></li><li><a data-edit="foreColor #8a6d3b" style="color:#8a6d3b">Warning</a></li><li><a data-edit="foreColor #a94442" style="color:#a94442">Danger</a></li></ul></div>';
+            toolbar += '<div class="btn-group"><a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="颜色"><i class="fa fa-paint-brush"></i>&nbsp;<b class="caret"></b></a><ul class="dropdown-menu"><li><a data-edit="foreColor #000" style="color:#000">Default</a></li><li><a data-edit="foreColor #005d6c" style="color:#005d6c">JNU Green</a></li><li><a data-edit="foreColor #777" style="color:#777">Muted</a></li><li><a data-edit="foreColor #337ab7" style="color:#337ab7">Primary</a></li><li><a data-edit="foreColor #3c763d" style="color:#3c763d">Success</a></li><li><a data-edit="foreColor #31708f" style="color:#31708f">Info</a></li><li><a data-edit="foreColor #8a6d3b" style="color:#8a6d3b">Warning</a></li><li><a data-edit="foreColor #a94442" style="color:#a94442">Danger</a></li></ul></div>';
             toolbar += '<div class="btn-group"><a class="btn btn-default btn-sm" data-edit="bold" title="加粗 (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a><a class="btn btn-default btn-sm" data-edit="italic" title="斜体 (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a><a class="btn btn-default btn-sm" data-edit="strikethrough" title="删除线"><i class="fa fa-strikethrough"></i></a><a class="btn btn-default btn-sm" data-edit="underline" title="下划线 (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a></div>';
             toolbar += '<div class="btn-group"><a class="btn btn-default btn-sm" data-edit="insertunorderedlist" title="无序列表"><i class="fa fa-list-ul"></i></a><a class="btn btn-default btn-sm" data-edit="insertorderedlist" title="有序列表"><i class="fa fa-list-ol"></i></a><a class="btn btn-default btn-sm" data-edit="outdent" title="退格 (Shift+Tab)"><i class="fa fa-dedent"></i></a><a class="btn btn-default btn-sm" data-edit="indent" title="入格 (Tab)"><i class="fa fa-indent"></i></a></div>';
             toolbar += '<div class="btn-group"><a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="超链接"><i class="fa fa-link"></i></a><div class="dropdown-menu input-append p10 minw250"><input class="form-control" placeholder="URL" type="text" data-edit="createLink" /><button class="btn btn-block btn-primary btn-sm mt5" type="button">添加</button><br/><p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;<small>只接受以http://，https://或mailto:开头的链接地址</small></p></div></div>';
@@ -223,6 +223,7 @@ $.fn.extend({
 $(document).ready(function () {
 
     var nav = $('nav.navbar-static-top'),
+        navToolbar = $('.nav-toolbar'),
         pathname = window.location.pathname;
 
     if (pathname.indexOf('/center') === 0) {
@@ -235,7 +236,20 @@ $(document).ready(function () {
         nav.find('#nav-link-to-ip').addClass('active');
     }
 
-    $('#sign-out').click(function () {
+    navToolbar.find('#input-search').keydown(function (e) {
+        if (e.which === 13) {
+            navToolbar.find('#nav-search').click()
+        }
+    })
+
+    navToolbar.find('#nav-search').click(function () {
+        var q = navToolbar.find('#input-search').val();
+        if (q !== '') {
+            window.location.href = "/search?q=" + q;
+        }
+    })
+
+    navToolbar.find('#sign-out').click(function () {
         $.ajax({
             type: "POST",
             url: encodeURI("/api/post/signout"),
@@ -265,10 +279,6 @@ $(document).ready(function () {
     initBackToTop();
 
     $('[data-toggle="tooltip"]').tooltip();
-
-    $('#copyright-year').html(new Date().getFullYear());
-
-
 
     $(function () {
         var selectList = $('[data-role=selector]');

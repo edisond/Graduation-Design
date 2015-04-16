@@ -1,7 +1,29 @@
 $(document).ready(function () {
 
     var projectType = $('#projectType').val(),
-        list = $('#list');
+        list = $('#list'),
+        projects = [];
+
+
+    function createProjects(_projects) {
+        list.empty().hide();
+        if (_projects.length) {
+            for (var i = 0, j = _projects.length; i < j; i++) {
+                DOMCreator.project(_projects[i]).appendTo(list);
+                if (i < j - 1) {
+                    $('<hr>').appendTo(list);
+                }
+            }
+        } else {
+            var info = $('<span class="text-muted" id="load-state">没有符合条件的结果，点<a href="#">这里</a>重置</span>');
+            info.find('a').click(function (e) {
+                e.preventDefault();
+                createProjects(projects);
+            })
+            info.appendTo(list.empty());
+        }
+        list.fadeIn(250);
+    }
 
     function fetchProjecs() {
         list.empty();
@@ -13,6 +35,7 @@ $(document).ready(function () {
                 $('#header-teacher-num').html('0');
                 $('#header-update-date').html('等待更新');
             } else {
+                projects = data;
                 list.empty().hide();
                 var teachers = [],
                     lastUpdate = new Date(data[0].dateUpdate);
@@ -42,6 +65,55 @@ $(document).ready(function () {
     }
 
     fetchProjecs();
+
+    $('#input-search-in-result').keydown(function (e) {
+        if (e.which === 13) {
+            $('#search-in-result').click();
+        }
+    })
+
+    $('#search-in-result').click(function () {
+        var search = $('#input-search-in-result').val();
+        if (search !== '') {
+            var result = [];
+            for (var i = 0, j = projects.length; i < j; i++) {
+                if (projects[i].teacher) {
+                    if (projects[i].name.indexOf(search) >= 0 || projects[i].teacher.name.indexOf(search) >= 0)
+                        result.push(projects[i])
+                } else {
+                    if (projects[i].name.indexOf(search) >= 0)
+                        result.push(projects[i])
+                }
+            }
+            createProjects(result);
+        }
+    })
+
+    $('#sort-by-date-start').click(function () {
+        createProjects(projects.sort(function (a, b) {
+            return new Date(a.dateStart) < new Date(b.dateStart)
+        }));
+    })
+
+    $('#sort-by-date-update').click(function () {
+        createProjects(projects.sort(function (a, b) {
+            return new Date(a.dateUpdate) < new Date(b.dateUpdate)
+        }));
+    })
+
+    $('#sort-by-name').click(function () {
+        createProjects(projects.sort(function (a, b) {
+            return a.name > b.name
+        }));
+    })
+
+    $('#sort-by-teacher').click(function () {
+        createProjects(projects.sort(function (a, b) {
+            if (a.teacher) {
+                return a.teacher.name > b.teacher.name
+            } else return true;
+        }));
+    })
 
     $('.wysiwyg-textarea').Wysiwyg()
 

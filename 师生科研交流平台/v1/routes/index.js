@@ -7,9 +7,25 @@ var Dao = db.Dao;
 
 /* 主页 */
 router.get('/', function (req, res) {
-    res.render('index', {
-        user: req.session.user
-    });
+    Dao.countUser({
+        type: '老师'
+    }, function (utcount) {
+        Dao.countUser({
+            type: '同学'
+        }, function (uscount) {
+            Dao.countProject({}, function (pcount) {
+                Dao.countTeam({}, function (tcount) {
+                    res.render('index', {
+                        user: req.session.user,
+                        utcount: utcount,
+                        uscount: uscount,
+                        pcount: pcount,
+                        tcount: tcount
+                    });
+                })
+            })
+        })
+    })
 })
 
 /* 注册页 */
@@ -22,6 +38,13 @@ router.get('/register', function (req, res) {
 /* 登录页 */
 router.get('/login', function (req, res) {
     res.render('login', {
+        user: req.session.user
+    });
+})
+
+/* 搜索页 */
+router.get('/search', function (req, res) {
+    res.render('search', {
         user: req.session.user
     });
 })
