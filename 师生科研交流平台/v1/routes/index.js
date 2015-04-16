@@ -19,12 +19,18 @@ router.get('/register', function (req, res) {
     });
 })
 
+/* 登录页 */
+router.get('/login', function (req, res) {
+    res.render('login', {
+        user: req.session.user
+    });
+})
+
 /* 开放实验列表页 */
 router.get('/open-experiment', function (req, res) {
     res.render('project', {
         user: req.session.user,
-        projectType: '开放实验项目',
-        projectFix: 'open-experiment'
+        projectType: '开放实验项目'
     });
 })
 
@@ -32,8 +38,7 @@ router.get('/open-experiment', function (req, res) {
 router.get('/challenge-cup', function (req, res) {
     res.render('project', {
         user: req.session.user,
-        projectType: '挑战杯项目',
-        projectFix: 'challenge-cup'
+        projectType: '挑战杯项目'
     });
 })
 
@@ -41,8 +46,7 @@ router.get('/challenge-cup', function (req, res) {
 router.get('/innovation-project', function (req, res) {
     res.render('project', {
         user: req.session.user,
-        projectType: '科技创新工程项目',
-        projectFix: 'innovation-project'
+        projectType: '科技创新工程项目'
     });
 })
 
@@ -57,7 +61,6 @@ router.get('/project/:id', function (req, res) {
                 if (docs.type === '开放实验项目') {
                     var isSelected = false,
                         isApplied = false,
-                        projectFix = 'open-experiment',
                         condition = {
                             student: req.session.user._id,
                             project: docs._id
@@ -75,17 +78,15 @@ router.get('/project/:id', function (req, res) {
                                 project: docs,
                                 user: req.session.user,
                                 isSelected: isSelected,
-                                isApplied: isApplied,
-                                projectFix: projectFix
+                                isApplied: isApplied
                             })
                         }
                     })
                 } else if (docs.type === '挑战杯项目') {
-                    var projectFix = 'challenge-cup',
-                        condition = {
-                            project: docs._id,
-                            active: true
-                        };
+                    var condition = {
+                        project: docs._id,
+                        active: true
+                    };
                     Dao.getSelects(condition, function (err, doc) {
                         if (err) {
                             res.sendStatus(500);
@@ -93,17 +94,15 @@ router.get('/project/:id', function (req, res) {
                             res.render('projectView', {
                                 project: docs,
                                 user: req.session.user,
-                                team: (doc.length && doc[0].team) ? doc[0].team : undefined,
-                                projectFix: projectFix
+                                team: (doc.length && doc[0].team) ? doc[0].team : undefined
                             })
                         }
                     })
                 } else if (docs.type === '科技创新工程项目') {
-                    var projectFix = 'innovation-project',
-                        condition = {
-                            project: docs._id,
-                            active: true
-                        };
+                    var condition = {
+                        project: docs._id,
+                        active: true
+                    };
                     Dao.getSelects(condition, function (err, doc) {
                         if (err) {
                             res.sendStatus(500);
@@ -111,8 +110,7 @@ router.get('/project/:id', function (req, res) {
                             res.render('projectView', {
                                 project: docs,
                                 user: req.session.user,
-                                team: (doc.length && doc[0].team) ? doc[0].team : undefined,
-                                projectFix: projectFix
+                                team: (doc.length && doc[0].team) ? doc[0].team : undefined
                             })
                         }
                     })
@@ -130,40 +128,35 @@ router.get('/project/:id', function (req, res) {
                 docs.dateEnd = moment(docs.dateEnd).format('l');
                 if (docs.type === '开放实验项目') {
                     res.render('projectView', {
-                        project: docs,
-                        projectFix: 'open-experiment'
+                        project: docs
                     })
                 } else if (docs.type === '挑战杯项目') {
-                    var projectFix = 'challenge-cup',
-                        condition = {
-                            project: docs._id,
-                            active: true
-                        };
+                    var condition = {
+                        project: docs._id,
+                        active: true
+                    };
                     Dao.getSelects(condition, function (err, doc) {
                         if (err) {
                             res.sendStatus(500);
                         } else {
                             res.render('projectView', {
                                 project: docs,
-                                team: (doc.length && doc[0].team) ? doc[0].team : undefined,
-                                projectFix: projectFix
+                                team: (doc.length && doc[0].team) ? doc[0].team : undefined
                             })
                         }
                     })
                 } else if (docs.type === '科技创新工程项目') {
-                    var projectFix = 'innovation-project',
-                        condition = {
-                            project: docs._id,
-                            active: true
-                        };
+                    var condition = {
+                        project: docs._id,
+                        active: true
+                    };
                     Dao.getSelects(condition, function (err, doc) {
                         if (err) {
                             res.sendStatus(500);
                         } else {
                             res.render('projectView', {
                                 project: docs,
-                                team: (doc.length && doc[0].team) ? doc[0].team : undefined,
-                                projectFix: projectFix
+                                team: (doc.length && doc[0].team) ? doc[0].team : undefined
                             })
                         }
                     })

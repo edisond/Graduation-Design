@@ -13,28 +13,19 @@
         <div class="body">
             <% include parts/nav.ejs %>
                 <input type="hidden" id="projectType" value="<%=projectType%>" />
-                <div class="header header-<%=projectFix%>">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <h2><%=projectType%></h2>
-                                <p><i class="fa fa-<%=projectType==='开放实验项目'?'flask':(projectType==='挑战杯项目'?'trophy':'lightbulb-o')%>"></i>&nbsp;<span id="header-project-num">-</span>个项目<i class="fa fa-street-view ml20"></i>&nbsp;<span id="header-teacher-num">-</span>位指导教师<i class="fa fa-clock-o ml20"></i>&nbsp;<span id="header-update-date"></span>
-                                </p>
-                            </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12 mt20">
+                            <h2><%=projectType%></h2>
+                            <p><i class="fa fa-<%=projectType==='开放实验项目'?'flask':(projectType==='挑战杯项目'?'trophy':'lightbulb-o')%>"></i>&nbsp;<span id="header-project-num">-</span>个项目<i class="fa fa-street-view ml20"></i>&nbsp;<span id="header-teacher-num">-</span>位指导教师<i class="fa fa-clock-o ml20"></i>&nbsp;<span id="header-update-date"></span>
+                            </p>
+                            <hr/>
                         </div>
                     </div>
                 </div>
                 <div class="container mt20">
                     <div class="row">
                         <div class="col-sm-9 col-xs-12">
-                            <ol class="breadcrumb">
-                                <span class="text-muted"><i class="fa fa-map-marker"></i>&nbsp;我的位置：</span>
-                                <li><a href="/">主页</a>
-                                </li>
-                                <li class="active">
-                                    <%=projectType%>
-                                </li>
-                            </ol>
                             <div class="row">
                                 <div class="col-sm-6 col-xs-12 text-left mb10">
                                     <form class="form-inline">
@@ -68,7 +59,7 @@
                                 </div>
                             </div>
 
-                            <hr class="hr-dark" />
+                            <hr/>
                             <div id="list">
                                 <span class="text-muted" id="load-state"></span>
                             </div>

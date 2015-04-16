@@ -235,26 +235,7 @@ $(document).ready(function () {
         nav.find('#nav-link-to-ip').addClass('active');
     }
 
-    nav.find('form').html5Validate(function () {
-        var $this = $(this);
-        var post = {
-            id: $this.find('#nav-input-id').val(),
-            password: md5($this.find('#nav-input-pwd').val())
-        };
-        $.ajax({
-            type: "POST",
-            url: encodeURI("/api/post/signin"),
-            data: post,
-            success: function () {
-                location.reload();
-            },
-            error: function () {
-                notyFacade('用户名与密码不匹配', 'error')
-            }
-        });
-    });
-
-    nav.find('#nav-sign-out').click(function () {
+    $('#sign-out').click(function () {
         $.ajax({
             type: "POST",
             url: encodeURI("/api/post/signout"),
@@ -262,27 +243,6 @@ $(document).ready(function () {
                 location.reload();
             }
         });
-    });
-
-    nav.find('#nav-input-admin').click(function () {
-        var password = prompt('请输入管理员密码');
-        if (password && password !== '') {
-            $.ajax({
-                type: "POST",
-                url: encodeURI("/api/post/signin?type=admin"),
-                data: {
-                    password: md5(password)
-                },
-                success: function () {
-                    window.location = '/admin';
-                },
-                error: function () {
-                    notyFacade('密码错误', 'error')
-                }
-            });
-        } else {
-            return false;
-        }
     });
 
     function initBackToTop() {

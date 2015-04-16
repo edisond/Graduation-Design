@@ -50,6 +50,10 @@ img {
     margin-top: 20px
 }
 
+.mt30 {
+    margin-top: 30px
+}
+
 .mt40 {
     margin-top: 40px
 }
@@ -122,6 +126,14 @@ img {
     padding: 20px
 }
 
+.pl10 {
+    padding-left: 10px
+}
+
+.pl20 {
+    padding-left: 20px
+}
+
 .pb10 {
     padding-bottom: 10px
 }
@@ -140,6 +152,14 @@ img {
 
 .maxw300 {
     max-width: 300px !important
+}
+
+.maxw400 {
+    max-width: 400px !important
+}
+
+.maxw500 {
+    max-width: 500px !important
 }
 
 .minw25 {

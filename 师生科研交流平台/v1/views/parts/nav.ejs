@@ -1,5 +1,5 @@
-<nav class="navbar navbar-static-top navbar-inverse mb0">
-    <div class="container-fluid">
+<nav class="navbar navbar-static-top mb0">
+    <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-main">
                 <span class="sr-only">Toggle navigation</span>
@@ -10,7 +10,7 @@
             <a class="navbar-brand" href="/">暨南大学师生科研交流平台</a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-main">
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav navbar-right">
                 <li id="nav-link-to-oe"><a href="/open-experiment">开放实验</a>
                 </li>
                 <li id="nav-link-to-cc"><a href="/challenge-cup">挑战杯</a>
@@ -22,75 +22,60 @@
                     </li>
                     <% } %>
             </ul>
-            <% if(typeof user!=='undefined' ){ %>
-                <input type="hidden" value="<%=user._id%>" id="USERID" />
-                <input type="hidden" value="<%=user.name%>" id="USERNAME" />
-                <input type="hidden" value="<%=user.type%>" id="USERTYPE" />
-                <input type="hidden" value="<%=user.img%>" id="USERIMG" />
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">欢迎，<%=user.name%>&nbsp;<%=user.type%><span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="/center"><i class="fa fa-user"></i>个人中心</a>
-                            </li>
-                            <li><a href="/center#team"><i class="fa fa-users"></i>我的团队</a>
-                            </li>
-                            <li class="divider"></li>
-                            <% if(user.type==='同学' ) { %>
-                                <li><a href="/center#project"><i class="fa fa-book"></i>我的选题</a>
-                                </li>
-                                <li><a href="/center#apply"><i class="fa fa-edit"></i>入团申请</a>
-                                </li>
-                                <% } else { %>
-                                    <li><a href="/center#project"><i class="fa fa-book"></i>我的项目</a>
-                                    </li>
-                                    <li><a href="/center#apply"><i class="fa fa-edit"></i>学生申请</a>
-                                    </li>
-                                    <% } %>
-                                        <li class="divider"></li>
-                                        <li><a href="/center#settings"><i class="fa fa-cog"></i>设置</a>
-                                        </li>
-                                        <li><a href="#" id="nav-sign-out"><i class="fa fa-sign-out"></i>注销</a>
-                                        </li>
-                        </ul>
-                    </li>
-                </ul>
-                <% } else { %>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-sign-in"></i>登录&nbsp;<span class="caret"></span></a>
-                            <ul class="dropdown-menu minw250" role="menu">
-                                <li>
-                                    <form class="p20 pb10">
-                                        <div class="form-group">
-                                            <div class="input-group input-group-sm">
-                                                <span class="input-group-addon" data-toggle="tooltip" title="学号/工号"><i class="fa fa-user"></i></span>
-                                                <input type="text" class="form-control" id="nav-input-id" placeholder="学号/工号" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="input-group input-group-sm">
-                                                <span class="input-group-addon" data-toggle="tooltip" title="密码"><i class="fa fa-lock"></i></span>
-                                                <input type="password" class="form-control" id="nav-input-pwd" placeholder="密码" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label">
-                                                <input type="checkbox" id="nav-input-rem">
-                                                <span class="text-muted">记住我</span>
-                                            </label>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary btn-sm" id="nav-input-sub">登录</button>
-                                        <a href="/register" class="btn btn-default btn-sm ml10">注册</a>
-                                    </form>
-                                </li>
-                                <li class="divider"></li>
-                                <li><a href="#" id="nav-input-admin"><span class="text-muted m0 mb5">管理员入口</span></a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <% } %>
         </div>
     </div>
 </nav>
+<div class="nav-toolbar">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6 col-sm-3">
+                <a href="/"><img class="nav-logo" src="/img/jnu-logo.png" />
+                </a>
+            </div>
+            <div class="col-xs-6 col-sm-3 text-right pull-right">
+                <div class="user-info">
+                    <% if(typeof user==='undefined' ){ %>
+                        <div class="anonymous"><a href="/register">注册</a>&nbsp;或<a href="/login">&nbsp;登录</a>
+                        </div>
+                        <%} else{%>
+                            <input type="hidden" value="<%=user._id%>" id="USERID" />
+                            <input type="hidden" value="<%=user.name%>" id="USERNAME" />
+                            <input type="hidden" value="<%=user.type%>" id="USERTYPE" />
+                            <input type="hidden" value="<%=user.img%>" id="USERIMG" />
+                            <table class="signed">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <h5><a href="/center">
+                                                <%=user.name%>
+                                                    <%=user.type%>
+                                            </a></h5>
+                                        </td>
+                                        <td rowspan="2" class="pl10"><a href="/center"><img class="head" src="<%=user.img%>"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h6><a class="text-muted" href="#" id="sign-out">注销</a></h6>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <%}%>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <form id="nav-search">
+                    <div class="input-group input-group-lg">
+                        <input type="text" class="form-control" id="aside-input-search" placeholder="找项目">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default" id="aside-input-search-btn">&nbsp;&nbsp;<i class="fa fa-search"></i>&nbsp;&nbsp;
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

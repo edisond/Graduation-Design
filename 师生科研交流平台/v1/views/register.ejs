@@ -13,32 +13,23 @@
             <% include parts/nav.ejs %>
                 <div class="container">
                     <div class="row">
-                        <div class="col-xs-12">
-                            <div class="page-header">
-                                <h2 class="text-center">注册</h2>
-                            </div>
-                        </div>
+                        <h2 class="text-center">注册</h2>
                         <div class="col-xs-12 text-center">
-                            <form class="maxw300 pull-center text-left" id="register">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon" data-toggle="tooltip" title="学号/工号"><i class="fa fa-user minw25"></i></span>
-                                        <input type="text" class="form-control" id="input-id" required pattern="^[0-9]*$" maxlength="10" placeholder="请填写十位以下数字学号/工号">
-                                    </div>
+                            <form class="maxw400 pull-center text-left" id="register">
+                                <div class="form-group form-group-lg mt30">
+                                    <label for="input-id">学号/工号</label>
+                                    <input type="text" class="form-control" id="input-id" required pattern="^[0-9]*$" maxlength="10">
+                                    <p class="text-muted">请填写十位以下数字学号/工号</p>
                                 </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon" data-toggle="tooltip" title="姓名"><i class="fa fa-credit-card minw25"></i></span>
-                                        <input type="text" class="form-control" id="input-name" required maxlength="10" placeholder="请填写您的姓名">
-                                    </div>
+                                <div class="form-group form-group-lg mt30">
+                                    <label for="input-name">姓名</label>
+                                    <input type="text" class="form-control" id="input-name" required maxlength="10">
                                 </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon" data-toggle="tooltip" title="密码"><i class="fa fa-lock minw25"></i></span>
-                                        <input type="password" class="form-control" id="input-password" required maxlength="20" placeholder="密码不超过20位">
-                                    </div>
+                                <div class="form-group form-group-lg mt30">
+                                    <label for="input-password">密码</label>
+                                    <input type="password" class="form-control" id="input-password" required maxlength="20">
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group form-group-lg mt30">
                                     <label for="input-type">我是</label>
                                     <div class="pull-right">
                                         <label class="radio-inline">
@@ -49,12 +40,12 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <button type="submit" class="col-xs-12 btn btn-primary" id="input-submit">注册</button>
+                                <div class="form-group form-group-lg mt30">
+                                    <button type="submit" class="col-xs-12 btn btn-primary btn-lg" id="input-submit">注册</button>
                                 </div>
                             </form>
                         </div>
-                        <div class="col-xs-12 text-center">
+                        <div class="col-xs-12 text-center mt30">
                             <br/>
                             <p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;<small>注册后请等待管理员确认方可激活账号<br/>如有任何疑问，请联系管理员<span id="admin-email"></span></small>
                             </p>
