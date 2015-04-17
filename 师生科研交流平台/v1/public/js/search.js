@@ -30,9 +30,6 @@ $(document).ready(function () {
                 });
                 for (var i = 0, j = data.length; i < j; i++) {
                     DOMCreator.project(data[i]).appendTo(list);
-                    if (i < j - 1) {
-                        $('<hr>').appendTo(list);
-                    }
                 }
                 list.fadeIn(250);
             })

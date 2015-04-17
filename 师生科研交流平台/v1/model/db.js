@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var model = require('./model');
 var User = model.User;
-var Admin = model.Admin;
 var Project = model.Project;
 var Select = model.Select;
 var Comment = model.Comment;
@@ -38,7 +37,7 @@ var Dao = {
 
     /* 新建一个用户 */
     newUser: function (user, callback) {
-        user.img = user.img || '/img/heads/' + user.type + '-default.jpg';
+        user.img = user.img || '/img/heads/' + user.type + '默认头像.png';
         user = new User(user);
         user.key = md5.md5(new Date());
         user.password = md5.md5(user.password + user.key);
@@ -108,15 +107,35 @@ var Dao = {
     /* 参数：password，callback(match) */
     /* @password-执行验证的密码，@match-验证结果 */
     checkAdminPassword: function (password, callback) {
-        Admin.findOne({}, function (err, docs) {
-            if (err || !docs) {
+        User.findOne({
+            type: '管理员'
+        }, function (err, docs) {
+            if (err) {
                 callback(false);
-            } else {
+            } else if (docs) {
                 if (md5.md5(password + docs.key) === docs.password) {
-                    callback(true, docs.email);
+                    callback(true, docs);
                 } else {
                     callback(false);
                 }
+            } else {
+                var user = new User({
+                    id: 'admin',
+                    name: 'admin',
+                    type: '管理员',
+                    img: '/img/heads/管理员默认头像.png',
+                    key: md5.md5(new Date()),
+                    active: true
+                });
+                user.password = md5.md5(md5.md5('admin') + user.key);
+                user.email = 'undefined';
+                user.save(function (err, admin) {
+                    if (err) {
+                        callback(false);
+                    } else {
+                        callback(true, admin);
+                    }
+                })
             }
         });
     },
@@ -130,11 +149,15 @@ var Dao = {
             admin.key = md5.md5(new Date());
             admin.password = md5.md5(admin.password + admin.key);
         }
-        Admin.findOneAndUpdate({}, admin, callback)
+        User.findOneAndUpdate({
+            type: '管理员'
+        }, admin, callback)
     },
 
     getAdmin: function (callback) {
-        Admin.findOne({}, 'email -_id').lean().exec(callback)
+        User.findOne({
+            type: '管理员'
+        }, 'email -_id').lean().exec(callback)
     },
 
     /* 新建项目 */
@@ -207,10 +230,24 @@ var Dao = {
         })
     },
 
-    updateSelect: function (select, callback) {
+    approveSelect: function (select, callback) {
+        select.active = true;
         Select.findOneAndUpdate({
             _id: select._id
-        }, select, callback)
+        }, select, function (err, doc) {
+            if (!err && doc.team) {
+                Select.remove({
+                    project: doc.project,
+                    _id: {
+                        $ne: doc._id
+                    }
+                }, function (_err) {
+                    callback(_err, doc);
+                })
+            } else {
+                callback(err, doc);
+            }
+        })
     },
 
     deleteSelect: function (condition, callback) {

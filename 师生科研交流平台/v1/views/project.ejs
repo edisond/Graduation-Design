@@ -54,7 +54,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <% if(typeof user!=='undefined' && ((user.type==='老师' && projectType==='开放实验项目' ) || projectType==='挑战杯项目' || projectType==='科技创新工程项目' )){%>
+                                <% if(typeof user!=='undefined' && user.type!=='管理员' && ((user.type==='老师' && projectType==='开放实验项目' ) || projectType==='挑战杯项目' || projectType==='科技创新工程项目' )){%>
                                     <button type="button" class="btn btn-sm btn-success btn-block" data-toggle="modal" data-target="#new-project"><i class="fa fa-plus"></i>&nbsp;创建</button>
                                     <% } %>
                                         <br/>

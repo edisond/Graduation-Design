@@ -16,7 +16,7 @@ router.get('/admin', function (req, res) {
 
 /* Get user list */
 router.get('/user', function (req, res) {
-    if (req.session.admin) {
+    if (req.session.user.type === '管理员') {
         var condition = {};
         if (req.query.type) condition.type = req.query.type;
         Dao.getUsers(condition, function (err, docs) {

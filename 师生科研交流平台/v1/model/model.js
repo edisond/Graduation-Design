@@ -33,7 +33,7 @@ var User = new Schema({
     type: {
         type: 'String',
         required: true,
-        enum: ['老师', '同学']
+        enum: ['老师', '同学', '管理员']
     },
     /* 是否激活 */
     active: {
@@ -66,23 +66,6 @@ var User = new Schema({
         department: String,
         /* 职称 */
         title: String
-    }
-});
-
-/* 管理员表 */
-var Admin = new Schema({
-    /* 密码 */
-    password: {
-        type: 'String',
-        required: true
-    },
-    /* 密钥 */
-    key: {
-        type: 'String',
-        required: true
-    },
-    email: {
-        type: 'String'
     }
 });
 
@@ -295,7 +278,6 @@ var TeamApply = new Schema({
 })
 
 module.exports.User = mongoose.model('user', User);
-module.exports.Admin = mongoose.model('admin', Admin);
 module.exports.Project = mongoose.model('project', Project);
 module.exports.Comment = mongoose.model('comment', Comment);
 module.exports.Select = mongoose.model('select', Select);

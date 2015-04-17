@@ -101,10 +101,9 @@ router.post('/update/admin', function (req, res) {
 /* 登录 */
 router.post('/signin', function (req, res) {
     if (req.query.type === 'admin') {
-        Dao.checkAdminPassword(req.body.password, function (match, email) {
+        Dao.checkAdminPassword(req.body.password, function (match, doc) {
             if (match) {
-                email = typeof email === 'undefined' ? 'undefined' : email;
-                req.session.admin = email;
+                req.session.user = doc;
                 res.sendStatus(200);
             } else {
                 res.sendStatus(401);
@@ -132,7 +131,7 @@ router.post('/signout', function (req, res) {
 /* 用户 */
 router.post('/user', function (req, res) {
     var user = req.body;
-    if (req.session.admin) {
+    if (req.session.user && req.session.user.type === '管理员') {
         if (req.query.action === "new") {
             xssUser(user);
             Dao.newUser(user, function (err) {
@@ -199,6 +198,7 @@ router.post('/user', function (req, res) {
             user.active = false;
             xssUser(user);
             Dao.newUser(user, function (err) {
+                console.log(err)
                 res.sendStatus(err ? 500 : 200);
             })
         } else {
@@ -346,8 +346,7 @@ router.post('/select', function (req, res) {
                 })
             } else if (action === 'approve' && req.session.user.type === "老师") {
                 var select = req.body;
-                select.active = true;
-                Dao.updateSelect(select, function (err) {
+                Dao.approveSelect(select, function (err) {
                     res.sendStatus(err ? 500 : 200);
                 })
             } else {

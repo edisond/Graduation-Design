@@ -10,9 +10,6 @@ $(document).ready(function () {
         if (_projects.length) {
             for (var i = 0, j = _projects.length; i < j; i++) {
                 DOMCreator.project(_projects[i]).appendTo(list);
-                if (i < j - 1) {
-                    $('<hr>').appendTo(list);
-                }
             }
         } else {
             var info = $('<span class="text-muted" id="load-state">没有符合条件的结果，点<a href="#">这里</a>重置</span>');
@@ -44,9 +41,6 @@ $(document).ready(function () {
                 });
                 for (var i = 0, j = data.length; i < j; i++) {
                     DOMCreator.project(data[i]).appendTo(list);
-                    if (i < j - 1) {
-                        $('<hr>').appendTo(list);
-                    }
                     if (data[i].teacher) {
                         teachers.push(data[i].teacher._id);
                     }

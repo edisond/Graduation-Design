@@ -283,9 +283,9 @@ router.get('/team/:id', function (req, res) {
 
 /* 管理员页 */
 router.get('/admin', function (req, res) {
-    if (req.session.admin) {
+    if (req.session.user && req.session.user.type === '管理员') {
         res.render('admin', {
-            email: req.session.admin
+            user: req.session.user
         });
     } else {
         res.redirect('/');

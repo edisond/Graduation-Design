@@ -18,9 +18,9 @@ $(document).ready(function () {
         });
     });
 
-    $('#login-admin').click(function () {
-        var password = prompt('请输入管理员密码');
-        if (password && password !== '') {
+    $('#admin-login').find('form').html5Validate(function () {
+        var password = $(this).find('#input-admin-password').val();
+        if (password !== '') {
             $.ajax({
                 type: "POST",
                 url: encodeURI("/api/post/signin?type=admin"),

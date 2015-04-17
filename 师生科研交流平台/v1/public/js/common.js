@@ -56,7 +56,7 @@ notyFacade = function (text, type) {
 
 var DOMCreator = {
     project: function (project) {
-        var node = $('<div>');
+        var node = $('<div class="project">');
         var title = $('<h4>').appendTo(node);
         $('<a>').attr('href', '/project/' + project._id).html(project.name).appendTo(title);
         if (!project.teacher) {
@@ -82,7 +82,7 @@ var DOMCreator = {
     },
 
     myProject: function (select) {
-        var div = $('<div>');
+        var div = $('<div class="project">');
         var title = $('<h4><a href="/project/' + select.project._id + '">' + select.project.name + '</a><small class="ml20">' + select.project.type + '</small></h4>').appendTo(div);
         var tag = $('<span class="label ml10">').appendTo(title);
         if (select.active) {
@@ -101,7 +101,7 @@ var DOMCreator = {
     },
 
     myProjectT: function (project) {
-        var div = $('<div>');
+        var div = $('<div class="project">');
         var title = $('<h4><a href="/project/' + project._id + '">' + project.name + '</a><small class="ml20">' + project.type + '</small></h4>').appendTo(div);
         var tag = $('<span class="label ml10">').appendTo(title);
         if (new Date(project.dateStart) > Date.now()) {
@@ -136,8 +136,13 @@ var DOMCreator = {
             mediaLeft = $('<div class="media-left">').appendTo(media),
             mediaBody = $('<div class="media-body">').appendTo(media);
         $('<a href="/profile/' + comment.from._id + '"><img src="' + comment.from.img + '" class="head head-sm"></a>').appendTo(mediaLeft);
-        $('<p class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + '</a>' + comment.from.type + '在<a href="/project/' + comment.project._id + '">' + comment.project.name + '</a>回复了我：</p>').appendTo(mediaBody);
-        $('<h6><small><i class="fa fa-clock-o"></i>&nbsp;' + moment(comment.date).fromNow() + '</small><a href="#input-comment" data-toggle="tooltip" title="回复" class="ml10" data-id="' + comment.from._id + '" data-name="' + comment.from.name + '" data-type="' + comment.from.type + '"><i class="fa fa-reply"></i></a></h6>').appendTo(mediaBody);
+        if (comment.project) {
+            $('<p class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + '</a>' + comment.from.type + '在<a href="/project/' + comment.project._id + '">' + comment.project.name + '</a>回复了我：</p>').appendTo(mediaBody);
+            $('<h6><small><i class="fa fa-clock-o"></i>&nbsp;' + moment(comment.date).fromNow() + '</small><a href="/project/' + comment.project._id + '" data-toggle="tooltip" title="回复" class="ml10"><i class="fa fa-reply"></i></a></h6>').appendTo(mediaBody);
+        } else {
+            $('<p class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + '</a>' + comment.from.type + '对我说：</p>').appendTo(mediaBody);
+            $('<h6><small><i class="fa fa-clock-o"></i>&nbsp;' + moment(comment.date).fromNow() + '</small><a href="/profile/' + comment.from._id + '" data-toggle="tooltip" title="回复" class="ml10"><i class="fa fa-reply"></i></a></h6>').appendTo(mediaBody);
+        }
         $('<div class="comment-body">').html(comment.body).appendTo(mediaBody);
         media.find('[data-toggle=tooltip]').tooltip();
         return media;
@@ -150,7 +155,7 @@ var DOMCreator = {
     },
 
     myTeam: function (apply, user_id) {
-        var div = $('<div>');
+        var div = $('<div class="project">');
         var title = $('<h4><a href="/team/' + apply.team._id + '">' + apply.team.name + '</a></h4>').appendTo(div);
         var tag = $('<span class="label ml10">').appendTo(title);
         if (apply.active) {

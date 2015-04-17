@@ -54,9 +54,6 @@ $(document).ready(function () {
                 teamList.empty().hide();
                 for (var i = 0, j = data.length; i < j; i++) {
                     DOMCreator.myTeam(data[i], USER._id).appendTo(teamList);
-                    if (i < j - 1) {
-                        $('<hr>').appendTo(teamList);
-                    }
                 }
                 teamList.fadeIn(250)
             }
@@ -148,9 +145,6 @@ $(document).ready(function () {
                             ipNum++;
                         }
                         DOMCreator.myProjectT(data[i]).appendTo(projectList);
-                        if (i < j - 1) {
-                            $('<hr>').appendTo(projectList);
-                        }
                     }
                     projectList.fadeIn(250);
                     $('#oe-num').html(oeNum);
@@ -194,7 +188,7 @@ $(document).ready(function () {
                     "width": '200px',
                     'className': "text-center",
                     'render': function (data, type, row) {
-                        return row.team ? '<a href="/team/' + row.team._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a><a class="ml20" href="#" data-id="' + data + '" data-action="reject"><i class="fa fa-times"></i>&nbsp;拒绝</a>' : '<a href="/profile/' + row.student._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a><a class="ml20" href="#" data-id="' + data + '" data-action="reject"><i class="fa fa-times"></i>&nbsp;拒绝</a>';
+                        return row.team ? '<a href="/team/' + row.team._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-toggle="modal" data-target="#approve-project-apply"><i class="fa fa-check"></i>&nbsp;通过</a><a class="ml20" href="#" data-id="' + data + '" data-toggle="modal" data-target="#reject-project-apply"><i class="fa fa-times"></i>&nbsp;拒绝</a>' : '<a href="/profile/' + row.student._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-toggle="modal" data-target="#approve-project-apply"><i class="fa fa-check"></i>&nbsp;通过</a><a class="ml20" href="#" data-id="' + data + '" data-toggle="modal" data-target="#reject-project-apply"><i class="fa fa-times"></i>&nbsp;拒绝</a>';
                     }
             }
         ],
@@ -212,29 +206,47 @@ $(document).ready(function () {
             }
         });
 
-        tableApply.delegate('a[data-action=approve]', 'click', function (e) {
-            var row = $(e.target).parents('tr')[0],
-                data = tableApply.DataTable().row(row).data(),
-                post = {
-                    _id: data._id,
+        $('#approve-project-apply').on('show.bs.modal', function (e) {
+            var data = tableApply.DataTable().row($(e.relatedTarget).parents('tr')[0]).data(),
+                $this = $(this),
+                modalBody = $this.find('.modal-body').empty();
+            $('<input type="hidden" value="' + data._id + '"/>').appendTo(modalBody);
+            if (data.student) {
+                $this.find('.modal-title').html('接收学生');
+                modalBody.append($('<p>正在接收<a target="_blank" href="/profile/' + data.student._id + '">' + data.student.name + '</a>同学到项目<a target="_blank" href="/project/' + data.project._id + '">' + data.project.name + '</a><p>'));
+                modalBody.append($('<p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;<small>注意：开放实验项目中的预计学生容量不代表上限</small></p>'));
+            } else if (data.team) {
+                $this.find('.modal-title').html('接收团队');
+                modalBody.append($('<p>正在接收<a target="_blank" href="/team/' + data.team._id + '">' + data.team.name + '</a>团队到项目<a target="_blank" href="/project/' + data.project._id + '">' + data.project.name + '</a><p>'));
+                modalBody.append($('<p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;<small>注意：对于挑战杯项目、创新工程项目，目前只能与团队形成一对一的关系。在通过一个团队的加入申请后，其余团队将不能再申请加入此项目，同时申请本项目的其它团队也会失去对项目的申请。</small></p>'));
+            }
+        }).find('button[type=submit]').click(function () {
+            var $this = $('#approve-project-apply'),
+                _id = $this.find('input[type=hidden]');
+            if (_id.length) {
+                var post = {
+                    _id: _id.val(),
                     date: Date.now,
                     active: false
                 };
-            $.ajax({
-                url: encodeURI('/api/post/select?action=approve'),
-                type: 'POST',
-                data: post,
-                success: function () {
-                    tableApply.DataTable().row(row).remove().draw(false);
-                    notyFacade('操作成功', 'success');
-                },
-                error: function () {
-                    notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
-                }
-            })
-        });
+                $.ajax({
+                    url: encodeURI('/api/post/select?action=approve'),
+                    type: 'POST',
+                    data: post,
+                    success: function () {
+                        tableApply.DataTable().ajax.reload(null, false);
+                        $this.modal('hide');
+                        notyFacade('操作成功', 'success');
+                    },
+                    error: function () {
+                        notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
+                    }
+                })
+            }
+        })
 
-    } else {
+
+    } else if (USER.type === '同学') {
 
 
         var tableApply = $('#table-apply');
@@ -265,9 +277,6 @@ $(document).ready(function () {
                             ipNum++;
                         }
                         DOMCreator.myProject(data[i]).appendTo(projectList);
-                        if (i < j - 1) {
-                            $('<hr>').appendTo(projectList);
-                        }
                     }
                     projectList.fadeIn(250);
                     $('#oe-num').html(oeNum);
@@ -386,19 +395,23 @@ $(document).ready(function () {
             setProfileForm.find('#input-phone').val(data.phone);
             setProfileForm.find('#input-sex').val(data.sex);
             setProfileForm.find('#input-name').val(data.name);
-            setProfileForm.find('#input-department').attr('selectedItem', data.teacherAttr.department);
-            setProfileForm.find('#input-title').val(data.teacherAttr.title);
+            if (data.teacherAttr) {
+                setProfileForm.find('#input-department').attr('selectedItem', data.teacherAttr.department);
+                setProfileForm.find('#input-title').val(data.teacherAttr.title);
+            }
         } else if (data.type === '同学') {
             setProfileForm.find('#input-id').val(data.id);
             setProfileForm.find('#input-email').val(data.email);
             setProfileForm.find('#input-phone').val(data.phone);
             setProfileForm.find('#input-sex').val(data.sex);
             setProfileForm.find('#input-name').val(data.name);
-            setProfileForm.find('#input-college').attr('selectedItem', data.studentAttr.college);
-            setProfileForm.find('#input-major').attr('selectedItem', data.studentAttr.major);
-            setProfileForm.find('#input-grade').val(data.studentAttr.grade);
-            setProfileForm.find('#input-type').val(data.studentAttr.studentType);
-            setProfileForm.find('#input-address').val(data.studentAttr.address);
+            if (data.studentAttr) {
+                setProfileForm.find('#input-college').attr('selectedItem', data.studentAttr.college);
+                setProfileForm.find('#input-major').attr('selectedItem', data.studentAttr.major);
+                setProfileForm.find('#input-grade').val(data.studentAttr.grade);
+                setProfileForm.find('#input-type').val(data.studentAttr.studentType);
+                setProfileForm.find('#input-address').val(data.studentAttr.address);
+            }
         }
     })
 

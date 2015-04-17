@@ -14,9 +14,6 @@ $(document).ready(function () {
             });
             for (var i = 0, j = data.length; i < j; i++) {
                 DOMCreator.myProject(data[i]).appendTo(projectList);
-                if (i < j - 1) {
-                    $('<hr>').appendTo(projectList);
-                }
             }
         }
     })

@@ -31,12 +31,38 @@
                             </form>
                         </div>
                         <div class="col-xs-12 text-center mt30">
-                            <a href="#">忘记密码</a>&nbsp;&#124;&nbsp;<a href="/register">注册账号</a>&nbsp;&#124;&nbsp;<a href="#" id="login-admin">管理员</a>
+                            <a href="#">忘记密码</a>&nbsp;&#124;&nbsp;<a href="/register">注册账号</a>&nbsp;&#124;&nbsp;<a href="#" data-toggle="modal" data-target="#admin-login">管理员</a>
                         </div>
                     </div>
                 </div>
         </div>
         <% include parts/footer.ejs %>
+    </div>
+    <div class="modal fade" id="admin-login" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">管理员登录</h4>
+                </div>
+                <form>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="input-orign-password">密码</label>
+                            <input type="password" class="form-control" id="input-admin-password" required>
+                        </div>
+                        <br/>
+                        <p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;<small>初次登录时请输入'admin'，系统将自动创建唯一的管理员账号，该密码可在进入管理员界面后更改</small>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">登录</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
     <% include parts/include.js.html %>
         <script type="text/javascript" src="/js/login.js"></script>

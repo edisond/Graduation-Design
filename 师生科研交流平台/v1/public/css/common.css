@@ -43,13 +43,16 @@ nav.navbar .nav>li {
 }
 
 nav.navbar .nav>li>a {
-    color: rgba(255, 255, 255, 0.8);
+    color: #ddd;
+    -webkit-transition: background .2s ease-in-out;
+    -o-transition: background .2s ease-in-out;
+    transition: background .2s ease-in-out;
 }
 
 nav.navbar .nav>li>a:hover,
 nav.navbar .nav>li>a:focus,
 nav.navbar .nav>li.active>a {
-    background: rgba(0, 0, 0, 0.2);
+    background: #004a56;
     color: #fff;
 }
 
@@ -66,13 +69,16 @@ nav.navbar .nav>li.active>a:after {
 }
 
 nav.navbar .navbar-brand {
-    color: rgba(255, 255, 255, 0.8);
+    color: #ddd;
     font-size: 14px;
+    -webkit-transition: background .2s ease-in-out;
+    -o-transition: background .2s ease-in-out;
+    transition: background .2s ease-in-out;
 }
 
 nav.navbar .navbar-brand:hover,
 nav.navbar .navbar-brand:focus {
-    background: rgba(0, 0, 0, 0.2);
+    background: #004a56;
     color: #fff;
 }
 
@@ -89,12 +95,13 @@ nav.navbar i.fa {
     position: relative;
 }
 
-.nav-toolbar img.nav-logo {
+.nav-toolbar .nav-logo {
     height: 70px;
-    width: 70px;
+    width: 202px;
     border: none;
     position: absolute;
     top: -10px;
+    background: url('/img/jnu-logo-w.png') top left no-repeat;
 }
 
 .nav-toolbar .user-info {
@@ -235,7 +242,28 @@ img.head.head-sm {
     cursor: pointer;
 }
 
-.comment-body {}
+.media {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.media:last-child {
+    border-bottom: 0;
+}
+
+.project {
+    margin-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.project:first-child {
+    margin-top: 0;
+}
+
+.project:last-child {
+    border-bottom: 0;
+}
 
 .back-to-top {
     font-size: x-large;
@@ -262,5 +290,8 @@ img.head.head-sm {
     }
     nav.navbar .nav>li.active>a:after {
         display: none;
+    }
+    .nav-toolbar .nav-logo {
+        background: url('/img/jnu-logo.png') top left no-repeat;
     }
 }

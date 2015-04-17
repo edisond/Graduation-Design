@@ -17,9 +17,6 @@ $(document).ready(function () {
                 teamList.empty().hide();
                 for (var i = 0, j = data.length; i < j; i++) {
                     DOMCreator.myTeam(data[i], profile._id).appendTo(teamList);
-                    if (i < j - 1) {
-                        $('<hr>').appendTo(teamList);
-                    }
                 }
                 teamList.fadeIn(250)
             }
@@ -54,9 +51,6 @@ $(document).ready(function () {
                             ipNum++;
                         }
                         DOMCreator.myProjectT(data[i]).appendTo(projectList);
-                        if (i < j - 1) {
-                            $('<hr>').appendTo(projectList);
-                        }
                     }
                     projectList.fadeIn(250);
                     $('#oe-num').html(oeNum);
@@ -94,9 +88,6 @@ $(document).ready(function () {
                             ipNum++;
                         }
                         DOMCreator.myProject(data[i]).appendTo(projectList);
-                        if (i < j - 1) {
-                            $('<hr>').appendTo(projectList);
-                        }
                     }
                     projectList.fadeIn(250);
                     $('#oe-num').html(oeNum);
