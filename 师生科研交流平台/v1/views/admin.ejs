@@ -51,7 +51,7 @@
                                         <br/>
                                         <button type="button" class="btn btn-default" id="select-all-student">全部选择</button>
                                         <button type="button" class="btn btn-default ml10" id="deselect-all-student">取消全选</button>
-                                        <button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#delete-student"><i class="fa fa-trash-o"></i>&nbsp;失效选中记录</button>
+                                        <button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#delete-student"><i class="fa fa-times"></i>&nbsp;失效选中记录</button>
                                         <button type="button" class="btn btn-success pull-right mr10" id="active-select-student"><i class="fa fa-check"></i>&nbsp;激活选中记录</button>
                                         <button type="button" class="btn btn-success pull-right mr10" data-toggle="modal" data-target="#new-student"><i class="fa fa-plus"></i>&nbsp;添加学生</button>
                                         <br/>
@@ -78,14 +78,15 @@
                                         <fieldset>
                                             <legend class="fontsizeM">
                                                 <span data-toggle="tooltip" title="点击以展开/收回">
-                                        <a data-toggle="collapse" href="#account-setting" aria-expanded="false" aria-controls="password-setting">详细信息</a>
-                                    </span>
+                                                    <a data-toggle="collapse" href="#account-setting" aria-expanded="false" aria-controls="password-setting">详细信息</a>
+                                                </span>
                                             </legend>
                                             <div id="account-setting" class="collapse">
                                                 <div class="row">
                                                     <form class="col-xs-12 col-sm-6">
                                                         <div class="form-group">
-                                                            <label for="input-email">邮箱</label>
+                                                            <label for="input-email">邮箱<small>（公开）</small>
+                                                            </label>
                                                             <input type="email" class="form-control" id="input-email" required value="<%=user.email%>">
                                                         </div>
                                                         <button type="submit" class="col-xs-12 btn btn-primary">保存</button>

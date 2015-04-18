@@ -200,8 +200,15 @@ router.get('/center', function (req, res) {
             user: req.session.user
         });
     } else {
-        res.redirect('/');
+        res.redirect('/login');
     }
+})
+
+/* 支持页 */
+router.get('/support', function (req, res) {
+    res.render('support', {
+        user: req.session.user
+    });
 })
 
 router.get('/profile/:id', function (req, res) {
@@ -288,7 +295,7 @@ router.get('/admin', function (req, res) {
             user: req.session.user
         });
     } else {
-        res.redirect('/');
+        res.redirect('/login');
     }
 })
 

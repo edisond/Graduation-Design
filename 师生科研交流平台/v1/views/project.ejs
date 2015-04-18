@@ -95,9 +95,9 @@
                                 <form class="form-horizontal form-horizontal-label-left" id="new-oe">
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label for="input-college" class="col-sm-2 control-label">所属学院</label>
-                                            <div class="col-sm-4" data-role="selector">
-                                                <select class="form-control" id="input-college" required data-bind="college"></select>
+                                            <label for="input-name" class="col-sm-2 control-label">项目名称</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" id="input-name" maxlength="20" required>
                                             </div>
                                             <label for="input-lab" class="col-sm-2 control-label">所在实验室
                                             </label>
@@ -105,15 +105,14 @@
                                                 <input type="text" class="form-control" id="input-lab" maxlength="10" required>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="input-name" class="col-sm-2 control-label">项目名称</label>
+                                        <div class="form-group" data-role="selector">
+                                            <label for="input-college" class="col-sm-2 control-label">所属学院</label>
                                             <div class="col-sm-4">
-                                                <input type="text" class="form-control" id="input-name" maxlength="20" required>
+                                                <select class="form-control" id="input-college" required data-bind="college"></select>
                                             </div>
-                                            <label for="input-object" class="col-sm-2 control-label">面向对象&nbsp;<a href="#" tabindex="-1"><i class="fa fa-question-circle" data-toggle="tooltip" title="学生专业"></i></a>
-                                            </label>
+                                            <label for="input-object" class="col-sm-2 control-label">面向专业</label>
                                             <div class="col-sm-4">
-                                                <input type="text" class="form-control" id="input-object" maxlength="10" required>
+                                                <select class="form-control" id="input-object" required data-bind="major"></select>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -271,7 +270,7 @@
                                                 <label class="col-sm-2 control-label">项目类别</label>
                                                 <div class="col-sm-10">
                                                     <label class="radio-inline" for="input-type-1">
-                                                        <input value="哲学社会科学类社会调查报告和学术论文" type="radio" name="input-type" id="input-type-1">哲学社会科学类社会调查报告和学术论文
+                                                        <input checked value="哲学社会科学类社会调查报告和学术论文" type="radio" name="input-type" id="input-type-1">哲学社会科学类社会调查报告和学术论文
                                                     </label>
                                                     <label class="radio-inline" for="input-type-2">
                                                         <input value="自然科学类学术论文" type="radio" name="input-type" id="input-type-2">自然科学类学术论文

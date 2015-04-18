@@ -6,7 +6,14 @@ var express = require('express'),
     path = require('path'),
     Dao = db.Dao,
     md5 = require('../../lib/md5'),
-    xss = require('xss');
+    xss = require('xss'),
+    nodemailer = require("nodemailer"),
+    smtpTransport = nodemailer.createTransport("SMTP", {
+        auth: {
+            user: "jnussp@outlook.com",
+            pass: "33635468gkr"
+        }
+    });
 
 xss.whiteList['strike'] = [];
 
@@ -113,8 +120,12 @@ router.post('/signin', function (req, res) {
         var user = req.body;
         Dao.checkUserPassword(user, function (match, docs) {
             if (match) {
-                req.session.user = docs;
-                res.sendStatus(200);
+                if (docs.active) {
+                    req.session.user = docs;
+                    res.sendStatus(200);
+                } else {
+                    res.sendStatus(403);
+                }
             } else {
                 res.sendStatus(401);
             }
@@ -349,6 +360,10 @@ router.post('/select', function (req, res) {
                 Dao.approveSelect(select, function (err) {
                     res.sendStatus(err ? 500 : 200);
                 })
+            } else if (action === 'reject' && req.session.user.type === "老师") {
+                Dao.deleteSelect(req.body._id, function (err) {
+                    res.sendStatus(err ? 500 : 200);
+                })
             } else {
                 res.sendStatus(404);
             }
@@ -446,6 +461,20 @@ router.post('/teamapply', function (req, res) {
                     }
                 }
             })
+        } else if (action === 'reject') {
+            Dao.getTeamApply(req.body._id, function (err, doc) {
+                if (err || !doc) {
+                    res.sendStatus(500)
+                } else {
+                    if (doc.team.leader.toString() === req.session.user._id.toString()) {
+                        Dao.deleteTeamApply(doc._id, function (err) {
+                            res.sendStatus(err ? 500 : 200);
+                        })
+                    } else {
+                        res.sendStatus(401)
+                    }
+                }
+            })
         } else {
             res.sendStatus(404);
         }
@@ -453,5 +482,32 @@ router.post('/teamapply', function (req, res) {
         res.sendStatus(401);
     }
 });
+
+router.post('/email', function (req, res) {
+    if (req.query.to === 'author') {
+        var html = '';
+        html += '<p>类型：' + xss(req.body.type) + '</p>';
+        html += '<p>称呼：' + xss(req.body.name) + '</p>';
+        html += '<p>邮箱：' + xss(req.body.email) + '</p>';
+        html += '<p>标题：' + xss(req.body.title) + '</p>';
+        html += '<p>内容：' + xss(req.body.body) + '</p>';
+        var mailOptions = {
+            from: "jnussp@outlook.com",
+            to: "edisond@qq.com",
+            subject: "用户反馈",
+            html: html
+        }
+        smtpTransport.sendMail(mailOptions, function (error, response) {
+            if (error) {
+                console.log(err);
+                res.sendStatus(500);
+            } else {
+                res.sendStatus(200);
+            }
+        });
+    } else {
+        res.sendStatus(401)
+    }
+})
 
 module.exports = router;

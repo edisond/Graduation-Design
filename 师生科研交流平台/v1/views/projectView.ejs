@@ -341,9 +341,9 @@
                                         <input type="hidden" value="<%=project._id%>" id="input-_id">
                                         <div class="modal-body">
                                             <div class="form-group">
-                                                <label for="input-college" class="col-sm-2 control-label">所属学院</label>
-                                                <div class="col-sm-4" data-role="selector">
-                                                    <select class="form-control" id="input-college" required data-bind="college" selectedItem="<%=project.college%>"></select>
+                                                <label for="input-name" class="col-sm-2 control-label">项目名称</label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" class="form-control" id="input-name" maxlength="20" required value="<%=project.name %>">
                                                 </div>
                                                 <label for="input-lab" class="col-sm-2 control-label">所在实验室
                                                 </label>
@@ -351,15 +351,14 @@
                                                     <input type="text" class="form-control" id="input-lab" maxlength="10" required value="<%=project.openExperimentAttr.lab %>">
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label for="input-name" class="col-sm-2 control-label">项目名称</label>
+                                            <div class="form-group" data-role="selector">
+                                                <label for="input-college" class="col-sm-2 control-label">所属学院</label>
                                                 <div class="col-sm-4">
-                                                    <input type="text" class="form-control" id="input-name" maxlength="20" required value="<%=project.name %>">
+                                                    <select class="form-control" id="input-college" required data-bind="college" selectedItem="<%=project.college%>"></select>
                                                 </div>
-                                                <label for="input-object" class="col-sm-2 control-label">面向对象&nbsp;<a href="#" tabindex="-1"><i class="fa fa-question-circle" data-toggle="tooltip" title="学生专业"></i></a>
-                                                </label>
+                                                <label for="input-object" class="col-sm-2 control-label">面向专业</label>
                                                 <div class="col-sm-4">
-                                                    <input type="text" class="form-control" id="input-object" maxlength="10" required value="<%=project.openExperimentAttr.object %>">
+                                                    <select class="form-control" id="input-object" required data-bind="major" selectedItem="<%=project.openExperimentAttr.object%>"></select>
                                                 </div>
                                             </div>
                                             <div class="form-group">

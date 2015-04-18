@@ -11,16 +11,19 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-main">
             <ul class="nav navbar-nav navbar-right">
-                <li id="nav-link-to-oe"><a href="/open-experiment">开放实验</a>
-                </li>
-                <li id="nav-link-to-cc"><a href="/challenge-cup">挑战杯</a>
-                </li>
-                <li id="nav-link-to-ip"><a href="/innovation-project">创新项目</a>
-                </li>
                 <% if(typeof user!=='undefined' ){ %>
                     <li id="nav-link-to-center"><a href="/center">个人中心</a>
                     </li>
                     <% } %>
+                        <li id="nav-link-to-oe"><a href="/open-experiment">开放实验</a>
+                        </li>
+                        <li id="nav-link-to-cc"><a href="/challenge-cup">挑战杯</a>
+                        </li>
+                        <li id="nav-link-to-ip"><a href="/innovation-project">创新项目</a>
+                        </li>
+                        <li id="nav-link-to-support"><a href="/support">支持服务</a>
+                        </li>
+
             </ul>
         </div>
     </div>

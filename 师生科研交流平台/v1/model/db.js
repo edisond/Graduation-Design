@@ -250,8 +250,8 @@ var Dao = {
         })
     },
 
-    deleteSelect: function (condition, callback) {
-        Select.findOneAndRemove(condition, callback);
+    deleteSelect: function (_id, callback) {
+        Select.findByIdAndRemove(_id, callback);
     },
 
     /* 新建讨论 */
@@ -295,7 +295,7 @@ var Dao = {
     },
 
     getTeamApply: function (_id, callback) {
-        TeamApply.findById(_id).lean().exec(callback);
+        TeamApply.findById(_id).populate('team', 'name desc date leader').populate('user', '_id name type img').lean().exec(callback);
     },
 
     getTeamApplies: function (condition, callback) {
@@ -327,8 +327,8 @@ var Dao = {
         TeamApply.findByIdAndUpdate(ta._id, ta, callback)
     },
 
-    deleteTeamApply: function (condition, callback) {
-        TeamApply.findOneAndRemove(condition, callback);
+    deleteTeamApply: function (_id, callback) {
+        TeamApply.findByIdAndRemove(_id, callback);
     }
 
 }

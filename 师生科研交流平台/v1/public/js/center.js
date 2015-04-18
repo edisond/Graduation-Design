@@ -212,11 +212,9 @@ $(document).ready(function () {
                 modalBody = $this.find('.modal-body').empty();
             $('<input type="hidden" value="' + data._id + '"/>').appendTo(modalBody);
             if (data.student) {
-                $this.find('.modal-title').html('接收学生');
                 modalBody.append($('<p>正在接收<a target="_blank" href="/profile/' + data.student._id + '">' + data.student.name + '</a>同学到项目<a target="_blank" href="/project/' + data.project._id + '">' + data.project.name + '</a><p>'));
                 modalBody.append($('<p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;<small>注意：开放实验项目中的预计学生容量不代表上限</small></p>'));
             } else if (data.team) {
-                $this.find('.modal-title').html('接收团队');
                 modalBody.append($('<p>正在接收<a target="_blank" href="/team/' + data.team._id + '">' + data.team.name + '</a>团队到项目<a target="_blank" href="/project/' + data.project._id + '">' + data.project.name + '</a><p>'));
                 modalBody.append($('<p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;<small>注意：对于挑战杯项目、创新工程项目，目前只能与团队形成一对一的关系。在通过一个团队的加入申请后，其余团队将不能再申请加入此项目，同时申请本项目的其它团队也会失去对项目的申请。</small></p>'));
             }
@@ -231,6 +229,41 @@ $(document).ready(function () {
                 };
                 $.ajax({
                     url: encodeURI('/api/post/select?action=approve'),
+                    type: 'POST',
+                    data: post,
+                    success: function () {
+                        tableApply.DataTable().ajax.reload(null, false);
+                        $this.modal('hide');
+                        notyFacade('操作成功', 'success');
+                    },
+                    error: function () {
+                        notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
+                    }
+                })
+            }
+        })
+
+        $('#reject-project-apply').on('show.bs.modal', function (e) {
+            var data = tableApply.DataTable().row($(e.relatedTarget).parents('tr')[0]).data(),
+                $this = $(this),
+                modalBody = $this.find('.modal-body').empty();
+            $('<input type="hidden" value="' + data._id + '"/>').appendTo(modalBody);
+            if (data.student) {
+                modalBody.append($('<p>正在拒绝<a target="_blank" href="/profile/' + data.student._id + '">' + data.student.name + '</a>同学对项目<a target="_blank" href="/project/' + data.project._id + '">' + data.project.name + '</a>的申请<p>'));
+                modalBody.append($('<p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;<small>注意：该申请将被取消</small></p>'));
+            } else if (data.team) {
+                modalBody.append($('<p>正在拒绝<a target="_blank" href="/team/' + data.team._id + '">' + data.team.name + '</a>团队对项目<a target="_blank" href="/project/' + data.project._id + '">' + data.project.name + '</a>的申请<p>'));
+                modalBody.append($('<p class="text-danger"><i class="fa fa-info-circle"></i>&nbsp;<small>注意：该申请将被取消</small></p>'));
+            }
+        }).find('button[type=submit]').click(function () {
+            var $this = $('#reject-project-apply'),
+                _id = $this.find('input[type=hidden]');
+            if (_id.length) {
+                var post = {
+                    _id: _id.val()
+                };
+                $.ajax({
+                    url: encodeURI('/api/post/select?action=reject'),
                     type: 'POST',
                     data: post,
                     success: function () {
@@ -313,7 +346,7 @@ $(document).ready(function () {
                     "width": '200px',
                     'className': "text-center",
                     'render': function (data, type, row) {
-                        return '<a href="/profile/' + row.user._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a><a class="ml20" href="#" data-id="' + data + '" data-action="reject"><i class="fa fa-times"></i>&nbsp;拒绝</a>';
+                        return '<a href="/profile/' + row.user._id + '" target="_blank"><i class="fa fa-eye"></i>&nbsp;查看</a><a class="ml20" href="#" data-id="' + data + '" data-action="approve"><i class="fa fa-check"></i>&nbsp;通过</a><a class="ml20" href="#" data-id="' + data + '" data-toggle="modal" data-target="#reject-team-apply"><i class="fa fa-times"></i>&nbsp;拒绝</a>';
                     }
             }
         ],
@@ -355,6 +388,37 @@ $(document).ready(function () {
         });
 
     }
+
+    $('#reject-team-apply').on('show.bs.modal', function (e) {
+        var data = tableApply.DataTable().row($(e.relatedTarget).parents('tr')[0]).data(),
+            $this = $(this),
+            modalBody = $this.find('.modal-body').empty();
+        $('<input type="hidden" value="' + data._id + '"/>').appendTo(modalBody);
+        modalBody.append($('<p>正在拒绝<a target="_blank" href="/profile/' + data.user._id + '">' + data.user.name + '</a>' + data.user.type + '对团队<a target="_blank" href="/team/' + data.team._id + '">' + data.team.name + '</a>的申请<p>'));
+        modalBody.append($('<p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;<small>注意：该申请将被取消</small></p>'));
+
+    }).find('button[type=submit]').click(function () {
+        var $this = $('#reject-team-apply'),
+            _id = $this.find('input[type=hidden]');
+        if (_id.length) {
+            var post = {
+                _id: _id.val()
+            };
+            $.ajax({
+                url: encodeURI('/api/post/teamapply?action=reject'),
+                type: 'POST',
+                data: post,
+                success: function () {
+                    tableApply.DataTable().ajax.reload(null, false);
+                    $this.modal('hide');
+                    notyFacade('操作成功', 'success');
+                },
+                error: function () {
+                    notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
+                }
+            })
+        }
+    })
 
     setPasswordForm.html5Validate(function () {
         var post = {

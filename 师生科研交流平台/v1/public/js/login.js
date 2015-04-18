@@ -12,8 +12,12 @@ $(document).ready(function () {
             success: function () {
                 window.location.href = '/center';
             },
-            error: function () {
-                notyFacade('用户名与密码不匹配', 'error')
+            error: function (err) {
+                if (err.status === 401) {
+                    notyFacade('用户名与密码不匹配', 'error')
+                } else if (err.status === 403) {
+                    notyFacade('该用户尚未激活，请等待管理员审核', 'warning')
+                }
             }
         });
     });

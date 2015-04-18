@@ -239,6 +239,8 @@ $(document).ready(function () {
         nav.find('#nav-link-to-cc').addClass('active');
     } else if (pathname.indexOf('/innovation-project') === 0) {
         nav.find('#nav-link-to-ip').addClass('active');
+    } else if (pathname.indexOf('/support') === 0) {
+        nav.find('#nav-link-to-support').addClass('active');
     }
 
     navToolbar.find('#input-search').keydown(function (e) {

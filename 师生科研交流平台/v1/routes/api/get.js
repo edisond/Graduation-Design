@@ -59,7 +59,7 @@ router.get('/project', function (req, res) {
     var condition = {};
     if (req.query.type) condition.type = req.query.type;
     if (req.query.teacher) condition.teacher = req.query.teacher;
-    if (req.query.q) condition.name = req.query.q;
+    if (req.query.q) condition.name = new RegExp(req.query.q);
     Dao.getProjects(condition, function (err, docs) {
         if (err) {
             res.sendStatus(500);

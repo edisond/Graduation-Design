@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        支持服务 - 暨南大学师生科研互动平台</title>
+    <% include parts/include.css.html %>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <div class="body">
+            <% include parts/nav.ejs %>
+                <div class="container mt20">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-9">
+                            <div id="wtire-support">
+                                <h2 class="text-center">联系作者<br/><small>如您对本平台有任何意见或的功能上的需求，或发现了任何漏洞与BUG，或遇到了任何问题，请通过以下方式联系我</small></h2>
+                                <form id="support">
+                                    <div class="form-group form-group-lg mt30">
+                                        <label for="input-name">称呼</label>
+                                        <input type="text" class="form-control" id="input-name" required maxlength="10">
+                                    </div>
+                                    <div class="form-group form-group-lg mt30">
+                                        <label for="input-email">邮箱</label>
+                                        <input type="email" class="form-control" id="input-email" required maxlength="50">
+                                    </div>
+                                    <div class="form-group form-group-lg mt30">
+                                        <label for="input-title">标题</label>
+                                        <input type="text" class="form-control" id="input-title" required maxlength="50">
+                                    </div>
+                                    <div class="form-group mt30">
+                                        <label for="input-body">内容</label>
+                                        <textarea class="form-control" id="input-body" required rows="15"></textarea>
+                                    </div>
+                                    <div class="form-group form-group-lg mt30">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-4">
+                                                <div class="radio">
+                                                    <label>
+                                                        <input checked type="radio" name="input-type" id="input-type-function" value="我需要新的功能">我需要新的功能
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-4">
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="input-type" id="input-type-bug" value="我发现了BUG">我发现了BUG
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-4">
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="input-type" id="input-type-other" value="其它问题">其它问题
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-lg mt30">
+                                        <button type="submit" class="col-xs-12 btn btn-primary btn-lg">提交</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div id="success" class="dhidden">
+                                <h1><i class="fa fa-check-circle text-success"></i>&nbsp;已成功发送邮件，感谢您的反馈。</h1>
+                                <br/><a href="/">返回主页</a><a class="ml20" href="#" id="write-again">继续填写</a>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-xs-12 mt20">
+                            <div class="aside aside-right">
+                                <h4 class="text-theme"><b>寻求帮助</b></h4>
+                                <p class="text-muted"><span id="admin-email"></span>（管理员）
+                                </p>
+                                <p class="text-muted"><a href="mailto:edisond@qq.com">edisond@qq.com</a>（作者）
+                                    </span>
+                                </p>
+                                <br/>
+                                <h4 class="text-theme"><b>关于平台</b></h4>
+                                <p class="text-muted">本项目为电气信息学院研制基于Web的科研交流平台，针对学生的创新创业计划、开放实验项目等，老师或学生可以通过该平台实现交流，克服学生盲目选题或对选题理解不深等问题。</p>
+                                <p class="text-muted">通过该平台，教师和学生发布相关科研信息，包括教师寻找学生参与的课题、各级创新项目的互动、挑战杯项目、开放实验项目以及毕业设计的互动等，实现学生和老师在相关项目和课题的网上交流与合作以及老师在线指导学生，讨论和答疑。</p>
+                                <br/>
+                                <h4 class="text-theme"><b>相关技术</b></h4>
+                                <ul class="list-unstyled">
+                                    <li><a href="https://nodejs.org/" target="_blank">https://nodejs.org</a>
+                                    </li>
+                                    <li><a href="http://expressjs.com/" target="_blank">http://expressjs.com</a>
+                                    </li>
+                                    <li><a href="http://www.mongodb.org/" target="_blank">http://www.mongodb.org</a>
+                                    </li>
+                                    <li><a href="https://jquery.com/" target="_blank">https://jquery.com</a>
+                                    </li>
+                                    <li><a href="http://getbootstrap.com/" target="_blank">http://getbootstrap.com</a>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+        </div>
+        <% include parts/footer.ejs %>
+    </div>
+    <% include parts/include.js.html %>
+        <script type="text/javascript" src="/js/support.js"></script>
+</body>
+
+</html>
