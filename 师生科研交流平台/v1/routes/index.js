@@ -74,7 +74,7 @@ router.get('/innovation-project', function (req, res) {
 })
 
 /* 项目具体页 */
-router.get('/project/:id', function (req, res) {
+router.get('/project/:id', function (req, res, next) {
     if (req.session.user) {
         Dao.getProject(req.params.id, function (err, docs) {
             if (docs) {
@@ -140,7 +140,9 @@ router.get('/project/:id', function (req, res) {
                 }
 
             } else {
-                res.sendStatus(404);
+                var err = new Error('Not Found');
+                err.status = 404;
+                next(err);
             }
         })
     } else {
@@ -186,7 +188,9 @@ router.get('/project/:id', function (req, res) {
                 }
 
             } else {
-                res.sendStatus(404);
+                var err = new Error('Not Found');
+                err.status = 404;
+                next(err);
             }
         })
     }
@@ -240,7 +244,7 @@ router.get('/profile/:id', function (req, res) {
     }
 })
 
-router.get('/team/:id', function (req, res) {
+router.get('/team/:id', function (req, res, next) {
     if (req.session.user) {
         Dao.getTeam(req.params.id, function (err, docs) {
             if (docs) {
@@ -270,7 +274,9 @@ router.get('/team/:id', function (req, res) {
                     }
                 })
             } else {
-                res.sendStatus(404);
+                var err = new Error('Not Found');
+                err.status = 404;
+                next(err);
             }
         })
 
@@ -282,7 +288,9 @@ router.get('/team/:id', function (req, res) {
                     team: docs
                 })
             } else {
-                res.sendStatus(404);
+                var err = new Error('Not Found');
+                err.status = 404;
+                next(err);
             }
         })
     }
