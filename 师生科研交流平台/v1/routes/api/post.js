@@ -7,13 +7,9 @@ var express = require('express'),
     Dao = db.Dao,
     md5 = require('../../lib/md5'),
     xss = require('xss'),
-    nodemailer = require("nodemailer"),
-    smtpTransport = nodemailer.createTransport("SMTP", {
-        auth: {
-            user: "jnussp@outlook.com",
-            pass: "33635468gkr"
-        }
-    });
+    nodemailer = require("nodemailer");
+
+
 
 xss.whiteList['strike'] = [];
 
@@ -485,26 +481,41 @@ router.post('/teamapply', function (req, res) {
 
 router.post('/email', function (req, res) {
     if (req.query.to === 'author') {
+        var transporter = nodemailer.createTransport("SMTP", {
+            service: 'Hotmail',
+            auth: {
+                user: 'jnussp@outlook.com',
+                pass: '33635468gkr'
+            }
+        });
+        console.log('SMTP Configured');
         var html = '';
         html += '<p>类型：' + xss(req.body.type) + '</p>';
         html += '<p>称呼：' + xss(req.body.name) + '</p>';
         html += '<p>邮箱：' + xss(req.body.email) + '</p>';
         html += '<p>标题：' + xss(req.body.title) + '</p>';
         html += '<p>内容：' + xss(req.body.body) + '</p>';
-        var mailOptions = {
+        var message = {
             from: "jnussp@outlook.com",
             to: "edisond@qq.com",
             subject: "用户反馈",
             html: html
-        }
-        smtpTransport.sendMail(mailOptions, function (error, response) {
+        };
+        console.log('Sending Mail');
+        transporter.sendMail(message, function (error, info) {
             if (error) {
-                console.log(err);
+                console.log('Error occurred');
+                console.log(error.message);
                 res.sendStatus(500);
+                transporter.close();
             } else {
+                console.log('Message sent successfully!');
+                console.log('Server responded with "%s"', info.response);
                 res.sendStatus(200);
+                transporter.close();
             }
         });
+
     } else {
         res.sendStatus(401)
     }
