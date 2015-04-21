@@ -274,6 +274,17 @@ img.head.head-sm {
     display: none;
 }
 
+.comment-header {
+    padding-bottom: 5px;
+    border-bottom: 2px solid #ddd;
+}
+
+.comment-header #comment-num {
+    color: #ee542a;
+    font-family: Georgia;
+    margin: 0 5px;
+}
+
 @media (max-width: 767px) {
     .aside.aside-left,
     .aside.aside-right {

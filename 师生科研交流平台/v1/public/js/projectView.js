@@ -19,7 +19,7 @@ $(document).ready(function () {
             if (data.length === 0) {
                 loadstate.html('对项目有任何疑问都可以在这里与老师或同学交流。')
             } else {
-                $('#comment-num').html('共有' + data.length + '条评论');
+                $('#comment-num').html(data.length);
                 commentList.empty().hide();
                 data.sort(function (a, b) {
                     return new Date(a.date) > new Date(b.date)
