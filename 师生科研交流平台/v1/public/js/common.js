@@ -40,7 +40,7 @@ notyFacade = function (text, type) {
         type: type,
         theme: 'relax',
         timeout: 3000,
-        layout: 'topLeft',
+        layout: 'top',
         animation: {
             open: {
                 opacity: 'toggle'

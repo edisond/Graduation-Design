@@ -56,7 +56,7 @@ $(document).ready(function () {
     commentList.delegate('a[href="#input-comment"]', 'click', function (e) {
         if (USER) {
             var $this = $(this);
-            $('#reply-object').html('正在回复' + $this.attr('data-name') + $this.attr('data-type'));
+            $('#reply-object').html('<i class="fa fa-info-circle"></i>&nbsp;正在回复' + $this.attr('data-name') + $this.attr('data-type'));
             commentBox.attr({
                 'data-id': $this.attr('data-id'),
                 'data-name': $this.attr('data-name'),

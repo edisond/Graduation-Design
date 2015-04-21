@@ -153,20 +153,22 @@
                                             <br/>
                                             <%}%>
                                                 <hr/>
-                                                <h3><b>讨论</b>&nbsp;<small class="text-muted" id="comment-num">暂无评论</small></h3>
-                                                <div id="comments">
+                                                <h3><i class="fa fa-comments"></i><b class="ml10">讨论</b>&nbsp;<small class="text-muted" id="comment-num">暂无评论</small></h3>
+                                                <div id="comments" class="mt20">
                                                     <p class="text-muted" id="comments-state">讨论加载中</p>
                                                 </div>
 
                                                 <div class="panel panel-default mt20">
-                                                    <div class="panel-heading">说点什么</div>
+                                                    <div class="panel-heading">
+                                                        <h4 class="m0"><b>说点什么</b></h4>
+                                                    </div>
                                                     <div class="panel-body">
                                                         <form id="form-comment">
                                                             <div class="form-group">
                                                                 <div class="form-control wysiwyg-textarea wysiwyg-textarea-sm" id="input-comment"></div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <span id="reply-object"></span>
+                                                                <span id="reply-object" class="text-info"></span>
                                                                 <span id="reply-info" class="ml10"></span>
                                                                 <button type="submit" class="pull-right btn btn-primary" id="input-submit">发布评论</button>
                                                                 <button type="button" class="pull-right btn btn-default mr10" id="input-cancel">取消</button>

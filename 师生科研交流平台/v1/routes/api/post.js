@@ -357,7 +357,7 @@ router.post('/select', function (req, res) {
                     res.sendStatus(err ? 500 : 200);
                 })
             } else if (action === 'reject' && req.session.user.type === "老师") {
-                Dao.deleteSelect(req.body._id, function (err) {
+                Dao.deleteSelectById(req.body._id, function (err) {
                     res.sendStatus(err ? 500 : 200);
                 })
             } else {

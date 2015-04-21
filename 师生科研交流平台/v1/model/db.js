@@ -249,8 +249,10 @@ var Dao = {
             }
         })
     },
-
-    deleteSelect: function (_id, callback) {
+    deleteSelect: function (condition, callback) {
+        Select.findOneAndRemove(condition, callback);
+    },
+    deleteSelectById: function (_id, callback) {
         Select.findByIdAndRemove(_id, callback);
     },
 
