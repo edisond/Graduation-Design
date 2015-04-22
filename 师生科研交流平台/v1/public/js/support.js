@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $.get(encodeURI('/api/get/admin'), function (data) {
+    $.get(encodeURI('/api/get/admin?email=true'), function (data) {
         if (data) {
             $('<a href="mailto:' + data.email + '">' + data.email + '</a>').appendTo($('#admin-email'))
         }

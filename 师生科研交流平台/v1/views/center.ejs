@@ -41,16 +41,9 @@
                                     </div>
                                     <div role="tabpanel" class="tab-pane fade" id="tab-team">
                                         <br/>
-                                        <%if(user.type==='同学' ){%>
-                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#new-team"><i class="fa fa-plus mr10"></i>创建团队</button>
-                                            <%} else if(user.type==='老师' ){%>
-                                                <p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;<small>只有学生可作为团队负责人，教师可选择学生创建的团队并加入。</small>
-                                                </p>
-                                                <%}%>
-                                                    <hr class="hr-dark" />
-                                                    <div id="teams">
-                                                        <p class="text-muted" id="load-state">加载中</p>
-                                                    </div>
+                                        <div id="teams">
+                                            <p class="text-muted" id="load-state">加载中</p>
+                                        </div>
                                     </div>
                                     <div role="tabpanel" class="tab-pane fade" id="tab-apply">
                                         <br/>
@@ -58,7 +51,6 @@
                                             <table class="table table-bordered table-hover" id="table-apply" width="100%">
                                                 <thead>
                                                     <tr>
-                                                        <th>学号/工号</th>
                                                         <th>姓名</th>
                                                         <th>类型</th>
                                                         <th>申请加入</th>
@@ -354,38 +346,6 @@
                         </div>
                     </div>
                     <%} else if(user.type==='同学' ){%>
-                        <div class="modal fade" id="new-team" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                                        </button>
-                                        <h4 class="modal-title">创建团队</h4>
-                                    </div>
-                                    <form>
-                                        <div class="modal-body">
-                                            <div class="form-group">
-                                                <label for="input-orign-password">负责人</label>
-                                                <input type="text" class="form-control" id="input-leader" required value="<%=user.name+' ('+user.id+')'%>" readonly>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="input-orign-password">名称</label>
-                                                <input type="text" class="form-control" id="input-name" required maxlength="20">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="input-orign-password">描述</label>
-                                                <textarea class="form-control" id="input-desc" required maxlength="500" rows="3"></textarea>
-                                            </div>
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                            <button type="submit" class="btn btn-primary" id="submit">保存</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
                         <div class="modal fade" id="reject-team-apply" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">

@@ -327,11 +327,7 @@ $(document).ready(function () {
                 'url': encodeURI('/api/get/teamapply?active=false&leader=' + USER._id),
                 'dataSrc': '',
             },
-            "columns": [
-                {
-                    "data": "user.id"
-            },
-                {
+            "columns": [{
                     "data": "user.name"
             }, {
                     "data": "user.type"
@@ -515,32 +511,5 @@ $(document).ready(function () {
             }
         })
     })
-
-    $('#new-team').find('form').html5Validate(function () {
-        var $this = $(this);
-        var post = {
-            name: $this.find('#input-name').val(),
-            desc: $this.find('#input-desc').val()
-        }
-        $.ajax({
-            url: encodeURI('/api/post/team?action=new'),
-            type: "POST",
-            data: post,
-            success: function (data) {
-                notyFacade('创建成功', 'success');
-                $('#new-team').modal('hide');
-                fetchMyTeam();
-                $this[0].reset();
-            },
-            error: function (XMLHttpRequest) {
-                if (XMLHttpRequest.status === 403) {
-                    notyFacade('你不能拥有超过5个团队', 'warning')
-                } else {
-                    notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error')
-                }
-            }
-        })
-    })
-
 
 })

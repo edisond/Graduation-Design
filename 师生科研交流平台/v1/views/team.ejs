@@ -3,67 +3,57 @@
 
 <head>
     <title>
-        <%=team.name%> - 团队资料 - 暨南大学师生科研互动平台</title>
-    <%include parts/include.css.html%>
+        团队列表 - 暨南大学师生科研互动平台</title>
+    <% include parts/include.css.html %>
 </head>
 
 <body>
     <div class="page-wrapper">
         <div class="body">
             <% include parts/nav.ejs %>
-                <input type="hidden" value="<%=team._id%>" id="team-_id">
-
-
-                <div class="container mt20">
+                <div class="container">
                     <div class="row">
-                        <div class="col-xs-12">
-                            <h2><%-team.name %></h2>
-                            <p class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;创建于
-                                <%=team.dateCreate %><i class="fa fa-user ml20"></i>&nbsp;负责人：
-                                    <%=team.leader.name %>
+                        <div class="col-xs-12 mt20">
+                            <h2>项目团队</h2>
+                            <p class="text-muted"><i class="fa fa-users"></i>&nbsp;<span id="header-team-num">-</span>个团队<i class="fa fa-clock-o ml20"></i>&nbsp;<span id="header-update-date"></span>
                             </p>
+                            <hr/>
                         </div>
                     </div>
-                    <hr/>
                 </div>
-
-
                 <div class="container mt20">
                     <div class="row">
                         <div class="col-sm-9 col-xs-12">
-                            <h3><b>团队简介</b></h3>
-                            <p>
-                                <%-team.desc%>
-                            </p>
-                            <h3><b>参与项目</b></h3>
-                            <div id="projects">
-                                <p class="text-muted" id="load-state">加载中</p>
+                            <div id="list">
+                                <span class="text-muted" id="load-state"></span>
                             </div>
                         </div>
                         <div class="col-sm-3 col-xs-12">
                             <div class="aside aside-right">
-                                <%if(typeof user!=='undefined' ){%>
-                                    <%if(team.leader._id.toString()!==user._id.toString() ){%>
+                                <div class="input-group input-group-sm mb10">
+                                    <input type="text" class="form-control" id="input-search-in-result" placeholder="团队名 负责人">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default" id="search-in-result">&nbsp;<i class="fa fa-search"></i>&nbsp;
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="btn-group btn-block">
+                                    <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-sort"></i>&nbsp;排序
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#" id="sort-by-date">最近创建</a>
+                                        </li>
+                                        <li><a href="#" id="sort-by-name">团队名称</a>
+                                        </li>
+                                        <li><a href="#" id="sort-by-leader">负责同学</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <% if(typeof user!=='undefined' && user.type==='同学' ){%>
+                                    <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#new-team"><i class="fa fa-plus"></i>&nbsp;创建</button>
+                                    <% } %>
 
-                                        <button type="button" class="mr20 mb10 btn btn-danger <%=isSelected?'':'dhidden'%>" id="btn-submit-report">退出</button>
-                                        <button type="button" class="mr20 mb10 btn btn-warning <%=isApplied?'':'dhidden'%>" id="btn-cancel-select">取消申请</button>
-                                        <button type="button" class="mr20 mb10 btn btn-primary <%=(isApplied||isSelected)?'dhidden':''%>" id="btn-apply">申请加入</button>
-
-                                        <% } else{%>
-
-                                            <button type="button" class="mr20 mb10 btn btn-danger" id="btn-update-content" data-toggle="modal" data-target="#edit-project">解散</button>
-
-                                            <%}}else{%>
-                                                <p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;您目前尚未登录，登录后可以：</p>
-                                                <ul class="text-info">
-                                                    <li>参与团队</li>
-                                                </ul>
-                                                <%}%>
-                                                    <hr/>
-                                                    <h4 class="text-theme"><b>成员</b></h4>
-                                                    <div id="team-members" class="mt10">
-                                                        <span class="text-muted">加载中</span>
-                                                    </div>
                             </div>
                         </div>
                     </div>
@@ -71,8 +61,42 @@
         </div>
         <% include parts/footer.html %>
     </div>
-    <% include parts/include.js.html %>
-        <script type="text/javascript" src="/js/team.js"></script>
+    <% if(typeof user!=='undefined' && user.type==='同学' ){%>
+        <div class="modal fade" id="new-team" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">创建团队</h4>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="input-orign-password">负责人</label>
+                                <input type="text" class="form-control" id="input-leader" required value="<%=user.name+' ('+user.id+')'%>" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="input-orign-password">名称</label>
+                                <input type="text" class="form-control" id="input-name" required maxlength="20">
+                            </div>
+                            <div class="form-group">
+                                <label for="input-orign-password">描述</label>
+                                <textarea class="form-control" id="input-desc" required maxlength="500" rows="3"></textarea>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="submit" class="btn btn-primary" id="submit">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <%}%>
+            <% include parts/include.js.html %>
+                <script type="text/javascript" src="/js/team.js"></script>
 </body>
 
 </html>

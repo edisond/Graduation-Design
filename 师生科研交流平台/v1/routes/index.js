@@ -1,20 +1,22 @@
-var express = require('express');
-var router = express.Router();
-var session = require('express-session');
-var moment = require('moment');
-var db = require('../model/db');
-var Dao = db.Dao;
+var express = require('express'),
+    router = express.Router(),
+    session = require('express-session'),
+    moment = require('moment'),
+    model = require('../model/model');
 
-/* 主页 */
 router.get('/', function (req, res) {
-    Dao.countUser({
+    model.User.count({
         type: '老师'
-    }, function (utcount) {
-        Dao.countUser({
+    }, function (err, utcount) {
+        utcount = err ? 0 : utcount;
+        model.User.count({
             type: '同学'
-        }, function (uscount) {
-            Dao.countProject({}, function (pcount) {
-                Dao.countTeam({}, function (tcount) {
+        }, function (err, uscount) {
+            uscount = err ? 0 : uscount;
+            model.Project.count({}, function (err, pcount) {
+                pcount = err ? 0 : pcount;
+                model.Team.count({}, function (err, tcount) {
+                    tcount = err ? 0 : tcount;
                     res.render('index', {
                         user: req.session.user,
                         utcount: utcount,
@@ -28,28 +30,24 @@ router.get('/', function (req, res) {
     })
 })
 
-/* 注册页 */
 router.get('/register', function (req, res) {
     res.render('register', {
         user: req.session.user
     });
 })
 
-/* 登录页 */
 router.get('/login', function (req, res) {
     res.render('login', {
         user: req.session.user
     });
 })
 
-/* 搜索页 */
 router.get('/search', function (req, res) {
     res.render('search', {
         user: req.session.user
     });
 })
 
-/* 开放实验列表页 */
 router.get('/open-experiment', function (req, res) {
     res.render('project', {
         user: req.session.user,
@@ -57,7 +55,6 @@ router.get('/open-experiment', function (req, res) {
     });
 })
 
-/* 挑战杯列表页 */
 router.get('/challenge-cup', function (req, res) {
     res.render('project', {
         user: req.session.user,
@@ -65,7 +62,6 @@ router.get('/challenge-cup', function (req, res) {
     });
 })
 
-/* 创新项目列表页 */
 router.get('/innovation-project', function (req, res) {
     res.render('project', {
         user: req.session.user,
@@ -73,131 +69,56 @@ router.get('/innovation-project', function (req, res) {
     });
 })
 
-/* 项目具体页 */
 router.get('/project/:id', function (req, res, next) {
-    if (req.session.user) {
-        Dao.getProject(req.params.id, function (err, docs) {
-            if (docs) {
-                docs.dateUpdate = moment(docs.dateUpdate).fromNow();
-                docs.dateStart = moment(docs.dateStart).format('l');
-                docs.dateEnd = moment(docs.dateEnd).format('l');
-                if (docs.type === '开放实验项目') {
+    model.Project.findById(req.params.id).populate('teacher', 'name department email phone img').populate('creator', 'name type').lean().exec(function (err, docs) {
+        if (docs) {
+            docs.dateUpdate = moment(docs.dateUpdate).fromNow();
+            docs.dateStart = moment(docs.dateStart).format('l');
+            docs.dateEnd = moment(docs.dateEnd).format('l');
+            if (docs.type === '开放实验项目') {
+                if (req.session.user) {
                     var isSelected = false,
-                        isApplied = false,
-                        condition = {
-                            student: req.session.user._id,
-                            project: docs._id
-                        };
-                    Dao.getSelects(condition, function (err, doc) {
-                        if (err) {
-                            res.sendStatus(500);
-                        } else {
-                            if (doc.length === 1 && doc[0].active) {
-                                isSelected = true
-                            } else if (doc.length === 1 && doc[0].active === false) {
-                                isApplied = true
-                            }
-                            res.render('projectView', {
-                                project: docs,
-                                user: req.session.user,
-                                isSelected: isSelected,
-                                isApplied: isApplied
-                            })
+                        isApplied = false;
+                    model.Select.findOne({
+                        student: req.session.user._id,
+                        project: docs._id
+                    }, function (err, doc) {
+                        if (doc) {
+                            isSelected = doc.active;
+                            isApplied = !doc.active;
                         }
+                        res.render('projectView', {
+                            project: docs,
+                            user: req.session.user,
+                            isSelected: isSelected,
+                            isApplied: isApplied
+                        })
                     })
-                } else if (docs.type === '挑战杯项目') {
-                    var condition = {
-                        project: docs._id,
-                        active: true
-                    };
-                    Dao.getSelects(condition, function (err, doc) {
-                        if (err) {
-                            res.sendStatus(500);
-                        } else {
-                            res.render('projectView', {
-                                project: docs,
-                                user: req.session.user,
-                                team: (doc.length && doc[0].team) ? doc[0].team : undefined
-                            })
-                        }
-                    })
-                } else if (docs.type === '科技创新工程项目') {
-                    var condition = {
-                        project: docs._id,
-                        active: true
-                    };
-                    Dao.getSelects(condition, function (err, doc) {
-                        if (err) {
-                            res.sendStatus(500);
-                        } else {
-                            res.render('projectView', {
-                                project: docs,
-                                user: req.session.user,
-                                team: (doc.length && doc[0].team) ? doc[0].team : undefined
-                            })
-                        }
-                    })
-                }
-
-            } else {
-                var err = new Error('Not Found');
-                err.status = 404;
-                next(err);
-            }
-        })
-    } else {
-        Dao.getProject(req.params.id, function (err, docs) {
-            if (docs) {
-                docs.dateUpdate = moment(docs.dateUpdate).fromNow();
-                docs.dateStart = moment(docs.dateStart).format('l');
-                docs.dateEnd = moment(docs.dateEnd).format('l');
-                if (docs.type === '开放实验项目') {
+                } else {
                     res.render('projectView', {
                         project: docs
                     })
-                } else if (docs.type === '挑战杯项目') {
-                    var condition = {
-                        project: docs._id,
-                        active: true
-                    };
-                    Dao.getSelects(condition, function (err, doc) {
-                        if (err) {
-                            res.sendStatus(500);
-                        } else {
-                            res.render('projectView', {
-                                project: docs,
-                                team: (doc.length && doc[0].team) ? doc[0].team : undefined
-                            })
-                        }
-                    })
-                } else if (docs.type === '科技创新工程项目') {
-                    var condition = {
-                        project: docs._id,
-                        active: true
-                    };
-                    Dao.getSelects(condition, function (err, doc) {
-                        if (err) {
-                            res.sendStatus(500);
-                        } else {
-                            res.render('projectView', {
-                                project: docs,
-                                team: (doc.length && doc[0].team) ? doc[0].team : undefined
-                            })
-                        }
-                    })
                 }
-
             } else {
-                var err = new Error('Not Found');
-                err.status = 404;
-                next(err);
+                model.Select.findOne({
+                    project: docs._id,
+                    active: true
+                }).populate('team', 'name').exec(function (err, doc) {
+                    res.render('projectView', {
+                        project: docs,
+                        user: req.session.user,
+                        team: doc && doc.team ? doc.team : undefined
+                    })
+                })
             }
-        })
-    }
+        } else {
+            var err = new Error('Not Found');
+            err.status = 404;
+            next(err);
+        }
+    })
 })
 
-
-/* 个人中心页 */
 router.get('/center', function (req, res) {
     if (req.session.user) {
         res.render('center', {
@@ -208,7 +129,6 @@ router.get('/center', function (req, res) {
     }
 })
 
-/* 支持页 */
 router.get('/support', function (req, res) {
     res.render('support', {
         user: req.session.user
@@ -216,83 +136,52 @@ router.get('/support', function (req, res) {
 })
 
 router.get('/profile/:id', function (req, res) {
-    if (req.session.user) {
-        if (req.session.user._id.toString() === req.params.id.toString()) {
-            res.redirect('/center');
-        } else {
-            Dao.getUser(req.params.id, function (err, docs) {
-                if (err) {
-                    res.sendStatus(500)
-                } else {
-                    res.render('profile', {
-                        user: req.session.user,
-                        profile: docs
-                    });
-                }
-            })
-        }
-    } else {
-        Dao.getUser(req.params.id, function (err, docs) {
-            if (err) {
-                res.sendStatus(500)
-            } else {
-                res.render('profile', {
-                    profile: docs
-                });
-            }
-        })
-    }
+    model.User.findById(req.params.id, function (err, docs) {
+        res.render('profile', {
+            user: req.session.user,
+            profile: docs
+        });
+    })
 })
 
-router.get('/team/:id', function (req, res, next) {
-    if (req.session.user) {
-        Dao.getTeam(req.params.id, function (err, docs) {
+router.get('/team/:id?', function (req, res, next) {
+    if (req.params.id) {
+        model.Team.findById(req.params.id).populate('leader', 'name type img').lean().exec(function (err, docs) {
             if (docs) {
                 docs.dateCreate = moment(docs.dateCreate).fromNow();
-
-                var isSelected = false,
-                    isApplied = false,
-                    condition = {
+                if (req.session.user) {
+                    var isSelected = false,
+                        isApplied = false;
+                    model.TeamApply.findOne({
                         user: req.session.user._id,
                         team: docs._id
-                    };
-                Dao.getTeamApplies(condition, function (err, doc) {
-                    if (err) {
-                        res.sendStatus(500);
-                    } else {
-                        if (doc.length === 1 && doc[0].active) {
-                            isSelected = true
-                        } else if (doc.length === 1 && doc[0].active === false) {
-                            isApplied = true
+                    }, function (err, doc) {
+                        if (doc) {
+                            isSelected = doc.active;
+                            isApplied = !doc.active;
                         }
-                        res.render('team', {
+                        res.render('teamView', {
                             team: docs,
                             user: req.session.user,
                             isSelected: isSelected,
                             isApplied: isApplied
                         })
-                    }
-                })
+                    })
+                } else {
+                    res.render('teamView', {
+                        team: docs
+                    })
+                }
             } else {
                 var err = new Error('Not Found');
                 err.status = 404;
                 next(err);
             }
         })
-
     } else {
-        Dao.getTeam(req.params.id, function (err, docs) {
-            if (docs) {
-                docs.dateCreate = moment(docs.dateCreate).fromNow();
-                res.render('team', {
-                    team: docs
-                })
-            } else {
-                var err = new Error('Not Found');
-                err.status = 404;
-                next(err);
-            }
-        })
+        res.render('team', {
+            user: req.session.user
+        });
     }
 })
 

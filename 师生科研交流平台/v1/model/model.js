@@ -1,75 +1,55 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-/* 教师表 */
+
 var User = new Schema({
-    /* 学号或工号 */
     id: {
         type: 'String',
         required: true,
         unique: true
     },
-    /* 密码 */
     password: {
         type: 'String',
         required: true
     },
-    /* 密钥 */
     key: {
         type: 'String',
         required: true
     },
-    /* 姓名 */
     name: {
         type: 'String',
         required: true
     },
-    /* 性别 */
     sex: {
         type: 'String',
         enum: ['男', '女', '其它']
     },
-    /* 用户种类 */
     type: {
         type: 'String',
         required: true,
         enum: ['老师', '同学', '管理员']
     },
-    /* 是否激活 */
     active: {
         type: 'Boolean',
         required: true,
         default: false
     },
-    /* 头像 */
     img: String,
-    /* 邮箱 */
     email: String,
-    /* 联系电话 */
     phone: String,
-    /* 学生属性 */
     studentAttr: {
-        /* 学院 */
         college: String,
-        /* 专业 */
         major: String,
-        /* 年级 */
         grade: String,
-        /* 类型（本科，研究生等） */
         studentType: String,
-        /* 宿舍地址 */
         address: String
     },
-    /* 教师属性 */
     teacherAttr: {
-        /* 部门 */
         department: String,
-        /* 职称 */
         title: String
     }
 });
 
-/* 项目表 */
 var Project = new Schema({
     /* 项目名 */
     name: {
@@ -107,12 +87,6 @@ var Project = new Schema({
         type: 'Date',
         required: true,
         default: Date.now()
-    },
-    /* 状态 */
-    active: {
-        type: 'Boolean',
-        required: true,
-        default: true
     },
     /* 教师id */
     teacher: {
@@ -276,6 +250,7 @@ var TeamApply = new Schema({
         default: Date.now()
     }
 })
+
 
 module.exports.User = mongoose.model('user', User);
 module.exports.Project = mongoose.model('project', Project);

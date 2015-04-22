@@ -316,7 +316,7 @@ $(document).ready(function () {
             selected = selectTeamModal.find('[name=select-team]:checked').val();
             if (selected) {
                 var post = {
-                    _id: projectId,
+                    project: projectId,
                     team: selected
                 };
                 $.ajax({

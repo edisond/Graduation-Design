@@ -67,7 +67,7 @@ var DOMCreator = {
         var tag = $('<span class="label ml10">').appendTo(title),
             dateStart = new Date(project.dateStart),
             dateEnd = new Date(project.dateEnd);
-        if (!project.active) {
+        if (!project.teacher) {
             tag.addClass('label-warning').html('寻求导师');
         } else if (dateStart > Date.now()) {
             tag.addClass('label-success').html('未开始');
@@ -154,6 +154,14 @@ var DOMCreator = {
         return head.tooltip();
     },
 
+    team: function (team) {
+        var div = $('<div class="project">');
+        var title = $('<h4><a href="/team/' + team._id + '">' + team.name + '</a><small class="ml20">负责人：' + team.leader.name + '</small></h4>').appendTo(div);
+        $('<small class="text-muted">' + team.desc + '</small>').appendTo(div);
+        $('<h6><small><i class="fa fa-clock-o"></i>&nbsp;创建于' + moment(team.dateCreate).fromNow() + '</small></h6>').appendTo(div);
+        return div
+    },
+
     myTeam: function (apply, user_id) {
         var div = $('<div class="project">');
         var title = $('<h4><a href="/team/' + apply.team._id + '">' + apply.team.name + '</a></h4>').appendTo(div);
@@ -168,6 +176,7 @@ var DOMCreator = {
             tag.addClass('label-warning').html('申请中');
         }
         $('<small class="text-muted">' + apply.team.desc + '</small>').appendTo(div);
+        $('<h6><small><i class="fa fa-clock-o"></i>&nbsp;创建于' + moment(apply.team.dateCreate).fromNow() + '</small></h6>').appendTo(div);
         return div
     }
 }
@@ -239,6 +248,8 @@ $(document).ready(function () {
         nav.find('#nav-link-to-cc').addClass('active');
     } else if (pathname.indexOf('/innovation-project') === 0) {
         nav.find('#nav-link-to-ip').addClass('active');
+    } else if (pathname.indexOf('/team') === 0) {
+        nav.find('#nav-link-to-team').addClass('active');
     } else if (pathname.indexOf('/support') === 0) {
         nav.find('#nav-link-to-support').addClass('active');
     }

@@ -17,7 +17,7 @@
                     <div class="row">
                         <div class="col-xs-12 mt20">
                             <h2><%=projectType%></h2>
-                            <p><i class="fa fa-book"></i>&nbsp;<span id="header-project-num">-</span>个项目<i class="fa fa-street-view ml20"></i>&nbsp;<span id="header-teacher-num">-</span>位指导教师<i class="fa fa-clock-o ml20"></i>&nbsp;<span id="header-update-date"></span>
+                            <p class="text-muted"><i class="fa fa-book"></i>&nbsp;<span id="header-project-num">-</span>个项目<i class="fa fa-street-view ml20"></i>&nbsp;<span id="header-teacher-num">-</span>位指导教师<i class="fa fa-clock-o ml20"></i>&nbsp;<span id="header-update-date"></span>
                             </p>
                             <hr/>
                         </div>
@@ -40,7 +40,7 @@
                                     </div>
                                 </div>
                                 <div class="btn-group btn-block">
-                                    <button type="button" class="btn btn-sm btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-sort"></i>&nbsp;排序
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
@@ -55,7 +55,7 @@
                                     </ul>
                                 </div>
                                 <% if(typeof user!=='undefined' && user.type!=='管理员' && ((user.type==='老师' && projectType==='开放实验项目' ) || projectType==='挑战杯项目' || projectType==='科技创新工程项目' )){%>
-                                    <button type="button" class="btn btn-sm btn-success btn-block" data-toggle="modal" data-target="#new-project"><i class="fa fa-plus"></i>&nbsp;创建</button>
+                                    <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#new-project"><i class="fa fa-plus"></i>&nbsp;创建</button>
                                     <% } %>
                                         <br/>
                                         <br/>

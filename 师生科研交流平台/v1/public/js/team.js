@@ -1,78 +1,115 @@
 $(document).ready(function () {
 
-    var teamId = $('#team-_id').val(),
-        teamMembers = $('#team-members'),
-        projectList = $('#projects');
+    var list = $('#list'),
+        teams = [];
 
-    $.get(encodeURI('/api/get/select?team=' + teamId), function (data) {
-        if (data.length === 0) {
-            projectList.find('#load-state').html('暂无选题')
-        } else {
-            projectList.find('#load-state').hide();
-            data.sort(function (a, b) {
-                return a.project.dateUpdate < b.project.dateUpdate
-            });
-            for (var i = 0, j = data.length; i < j; i++) {
-                DOMCreator.myProject(data[i]).appendTo(projectList);
+
+    function createTeams(_teams) {
+        list.empty().hide();
+        if (_teams.length) {
+            for (var i = 0, j = _teams.length; i < j; i++) {
+                DOMCreator.team(_teams[i]).appendTo(list);
             }
+        } else {
+            var info = $('<span class="text-muted" id="load-state">没有符合条件的结果，点<a href="#">这里</a>重置</span>');
+            info.find('a').click(function (e) {
+                e.preventDefault();
+                createTeams(teams);
+            })
+            info.appendTo(list.empty());
         }
-    })
+        list.fadeIn(250);
+    }
 
-
-    function fetchTeamMembers() {
-        teamMembers.empty();
-        var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(teamMembers)
-        $.get(encodeURI('/api/get/teamapply?team=' + teamId + '&active=true'), function (data) {
+    function fetchTeams() {
+        list.empty();
+        var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(list)
+        $.get(encodeURI('/api/get/team'), function (data) {
+            $('#header-team-num').html(data.length);
             if (data.length === 0) {
-                loadstate.html('暂无同学加入');
+                loadstate.html('<i class="fa fa-frown-o"></i>&nbsp;暂无团队');
+                $('#header-update-date').html('等待更新');
             } else {
-                teamMembers.empty().hide();
+                teams = data;
+                list.empty().hide();
+                var lastUpdate = new Date(data[0].dateCreate);
+                data.sort(function (a, b) {
+                    return new Date(a.dateCreate) < new Date(b.dateCreate);
+                });
                 for (var i = 0, j = data.length; i < j; i++) {
-                    DOMCreator.head(data[i].user).appendTo(teamMembers);
+                    DOMCreator.team(data[i]).appendTo(list);
+                    var temp = new Date(data[i].dateCreate);
+                    if (temp > lastUpdate) {
+                        lastUpdate = temp;
+                    }
                 }
-                teamMembers.fadeIn(250);
+                list.fadeIn(250);
+                lastUpdate = moment(lastUpdate);
+                $('#header-update-date').html('更新于' + lastUpdate.fromNow());
             }
         })
     }
 
-    fetchTeamMembers();
+    fetchTeams();
 
-    $('#btn-apply').click(function () {
-        var post = {
-            _id: teamId
-        };
-        $.ajax({
-            url: encodeURI('/api/post/teamapply?action=apply'),
-            data: post,
-            type: 'POST',
-            success: function () {
-                $('#btn-cancel-select').show();
-                $('#btn-apply').hide();
-                notyFacade('申请成功，请等待负责人确认', 'success');
-            },
-            error: function () {
-                notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
-            }
-
-        });
+    $('#input-search-in-result').keydown(function (e) {
+        if (e.which === 13) {
+            $('#search-in-result').click();
+        }
     })
 
-    $('#btn-cancel-select').click(function () {
-        var post = {
-            _id: teamId
-        };
-        $.ajax({
-            url: encodeURI('/api/post/teamapply?action=cancel'),
-            data: post,
-            type: 'POST',
-            success: function () {
-                $('#btn-apply').show();
-                $('#btn-cancel-select').hide();
-                notyFacade('已取消加入申请', 'success');
-            },
-            error: function () {
-                notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
+    $('#search-in-result').click(function () {
+        var search = $('#input-search-in-result').val();
+        if (search !== '') {
+            var result = [];
+            for (var i = 0, j = teams.length; i < j; i++) {
+                if (teams[i].name.indexOf(search) >= 0 || teams[i].leader.name.indexOf(search) >= 0)
+                    result.push(teams[i])
             }
-        });
-    });
+            createTeams(result);
+        }
+    })
+    $('#sort-by-date').click(function () {
+        createTeams(teams.sort(function (a, b) {
+            return new Date(a.dateCreate) < new Date(b.dateCreate)
+        }));
+    })
+
+    $('#sort-by-name').click(function () {
+        createTeams(teams.sort(function (a, b) {
+            return a.name > b.name
+        }));
+    })
+
+    $('#sort-by-leader').click(function () {
+        createTeams(teams.sort(function (a, b) {
+            return a.leader.name > b.leader.name
+        }));
+    })
+
+    $('#new-team').find('form').html5Validate(function () {
+        var $this = $(this);
+        var post = {
+            name: $this.find('#input-name').val(),
+            desc: $this.find('#input-desc').val()
+        }
+        $.ajax({
+            url: encodeURI('/api/post/team?action=new'),
+            type: "POST",
+            data: post,
+            success: function (data) {
+                notyFacade('创建成功', 'success');
+                $('#new-team').modal('hide');
+                fetchTeams();
+                $this[0].reset();
+            },
+            error: function (XMLHttpRequest) {
+                if (XMLHttpRequest.status === 403) {
+                    notyFacade('你不能拥有超过5个团队', 'warning')
+                } else {
+                    notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error')
+                }
+            }
+        })
+    })
 })
