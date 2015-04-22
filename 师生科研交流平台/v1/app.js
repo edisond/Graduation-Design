@@ -24,7 +24,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true,
-    limit: 1000000
+    limit: 100000
 }));
 app.use(session({
     secret: '666',

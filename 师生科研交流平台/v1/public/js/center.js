@@ -106,7 +106,7 @@ $(document).ready(function () {
                             notyFacade('修改成功，重新登录后生效', 'success')
                         },
                         error: function (XMLHttpRequest) {
-                            notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试。（请勿上传大于1MB的头像）', 'error')
+                            notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试。（请勿上传大于200KB的头像）', 'error')
                         }
                     })
                 }

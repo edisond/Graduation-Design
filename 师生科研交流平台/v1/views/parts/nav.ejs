@@ -11,7 +11,7 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-main">
             <ul class="nav navbar-nav navbar-right">
-                <% if(typeof user!=='undefined' ){ %>
+                <% if(typeof user!=='undefined' && user.type!=='管理员' ){ %>
                     <li id="nav-link-to-center"><a href="/center">个人中心</a>
                     </li>
                     <% } %>

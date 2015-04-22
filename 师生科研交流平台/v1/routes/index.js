@@ -121,9 +121,13 @@ router.get('/project/:id', function (req, res, next) {
 
 router.get('/center', function (req, res) {
     if (req.session.user) {
-        res.render('center', {
-            user: req.session.user
-        });
+        if (req.session.user.type === '管理员') {
+            res.redirect('/admin');
+        } else {
+            res.render('center', {
+                user: req.session.user
+            });
+        }
     } else {
         res.redirect('/login');
     }
