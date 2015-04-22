@@ -16,10 +16,10 @@ $(document).ready(function () {
         commentList.empty();
         var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(commentList)
         $.get(encodeURI('/api/get/comment?project=' + projectId), function (data) {
+            $('#comment-num').html(data.length);
             if (data.length === 0) {
                 loadstate.html('对项目有任何疑问都可以在这里与老师或同学交流。')
             } else {
-                $('#comment-num').html(data.length);
                 commentList.empty().hide();
                 data.sort(function (a, b) {
                     return new Date(a.date) > new Date(b.date)
