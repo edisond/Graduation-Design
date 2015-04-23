@@ -16,7 +16,6 @@ xss.whiteList['strike'] = [];
 function xssUser(user) {
     if (user.id) user.id = xss(user.id);
     if (user.name) user.name = xss(user.name);
-    if (user.img) user.img = xss(user.img);
     if (user.email) user.email = xss(user.email);
     if (user.phone) user.phone = xss(user.phone);
     if (user.studentAttr) {
@@ -94,7 +93,6 @@ router.post('/signin', function (req, res) {
                     id: 'admin',
                     name: 'admin',
                     type: '管理员',
-                    img: '/img/heads/管理员默认头像.png',
                     key: md5(new Date()),
                     active: true
                 });
@@ -144,7 +142,6 @@ router.post('/user', function (req, res) {
         if (req.session.user.type === '管理员') {
             if (req.query.action === "new") {
                 xssUser(user);
-                user.img = user.img || '/img/heads/' + user.type + '默认头像.png';
                 user.key = md5(new Date());
                 user.password = md5(user.password + user.key);
                 user = new model.User(user);
@@ -208,12 +205,6 @@ router.post('/user', function (req, res) {
                     }
                 });
             } else if (req.query.action === "update") {
-                if (user.img) {
-                    var base64Data = user.img.replace(/^data:image\/\w+;base64,/, "");
-                    var dataBuffer = new Buffer(base64Data, 'base64');
-                    fs.writeFileSync("public/img/heads/" + req.session.user._id + ".png", dataBuffer);
-                    user.img = "/img/heads/" + req.session.user._id + ".png";
-                }
                 xssUser(user);
                 model.User.findByIdAndUpdate(user._id, user, function (err, docs) {
                     res.sendStatus(err ? 500 : 200);
@@ -226,7 +217,6 @@ router.post('/user', function (req, res) {
         if (req.query.action && req.query.action === 'new') {
             user.active = false;
             xssUser(user);
-            user.img = user.img || '/img/heads/' + user.type + '默认头像.png';
             user.key = md5(new Date());
             user.password = md5(user.password + user.key);
             user = new model.User(user);

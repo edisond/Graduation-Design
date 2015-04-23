@@ -34,7 +34,6 @@ var User = new Schema({
         required: true,
         default: false
     },
-    img: String,
     email: String,
     phone: String,
     studentAttr: {
@@ -251,6 +250,35 @@ var TeamApply = new Schema({
     }
 })
 
+var SupportMessage = new Schema({
+    from: {
+        name: {
+            type: 'String',
+            required: true
+        },
+        email: {
+            type: 'String',
+            required: true
+        }
+    },
+    type: {
+        type: 'String',
+        required: true
+    },
+    title: {
+        type: 'String',
+        required: true
+    },
+    body: {
+        type: 'String',
+        required: true
+    },
+    date: {
+        type: 'Date',
+        required: true,
+        default: Date.now()
+    }
+})
 
 module.exports.User = mongoose.model('user', User);
 module.exports.Project = mongoose.model('project', Project);
@@ -258,3 +286,4 @@ module.exports.Comment = mongoose.model('comment', Comment);
 module.exports.Select = mongoose.model('select', Select);
 module.exports.Team = mongoose.model('team', Team);
 module.exports.TeamApply = mongoose.model('teamapply', TeamApply);
+module.exports.SupportMessage = mongoose.model('supportmessage', SupportMessage);

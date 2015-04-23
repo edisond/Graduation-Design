@@ -70,7 +70,7 @@ router.get('/innovation-project', function (req, res) {
 })
 
 router.get('/project/:id', function (req, res, next) {
-    model.Project.findById(req.params.id).populate('teacher', 'name department email phone img').populate('creator', 'name type').lean().exec(function (err, docs) {
+    model.Project.findById(req.params.id).populate('teacher', 'name department email phone').populate('creator', 'name type').lean().exec(function (err, docs) {
         if (docs) {
             docs.dateUpdate = moment(docs.dateUpdate).fromNow();
             docs.dateStart = moment(docs.dateStart).format('l');
@@ -150,7 +150,7 @@ router.get('/profile/:id', function (req, res) {
 
 router.get('/team/:id?', function (req, res, next) {
     if (req.params.id) {
-        model.Team.findById(req.params.id).populate('leader', 'name type img').lean().exec(function (err, docs) {
+        model.Team.findById(req.params.id).populate('leader', 'name type email').lean().exec(function (err, docs) {
             if (docs) {
                 docs.dateCreate = moment(docs.dateCreate).fromNow();
                 if (req.session.user) {

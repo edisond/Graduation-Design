@@ -19,10 +19,8 @@ $(document).ready(function () {
             type: 'POST',
             data: user,
             success: function () {
-                notyFacade('申请注册成功，请等待管理员确认，3秒后返回主页', 'success');
-                setTimeout(function () {
-                    window.location.href = '/'
-                }, 3000)
+                $('#main-panel').hide();
+                $('#success-panel').show();
             },
             error: function () {
                 notyFacade('该学号/工号已被使用', 'error');

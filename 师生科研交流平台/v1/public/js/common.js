@@ -54,11 +54,26 @@ notyFacade = function (text, type) {
     });
 }
 
+// $.fetchAvatars() <img data-email="test@email.com" data-target="gravatar" data-size="200px">
+$.fn.fetchAvatar = function (options) {
+    var settings = {
+        url: 'http://gravatar.duoshuo.com/avatar/',
+        rating: 'pg'
+    };
+    var options = $.extend(settings, options);
+    return this.each(function () {
+        var $this = $(this),
+            hash = md5($this.data('email').toLowerCase()),
+            size = $this.data('size') || "50px";
+        $this.attr('src', options.url + hash + '?s=' + size + '&r=' + options.rating);
+    });
+}
+
 var DOMCreator = {
     project: function (project) {
         var node = $('<div class="project">');
         var title = $('<h4>').appendTo(node);
-        $('<a>').attr('href', '/project/' + project._id).html(project.name).appendTo(title);
+        $('<a>').attr('href', '/project/' + project._id).html('<b>' + project.name + '</b>').appendTo(title);
         if (!project.teacher) {
             $('<small class="ml20">').html('暂无指导教师').appendTo(title);
         } else {
@@ -83,7 +98,7 @@ var DOMCreator = {
 
     myProject: function (select) {
         var div = $('<div class="project">');
-        var title = $('<h4><a href="/project/' + select.project._id + '">' + select.project.name + '</a><small class="ml20">' + select.project.type + '</small></h4>').appendTo(div);
+        var title = $('<h4><a href="/project/' + select.project._id + '"><b>' + select.project.name + '</b></a><small class="ml20">' + select.project.type + '</small></h4>').appendTo(div);
         var tag = $('<span class="label ml10">').appendTo(title);
         if (select.active) {
             if (new Date(select.project.dateStart) > Date.now()) {
@@ -102,7 +117,7 @@ var DOMCreator = {
 
     myProjectT: function (project) {
         var div = $('<div class="project">');
-        var title = $('<h4><a href="/project/' + project._id + '">' + project.name + '</a><small class="ml20">' + project.type + '</small></h4>').appendTo(div);
+        var title = $('<h4><a href="/project/' + project._id + '"><b>' + project.name + '</b></a><small class="ml20">' + project.type + '</small></h4>').appendTo(div);
         var tag = $('<span class="label ml10">').appendTo(title);
         if (new Date(project.dateStart) > Date.now()) {
             tag.addClass('label-success').html('未开始');
@@ -119,15 +134,20 @@ var DOMCreator = {
         var media = $('<div class="media">'),
             mediaLeft = $('<div class="media-left">').appendTo(media),
             mediaBody = $('<div class="media-body">').appendTo(media);
-        $('<a href="/profile/' + comment.from._id + '"><img src="' + comment.from.img + '" class="head head-sm"></a>').appendTo(mediaLeft);
+        $('<a href="/profile/' + comment.from._id + '"><img data-email="' + comment.from.email + '" data-target="gravatar" data-size="50px" class="head head-sm"></a>').appendTo(mediaLeft);
+        var heading = '';
         if (comment.to) {
-            $('<p class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + '</a>' + comment.from.type + '回复了<a href="/profile/' + comment.to._id + '">' + comment.to.name + '</a>' + comment.to.type + '：</p>').appendTo(mediaBody);
+            heading += '<p class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + comment.from.type + '</a>&nbsp;回复了&nbsp;<a href="/profile/' + comment.to._id + '">' + comment.to.name + comment.to.type + '</a>';
         } else {
-            $('<p class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + '</a>' + comment.from.type + '：</p>').appendTo(mediaBody);
+            heading += '<p class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + comment.from.type + '</a>';
         }
-        $('<h6><small><i class="fa fa-clock-o"></i>&nbsp;' + moment(comment.date).fromNow() + '</small><a href="#input-comment" data-toggle="tooltip" title="回复" class="ml10" data-id="' + comment.from._id + '" data-name="' + comment.from.name + '" data-type="' + comment.from.type + '"><i class="fa fa-reply"></i></a></h6>').appendTo(mediaBody);
+        heading += '<span class="text-muted">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;' + moment(comment.date).fromNow() + '</span></p>';
+        heading = $(heading);
+        heading.appendTo(mediaBody);
         $('<div class="comment-body">').html(comment.body).appendTo(mediaBody);
+        $('<h6><a data-toggle="tooltip" title="回复" class="text-muted" href="#input-comment" data-id="' + comment.from._id + '" data-name="' + comment.from.name + '" data-type="' + comment.from.type + '"><i class="fa fa-reply"></i></a></h6>').appendTo(mediaBody);
         media.find('[data-toggle=tooltip]').tooltip();
+        media.find('img[data-target=gravatar]').fetchAvatar();
         return media;
     },
 
@@ -135,28 +155,30 @@ var DOMCreator = {
         var media = $('<div class="media">'),
             mediaLeft = $('<div class="media-left">').appendTo(media),
             mediaBody = $('<div class="media-body">').appendTo(media);
-        $('<a href="/profile/' + comment.from._id + '"><img src="' + comment.from.img + '" class="head head-sm"></a>').appendTo(mediaLeft);
+        $('<a href="/profile/' + comment.from._id + '"><img data-email="' + comment.from.email + '" data-target="gravatar" data-size="50px" class="head head-sm"></a>').appendTo(mediaLeft);
         if (comment.project) {
-            $('<p class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + '</a>' + comment.from.type + '在<a href="/project/' + comment.project._id + '">' + comment.project.name + '</a>回复了我：</p>').appendTo(mediaBody);
-            $('<h6><small><i class="fa fa-clock-o"></i>&nbsp;' + moment(comment.date).fromNow() + '</small><a href="/project/' + comment.project._id + '" data-toggle="tooltip" title="回复" class="ml10"><i class="fa fa-reply"></i></a></h6>').appendTo(mediaBody);
+            $('<p class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + comment.from.type + '</a>&nbsp;在&nbsp;<a href="/project/' + comment.project._id + '">' + comment.project.name + '</a>&nbsp;回复了我<span class="text-muted">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;' + moment(comment.date).fromNow() + '</span></p>').appendTo(mediaBody);
+            $('<div class="comment-body">').html(comment.body).appendTo(mediaBody);
+            $('<h6><a href="/project/' + comment.project._id + '" data-toggle="tooltip" title="回复" class="text-muted"><i class="fa fa-reply"></i></a></h6>').appendTo(mediaBody);
         } else {
-            $('<p class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + '</a>' + comment.from.type + '对我说：</p>').appendTo(mediaBody);
-            $('<h6><small><i class="fa fa-clock-o"></i>&nbsp;' + moment(comment.date).fromNow() + '</small><a href="/profile/' + comment.from._id + '" data-toggle="tooltip" title="回复" class="ml10"><i class="fa fa-reply"></i></a></h6>').appendTo(mediaBody);
+            $('<p class="media-heading"><a href="/profile/' + comment.from._id + '">' + comment.from.name + comment.from.type + '</a>&nbsp;对我说<span class="text-muted">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;' + moment(comment.date).fromNow() + '</span></p>').appendTo(mediaBody);
+            $('<div class="comment-body">').html(comment.body).appendTo(mediaBody);
+            $('<h6><a href="/profile/' + comment.from._id + '" data-toggle="tooltip" title="回复" class="text-muted"><i class="fa fa-reply"></i></a></h6>').appendTo(mediaBody);
         }
-        $('<div class="comment-body">').html(comment.body).appendTo(mediaBody);
         media.find('[data-toggle=tooltip]').tooltip();
+        media.find('img[data-target=gravatar]').fetchAvatar();
         return media;
     },
 
     head: function (user) {
         var head = $('<a class="dinlineblock mr5 mt5" data-toggle="tooltip" data-placement="bottom" title="' + user.name + '" href="/profile/' + user._id + '"></a>');
-        $('<img height="50px" width="50px" src="' + user.img + '"/>').appendTo(head);
+        $('<img height="50px" width="50px" data-email="' + user.email + '" data-target="gravatar" data-size="50px"/>').fetchAvatar().appendTo(head);
         return head.tooltip();
     },
 
     team: function (team) {
         var div = $('<div class="project">');
-        var title = $('<h4><a href="/team/' + team._id + '">' + team.name + '</a><small class="ml20">负责人：' + team.leader.name + '</small></h4>').appendTo(div);
+        var title = $('<h4><a href="/team/' + team._id + '"><b>' + team.name + '</b></a><small class="ml20">负责人：' + team.leader.name + '</small></h4>').appendTo(div);
         $('<small class="text-muted">' + team.desc + '</small>').appendTo(div);
         $('<h6><small><i class="fa fa-clock-o"></i>&nbsp;创建于' + moment(team.dateCreate).fromNow() + '</small></h6>').appendTo(div);
         return div
@@ -164,7 +186,7 @@ var DOMCreator = {
 
     myTeam: function (apply, user_id) {
         var div = $('<div class="project">');
-        var title = $('<h4><a href="/team/' + apply.team._id + '">' + apply.team.name + '</a></h4>').appendTo(div);
+        var title = $('<h4><a href="/team/' + apply.team._id + '"><b>' + apply.team.name + '</b></a></h4>').appendTo(div);
         var tag = $('<span class="label ml10">').appendTo(title);
         if (apply.active) {
             if (apply.team.leader === user_id) {
@@ -297,6 +319,7 @@ $(document).ready(function () {
     initBackToTop();
 
     $('[data-toggle="tooltip"]').tooltip();
+    $('img[data-target="gravatar"]').fetchAvatar();
 
     $(function () {
         var selectList = $('[data-role=selector]');

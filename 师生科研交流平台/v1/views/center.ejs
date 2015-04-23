@@ -78,6 +78,50 @@
                                         <fieldset>
                                             <legend class="fontsizeM">
                                                 <span data-toggle="tooltip" title="点击以展开/收回">
+                                            <a data-toggle="collapse" href="#head-setting" aria-expanded="false" aria-controls="head-setting">更换头像</a>
+                                        </span>
+                                            </legend>
+                                            <div id="head-setting" class="collapse">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <p><i class="fa fa-cloud"></i>&nbsp;<b>本站头像使用&nbsp;<a href="http://cn.gravatar.com/" target="_blank">Gravatar</a>&nbsp;服务</b>
+                                                        </p>
+                                                        <ul>
+                                                            <li>已注册：在“详细信息”中填写邮箱地址即可将您的头像实时同步到本站所有页面</li>
+                                                            <li>未注册：
+                                                                <ol>
+                                                                    <li>登陆&nbsp;<a href="http://cn.gravatar.com/" target="_blank">Gravatar</a>&nbsp;网站</li>
+                                                                    <li>使用邮箱地址注册一个账号</li>
+                                                                    <li>上传并使用头像</li>
+                                                                    <li>回到本站，并在“详细信息”中填写您的邮箱地址</li>
+                                                                </ol>
+                                                            </li>
+                                                        </ul>
+                                                        <br/>
+                                                        <p><i class="fa fa-question-circle"></i>&nbsp;<b>什么是Gravatar</b>
+                                                        </p>
+                                                        <p>
+                                                            <ul>
+                                                                <li>Gravatar是Globally Recognized Avatar的缩写，是Gravatar推出的一项服务，意为“全球通用头像”。如果在Gravatar的服务器上放置了你自己的头像，那么在任何支持Gravatar的blog或者留言本上留言时，只要提供你与这个头像关联的email地址，就能够显示出你的Gravatar头像来。</li>
+                                                            </ul>
+                                                        </p>
+                                                        <br/>
+                                                        <p><i class="fa fa-question-circle"></i>&nbsp;<b>我的头像图片没有正确地显示</b>
+                                                        </p>
+                                                        <p>
+                                                            <ul>
+                                                                <li>头像图片上传到Gravatar服务器后需要经过一定的时间才能通过审核并同步到本站</li>
+                                                                <li>本站对头像图片的限制为“PG”级，高于此分级的头像将不会显示</li>
+                                                            </ul>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <br/>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset>
+                                            <legend class="fontsizeM">
+                                                <span data-toggle="tooltip" title="点击以展开/收回">
                                             <a data-toggle="collapse" href="#account-setting" aria-expanded="false" aria-controls="account-setting">详细信息</a>
                                         </span>
                                             </legend>
@@ -188,35 +232,6 @@
                                         <fieldset>
                                             <legend class="fontsizeM">
                                                 <span data-toggle="tooltip" title="点击以展开/收回">
-                                            <a data-toggle="collapse" href="#head-setting" aria-expanded="false" aria-controls="head-setting">更换头像</a>
-                                        </span>
-                                            </legend>
-                                            <div id="head-setting" class="collapse">
-                                                <div class="row">
-                                                    <form class="col-xs-12 col-sm-6">
-                                                        <p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;请勿上传大于100KB的图像
-                                                        </p>
-                                                        <div class="form-group">
-                                                            <input class="form-control" type="file" id="input-head">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <p class="text-danger hidden" id="lower-ie-warning"><i class="fa fa-exclamation-triangle"></i>&nbsp;当前浏览器版本过低，无法更换头像。请使用Internet Explorer 10+，Google Chrome或Mozilla Firefox的最新版本重新打开此页面。</p>
-                                                            <p>大图预览：</p>
-                                                            <img id="head-setting-preview-big" class="head head-lg" />
-                                                            <p class="mt20">小图预览：</p>
-                                                            <img id="head-setting-preview-small" class="head head-sm" style="vertical-align: bottom" />
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <button type="button" class="col-xs-12 btn btn-primary" id="submit-head">保存</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <br/>
-                                            </div>
-                                        </fieldset>
-                                        <fieldset>
-                                            <legend class="fontsizeM">
-                                                <span data-toggle="tooltip" title="点击以展开/收回">
                                             <a data-toggle="collapse" href="#password-setting" aria-expanded="false" aria-controls="password-setting">更改密码</a>
                                         </span>
                                             </legend>
@@ -250,7 +265,7 @@
                         <div class="col-sm-3 col-xs-12">
                             <div class="aside aside-left">
 
-                                <img src="<%=user.img%>" class="head head-lg" />
+                                <img class="head head-lg" data-email="<%=user.email%>" data-target="gravatar" data-size="200px" />
                                 <h3><%=user.name%><br/><small><%=user.id%></small></h3>
 
                                 <hr/>

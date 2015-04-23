@@ -221,6 +221,7 @@ img.head {
 
 img.head.head-lg {
     width: 100%;
+    max-width: 400px;
 }
 
 img.head.head-sm {

@@ -56,7 +56,9 @@
                                                     <%=user.type%>
                                             </a></h5>
                                         </td>
-                                        <td rowspan="2" class="pl10"><a href="/center"><img class="head" src="<%=user.img%>"></a>
+                                        <td rowspan="2" class="pl10">
+                                            <a href="/center"><img class="head" data-email="<%=user.email%>" data-target="gravatar" data-size="50px">
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
