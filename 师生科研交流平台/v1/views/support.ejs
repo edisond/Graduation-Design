@@ -19,11 +19,11 @@
                                 <form id="support">
                                     <div class="form-group form-group-lg mt30">
                                         <label for="input-name">称呼</label>
-                                        <input type="text" class="form-control" id="input-name" required maxlength="10">
+                                        <input type="text" class="form-control" id="input-name" required maxlength="10" value="<%=user?user.name+user.type:''%>">
                                     </div>
                                     <div class="form-group form-group-lg mt30">
                                         <label for="input-email">邮箱</label>
-                                        <input type="email" class="form-control" id="input-email" required maxlength="50">
+                                        <input type="email" class="form-control" id="input-email" required maxlength="50" value="<%=user?user.email:''%>">
                                     </div>
                                     <div class="form-group form-group-lg mt30">
                                         <label for="input-title">标题</label>
@@ -74,12 +74,16 @@
                                 <p class="text-muted"><span id="admin-email"></span>（管理员）
                                 </p>
                                 <p class="text-muted"><a href="mailto:edisond@qq.com">edisond@qq.com</a>（作者）
-                                    </span>
                                 </p>
                                 <br/>
                                 <h4 class="text-theme"><b>关于平台</b></h4>
                                 <p class="text-muted">本项目为电气信息学院研制基于Web的科研交流平台，针对学生的创新创业计划、开放实验项目等，老师或学生可以通过该平台实现交流，克服学生盲目选题或对选题理解不深等问题。</p>
                                 <p class="text-muted">通过该平台，教师和学生发布相关科研信息，包括教师寻找学生参与的课题、各级创新项目的互动、挑战杯项目、开放实验项目以及毕业设计的互动等，实现学生和老师在相关项目和课题的网上交流与合作以及老师在线指导学生，讨论和答疑。</p>
+                                <br/>
+                                <h4 class="text-theme"><b>浏览器支持</b></h4>
+                                <p class="text-muted">请使用<b>Internet Explorer 8以上</b>， 或最新版本的<b>Chrome</b>， <b>Firefox</b>， <b>Safari</b>等常用浏览器打开本站。
+                                </p>
+                                <p class="text-muted"><i class="fa fa-exclamation-triangle text-danger"></i>&nbsp;请勿禁用浏览器的<b>JavaScript</b>功能。</p>
                             </div>
                         </div>
                     </div>

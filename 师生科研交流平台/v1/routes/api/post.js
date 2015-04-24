@@ -7,6 +7,8 @@ var express = require('express'),
     crypto = require('crypto'),
     model = require('../../model/model');
 
+var nodemailer = require("nodemailer");
+
 function md5(text) {
     return crypto.createHash('md5').update(text.toString()).digest('hex');
 };
@@ -582,7 +584,36 @@ router.post('/update/admin', function (req, res) {
 });
 
 router.post('/email', function (req, res) {
-    res.sendStatus(200);
+    if (req.query.to) {
+        if (req.query.to === 'author') {
+            var transporter = nodemailer.createTransport({
+                service: 'yahoo',
+                auth: {
+                    user: 'jnussp@yahoo.com',
+                    pass: 'jinandaxuessp'
+                }
+            });
+            var html = '';
+            html += '<p>类型：' + xss(req.body.type) + '</p>';
+            html += '<p>称呼：' + xss(req.body.name) + '</p>';
+            html += '<p>邮箱：' + xss(req.body.email) + '</p>';
+            html += '<p>标题：' + xss(req.body.title) + '</p>';
+            html += '<p>内容：' + xss(req.body.body) + '</p>';
+            transporter.sendMail({
+                from: 'jnussp@yahoo.com',
+                to: 'edisond@qq.com',
+                subject: '用户反馈',
+                html: html
+            }, function (err) {
+                res.sendStatus(err ? 500 : 200);
+                transporter.close();
+            });
+        } else {
+            res.sendStatus(404);
+        }
+    } else {
+        res.sendStatus(404);
+    }
 })
 
 module.exports = router;
