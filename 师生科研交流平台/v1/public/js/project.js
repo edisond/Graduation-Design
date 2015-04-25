@@ -27,7 +27,7 @@ $(document).ready(function () {
         var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(list)
         $.get(encodeURI('/api/get/project?type=' + projectType), function (data) {
             if (data.length === 0) {
-                loadstate.html('<i class="fa fa-frown-o"></i>&nbsp;暂无项目');
+                loadstate.html('暂无项目');
                 $('#header-project-num').html('0');
                 $('#header-teacher-num').html('0');
                 $('#header-update-date').html('等待更新');

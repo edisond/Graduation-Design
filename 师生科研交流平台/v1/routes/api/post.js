@@ -110,26 +110,30 @@ router.post('/signin', function (req, res) {
             }
         });
     } else {
-        var condition = {};
-        if (req.body.id) condition.id = req.body.id;
-        if (req.body._id) condition._id = req.body._id;
-        model.User.findOne(condition).lean().exec(function (err, doc) {
-            if (err || !doc) {
-                res.sendStatus(401);
-            } else {
-                if (md5(req.body.password + doc.key) === doc.password) {
-                    if (doc.active) {
-                        delete doc.password;
-                        delete doc.key;
-                        delete doc.__v;
-                        req.session.user = doc;
-                        res.sendStatus(200);
-                    } else res.sendStatus(403);
-                } else {
+        if (req.session.cap && req.body.cap && req.body.cap.toString() === req.session.cap.toString()) {
+            var condition = {};
+            if (req.body.id) condition.id = req.body.id;
+            if (req.body._id) condition._id = req.body._id;
+            model.User.findOne(condition).lean().exec(function (err, doc) {
+                if (err || !doc) {
                     res.sendStatus(401);
+                } else {
+                    if (md5(req.body.password + doc.key) === doc.password) {
+                        if (doc.active) {
+                            delete doc.password;
+                            delete doc.key;
+                            delete doc.__v;
+                            req.session.user = doc;
+                            res.sendStatus(200);
+                        } else res.sendStatus(403);
+                    } else {
+                        res.sendStatus(401);
+                    }
                 }
-            }
-        });
+            })
+        } else {
+            res.sendStatus(406)
+        }
     }
 })
 
@@ -160,7 +164,7 @@ router.post('/user', function (req, res) {
                 model.User.findByIdAndUpdate(user._id, user, function (err) {
                     res.sendStatus(err ? 500 : 200);
                 })
-            } else if (req.query.action === "delete") {
+            } else if (req.query.action === "inactive") {
                 model.User.update({
                     _id: {
                         $in: user._id
@@ -184,6 +188,45 @@ router.post('/user', function (req, res) {
                 }, function (err, doc) {
                     res.sendStatus(err ? 500 : 200);
                 });
+            } else if (req.query.action === "delete") {
+                model.Comment.remove({
+                    $or: [{
+                        from: {
+                            $in: user._id
+                        }
+                    }, {
+                        to: {
+                            $in: user._id
+                        }
+                    }]
+                }).exec();
+                model.TeamApply.remove({
+                    user: {
+                        $in: user._id
+                    }
+                }).exec();
+                model.Team.remove({
+                    leader: {
+                        $in: user._id
+                    }
+                }).exec();
+                model.Select.remove({
+                    student: {
+                        $in: user._id
+                    }
+                }).exec();
+                model.Project.remove({
+                    creator: {
+                        $in: user._id
+                    }
+                }).exec();
+                model.User.remove({
+                    _id: {
+                        $in: user._id
+                    }
+                }, function (err) {
+                    res.sendStatus(err ? 500 : 200)
+                })
             } else {
                 res.sendStatus(404);
             }
@@ -216,17 +259,21 @@ router.post('/user', function (req, res) {
             }
         }
     } else {
-        if (req.query.action && req.query.action === 'new') {
-            user.active = false;
-            xssUser(user);
-            user.key = md5(new Date());
-            user.password = md5(user.password + user.key);
-            user = new model.User(user);
-            user.save(function (err) {
-                res.sendStatus(err ? 500 : 200);
-            });
+        if (req.session.cap && req.body.cap && req.body.cap.toString() === req.session.cap.toString()) {
+            if (req.query.action && req.query.action === 'new') {
+                user.active = false;
+                xssUser(user);
+                user.key = md5(new Date());
+                user.password = md5(user.password + user.key);
+                user = new model.User(user);
+                user.save(function (err) {
+                    res.sendStatus(err ? 500 : 200);
+                });
+            } else {
+                res.sendStatus(404)
+            }
         } else {
-            res.sendStatus(404)
+            res.sendStatus(406)
         }
     }
 
@@ -238,75 +285,66 @@ router.post('/project', function (req, res) {
     } else if (!req.session.user) {
         res.sendStatus(401)
     } else {
-        if (req.session.user.type === '老师') {
-            if (req.query.action === 'new') {
-                xssProject(req.body);
-                req.body.creator = req.body.teacher = req.session.user._id;
-                var project = new model.Project(req.body);
-                project.save(function (err, doc) {
-                    res.sendStatus(err ? 500 : 200);
-                })
-            } else if (req.query.action === 'update') {
-                model.Project.findById(req.body._id, function (err, doc) {
-                    if (err || !doc) {
-                        res.sendStatus(500)
+        if (req.query.action === 'delete') {
+            model.Project.findById(req.body._id, function (err, doc) {
+                if (err || !doc) {
+                    res.sendStatus(500)
+                } else {
+                    if (doc.creator.toString() === req.session.user._id.toString()) {
+                        model.Select.remove({
+                            project: doc._id
+                        }).exec();
+                        model.Comment.remove({
+                            project: doc._id
+                        }).exec();
+                        model.Project.findByIdAndRemove(doc._id, function (err) {
+                            res.sendStatus(err ? 500 : 200)
+                        })
                     } else {
-                        if (doc.creator.toString() === req.session.user._id.toString()) {
-                            xssProject(req.body);
-                            model.Project.findByIdAndUpdate(req.body._id, req.body, function (err) {
-                                res.sendStatus(err ? 500 : 200);
-                            })
-                        } else {
-                            res.sendStatus(401);
-                        }
+                        res.sendStatus(401)
                     }
-                })
-            } else if (req.query.action === 'guide') {
-                model.Project.findById(req.body._id, function (err, doc) {
-                    if (err || !doc || doc.teacher) {
-                        res.sendStatus(500)
-                    } else {
-                        var project = {
-                            _id: req.body._id,
-                            teacher: req.session.user._id,
-                            creator: req.session.user._id
-                        }
-                        model.Project.findByIdAndUpdate(project._id, project, function (err) {
+                }
+            })
+        } else if (req.query.action === 'update') {
+            model.Project.findById(req.body._id, function (err, doc) {
+                if (err || !doc) {
+                    res.sendStatus(500)
+                } else {
+                    if (doc.creator.toString() === req.session.user._id.toString()) {
+                        xssProject(req.body);
+                        model.Project.findByIdAndUpdate(req.body._id, req.body, function (err) {
                             res.sendStatus(err ? 500 : 200);
                         })
-                    }
-                })
-            } else {
-                res.sendStatus(404);
-            }
-        } else if (req.session.user.type === '同学') {
-            if (req.query.action === 'new') {
-                xssProject(req.body);
-                req.body.creator = req.session.user._id;
-                var project = new model.Project(req.body);
-                project.save(function (err, doc) {
-                    res.sendStatus(err ? 500 : 200);
-                })
-            } else if (req.query.action === 'update') {
-                model.Project.findById(req.body._id, function (err, doc) {
-                    if (err || !doc) {
-                        res.sendStatus(500)
                     } else {
-                        if (doc.creator.toString() === req.session.user._id.toString()) {
-                            xssProject(req.body);
-                            model.Project.findByIdAndUpdate(req.body._id, req.body, function (err) {
-                                res.sendStatus(err ? 500 : 200);
-                            })
-                        } else {
-                            res.sendStatus(401);
-                        }
+                        res.sendStatus(401);
                     }
-                })
-            } else {
-                res.sendStatus(404);
-            }
+                }
+            })
+        } else if (req.query.action === 'new') {
+            xssProject(req.body);
+            req.body.creator = req.session.user._id;
+            if (req.session.user.type === '老师') req.body.teacher = req.session.user._id;
+            var project = new model.Project(req.body);
+            project.save(function (err, doc) {
+                res.sendStatus(err ? 500 : 200);
+            })
+        } else if (req.query.action === 'guide' && req.session.user.type === '老师') {
+            model.Project.findById(req.body._id, function (err, doc) {
+                if (err || !doc || doc.teacher) {
+                    res.sendStatus(500)
+                } else {
+                    var project = {
+                        _id: req.body._id,
+                        teacher: req.session.user._id,
+                        creator: req.session.user._id
+                    }
+                    model.Project.findByIdAndUpdate(project._id, project, function (err) {
+                        res.sendStatus(err ? 500 : 200);
+                    })
+                }
+            })
         } else {
-            res.sendStatus(401)
+            res.sendStatus(404)
         }
     }
 });
@@ -314,12 +352,16 @@ router.post('/project', function (req, res) {
 router.post('/comment', function (req, res) {
     if (req.session.user) {
         if (req.query.action === "new") {
-            req.body.from = req.session.user._id;
-            xssComment(req.body);
-            var comment = new model.Comment(req.body);
-            comment.save(function (err) {
-                res.sendStatus(err ? 500 : 200)
-            })
+            if (req.session.cap && req.body.cap && req.body.cap.toString() === req.session.cap.toString()) {
+                req.body.from = req.session.user._id;
+                xssComment(req.body);
+                var comment = new model.Comment(req.body);
+                comment.save(function (err) {
+                    res.sendStatus(err ? 500 : 200)
+                })
+            } else {
+                res.sendStatus(406)
+            }
         } else {
             res.sendStatus(404);
         }
@@ -457,16 +499,14 @@ router.post('/team', function (req, res) {
                 if (err) res.sendStatus(500)
                 else {
                     if (doc.leader.toString() === req.session.user._id.toString()) {
-                        model.Team.findByIdAndRemove(req.body._id, function () {
-                            model.TeamApply.remove({
-                                team: req.body._id
-                            }, function () {
-                                model.Select.remove({
-                                    team: req.body._id
-                                }, function () {
-                                    res.sendStatus(200);
-                                })
-                            })
+                        model.TeamApply.remove({
+                            team: req.body._id
+                        }).exec();
+                        model.Select.remove({
+                            team: req.body._id
+                        }).exec();
+                        model.Team.findByIdAndRemove(req.body._id, function (err) {
+                            res.sendStatus(err ? 500 : 200);
                         })
                     } else {
                         res.sendStatus(401)

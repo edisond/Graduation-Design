@@ -3,7 +3,8 @@ $(document).ready(function () {
         var $this = $(this);
         var post = {
             id: $this.find('#input-id').val(),
-            password: md5($this.find('#input-pwd').val())
+            password: md5($this.find('#input-pwd').val()),
+            cap: $this.find('#input-cap').val(),
         };
         $.ajax({
             type: "POST",
@@ -13,10 +14,12 @@ $(document).ready(function () {
                 window.location.href = '/center';
             },
             error: function (err) {
-                if (err.status === 401) {
-                    notyFacade('用户名与密码不匹配', 'error')
+                if (err.status === 406) {
+                    notyFacade('验证码错误，请重新输入', 'warning');
                 } else if (err.status === 403) {
                     notyFacade('该用户尚未激活，请等待管理员审核', 'warning')
+                } else {
+                    notyFacade('用户名与密码不匹配', 'error')
                 }
             }
         });

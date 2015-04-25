@@ -135,12 +135,14 @@ $(document).ready(function () {
     });
 
     $('#form-comment').html5Validate(function () {
+        var $this = $(this);
         if (USER) {
             var comment = {
                 body: commentBox.html(),
                 from: USER._id,
                 project: projectId,
-                date: Date.now()
+                date: Date.now(),
+                cap: $this.find('#input-cap').val()
             };
             if (comment.body === '') {
                 notyFacade('请填写讨论内容', 'warning');
@@ -157,10 +159,16 @@ $(document).ready(function () {
                     fetchComments();
                     commentBox.html('');
                     $('#input-cancel').click();
+                    $this.find('img.captcha').click();
+                    $this[0].reset();
                     notyFacade('发布成功', 'success');
                 },
-                error: function () {
-                    notyFacade('发布失败，请重试或刷新后重试', 'error');
+                error: function (err) {
+                    if (err.status === 406) {
+                        notyFacade('验证码错误，请重新输入', 'warning');
+                    } else {
+                        notyFacade('发布失败，请重试或刷新后重试', 'error');
+                    }
                 }
             });
         } else {
@@ -176,7 +184,8 @@ $(document).ready(function () {
 
     $('.wysiwyg-textarea').Wysiwyg()
 
-    var editProjectModal = $('#edit-project');
+    var editProjectModal = $('#edit-project'),
+        deleteProjectModal = $('#delete-project');
 
     if (editProjectModal.size() > 0) {
 
@@ -288,6 +297,30 @@ $(document).ready(function () {
                 },
                 error: function () {
                     notyFacade('抱歉，产生了一个错误，请重试或刷新后重试', 'error');
+                }
+            });
+        })
+    }
+    if (deleteProjectModal.length) {
+        deleteProjectModal.find('#submit').click(function () {
+            var post = {
+                _id: projectId
+            };
+            $.ajax({
+                url: encodeURI('/api/post/project?action=delete'),
+                data: post,
+                type: 'POST',
+                success: function () {
+                    if (projectType === '开放实验项目') {
+                        window.location.href = '/open-experiment'
+                    } else if (projectType === '挑战杯项目') {
+                        window.location.href = '/challenge-cup'
+                    } else if (projectType === '科技创新工程项目') {
+                        window.location.href = '/innovation-project'
+                    }
+                },
+                error: function () {
+                    notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
                 }
             });
         })

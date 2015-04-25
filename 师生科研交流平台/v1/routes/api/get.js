@@ -1,6 +1,24 @@
 var express = require('express'),
     router = express.Router(),
-    model = require('../../model/model');
+    model = require('../../model/model'),
+    captchapng = require('captchapng');
+
+function genCap() {
+    var num = "";
+    for (var i = 0; i < 4; i++) {
+        var tmp = Math.floor(Math.random() * 10);
+        if (tmp === 0) tmp++;
+        num += tmp.toString();
+    }
+    num = parseInt(num);
+    var result = {},
+        p = new captchapng(50, 25, num);
+    p.color(0, 0, 0, 0);
+    p.color(0, 93, 108);
+    result.src = 'data:image/png;base64,' + p.getBase64();
+    result.num = num;
+    return result;
+}
 
 router.get('/admin', function (req, res) {
     var fields = '_id';
@@ -144,6 +162,12 @@ router.get('/teamapply', function (req, res) {
             else res.status(200).send(docs)
         })
     }
+})
+
+router.get('/captcha', function (req, res) {
+    var cap = genCap();
+    req.session.cap = cap.num;
+    res.status(200).send(cap.src)
 })
 
 module.exports = router;

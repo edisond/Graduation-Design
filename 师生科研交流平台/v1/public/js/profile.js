@@ -12,7 +12,7 @@ $(document).ready(function () {
         var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(teamList)
         $.get(encodeURI('/api/get/teamapply?user=' + profile._id), function (data) {
             if (data.length === 0) {
-                loadstate.html('<i class="fa fa-frown-o"></i>&nbsp;暂无团队')
+                loadstate.html('暂无团队')
             } else {
                 teamList.empty().hide();
                 for (var i = 0, j = data.length; i < j; i++) {
@@ -30,7 +30,7 @@ $(document).ready(function () {
             var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(projectList);
             $.get(encodeURI('/api/get/project?teacher=' + profile._id), function (data) {
                 if (data.length === 0) {
-                    loadstate.html('<i class="fa fa-frown-o"></i>&nbsp;暂无项目');
+                    loadstate.html('暂无项目');
                     $('#oe-num').html(0);
                     $('#cc-num').html(0);
                     $('#ip-num').html(0);
@@ -67,7 +67,7 @@ $(document).ready(function () {
             var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(projectList);
             $.get(encodeURI('/api/get/select?student=' + profile._id), function (data) {
                 if (data.length === 0) {
-                    loadstate.html('<i class="fa fa-frown-o"></i>&nbsp;暂无项目');
+                    loadstate.html('暂无项目');
                     $('#oe-num').html(0);
                     $('#cc-num').html(0);
                     $('#ip-num').html(0);

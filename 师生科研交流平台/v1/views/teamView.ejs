@@ -44,26 +44,19 @@
                             <div class="aside aside-right">
                                 <%if(typeof user!=='undefined' ){%>
                                     <%if(team.leader._id.toString()!==user._id.toString() ){%>
-
                                         <button type="button" class="btn btn-block btn-danger <%=isSelected?'':'dhidden'%>" id="btn-submit-report" data-toggle="modal" data-target="#exit-team"><i class="fa fa-sign-out"></i>&nbsp;退出团队</button>
                                         <button type="button" class="btn btn-block btn-warning <%=isApplied?'':'dhidden'%>" id="btn-cancel-select"><i class="fa fa-times"></i>&nbsp;取消申请</button>
                                         <button type="button" class="btn btn-block btn-primary <%=(isApplied||isSelected)?'dhidden':''%>" id="btn-apply"><i class="fa fa-check"></i>&nbsp;申请加入</button>
-
+                                        <hr/>
                                         <% } else{%>
                                             <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#update-team"><i class="fa fa-edit"></i>&nbsp;更新团队</button>
                                             <button type="button" class="btn btn-block btn-danger" data-toggle="modal" data-target="#delete-team"><i class="fa fa-trash"></i>&nbsp;解散团队</button>
-
-                                            <%}}else{%>
-                                                <p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;您目前尚未登录，登录后可以：</p>
-                                                <ul class="text-info">
-                                                    <li>参与团队</li>
-                                                </ul>
-                                                <%}%>
-                                                    <hr/>
-                                                    <h4 class="text-theme"><b>成员</b></h4>
-                                                    <div id="team-members" class="mt10">
-                                                        <span class="text-muted">加载中</span>
-                                                    </div>
+                                            <hr/>
+                                            <%}}%>
+                                                <h4 class="text-theme"><b>成员</b></h4>
+                                                <div id="team-members" class="mt10">
+                                                    <span class="text-muted">加载中</span>
+                                                </div>
                             </div>
                         </div>
                     </div>
@@ -101,13 +94,13 @@
                                 <h4 class="modal-title">解散团队</h4>
                             </div>
                             <div class="modal-body">
-                                <h5>点击“确定”后，本团队将被解散。</h5>
+                                <h5><b>点击“确定”后，本团队将被解散</b></h5>
                                 <p><i class="fa fa-exclamation-triangle text-danger"></i>&nbsp;注意：</p>
                                 <ol>
-                                    <li>团队的所有选课将丢失；</li>
-                                    <li>团队成员将失去团队关系。</li>
+                                    <li>团队的所有选课将丢失</li>
+                                    <li>团队成员将失去团队关系</li>
                                 </ol>
-                                <p>因此，请同学在<b>确认解散团队前务必完成已选项目任务</b>，执行此操作。</p>
+                                <p>因此，请同学在<b>确认解散团队前务必完成已选项目任务</b>，执行此操作</p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>

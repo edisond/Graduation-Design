@@ -24,10 +24,22 @@
                                     <label for="input-pwd">密码</label>
                                     <input type="password" class="form-control" id="input-pwd" required maxlength="20">
                                 </div>
+                                <div class="form-group mt30">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-6">
+                                            <label for="input-cap">验证码</label>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon pt0 pb0"><img data-toggle="tooltip" title="点击更换" class="captcha" src="<%=capSrc%>"/></span>
+                                                <input id="input-cap" type="text" class="form-control" required maxlength="4">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group form-group-lg mt30">
                                     <button type="submit" class="btn btn-block btn-primary btn-lg">登录</button>
                                 </div>
-
                             </form>
                         </div>
                         <div class="col-xs-12 text-center mt30">

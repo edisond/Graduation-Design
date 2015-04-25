@@ -12,6 +12,7 @@ $(document).ready(function () {
             id: register.find('#input-id').val(),
             name: register.find('#input-name').val(),
             password: md5(register.find('#input-password').val()),
+            cap: register.find('#input-cap').val(),
             type: register.find('#input-type-student').is(':checked') ? '同学' : '老师'
         };
         $.ajax({
@@ -22,8 +23,12 @@ $(document).ready(function () {
                 $('#main-panel').hide();
                 $('#success-panel').show();
             },
-            error: function () {
-                notyFacade('该学号/工号已被使用', 'error');
+            error: function (error) {
+                if (error.status === 406) {
+                    notyFacade('验证码错误，请重新输入', 'warning');
+                } else {
+                    notyFacade('该学号/工号已被使用', 'error');
+                }
             }
         })
     })

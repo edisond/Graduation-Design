@@ -27,7 +27,7 @@ $(document).ready(function () {
         $.get(encodeURI('/api/get/team'), function (data) {
             $('#header-team-num').html(data.length);
             if (data.length === 0) {
-                loadstate.html('<i class="fa fa-frown-o"></i>&nbsp;暂无团队');
+                loadstate.html('暂无团队');
                 $('#header-update-date').html('等待更新');
             } else {
                 teams = data;

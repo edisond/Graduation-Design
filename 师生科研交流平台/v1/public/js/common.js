@@ -299,6 +299,14 @@ $(document).ready(function () {
         });
     });
 
+    $('.captcha').click(function () {
+        var $this = $(this);
+        $.get(encodeURI('/api/get/captcha'), function (data) {
+            $this.attr('src', data)
+        })
+
+    })
+
     function initBackToTop() {
         var btt = $('<a data-toggle="tooltip" title="返回顶部" class="back-to-top"><i class="fa fa-chevron-up"></i></a>"');
         btt.appendTo($('body')).click(function () {

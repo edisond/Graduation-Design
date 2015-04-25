@@ -3,14 +3,14 @@ $(document).ready(function () {
         newStudentModel = $('#new-student'),
         editTeacherModel = $('#edit-teacher'),
         editStudentModel = $('#edit-student'),
+        inactiveStudentModel = $('#inactive-student'),
+        inactiveTeacherModel = $('#inactive-teacher'),
         deleteStudentModel = $('#delete-student'),
         deleteTeacherModel = $('#delete-teacher'),
         tableTeacher = $('#table-teacher'),
         tableStudent = $('#table-student');
     //init table teacher
-    $('#table-teacher').on('init.dt', function () {
-        $('#teacher-reg').html($(this).DataTable().data().length);
-    }).dataTable({
+    $('#table-teacher').dataTable({
         "ajax": {
             'url': encodeURI('/api/get/user?type=老师'),
             'dataSrc': '',
@@ -191,19 +191,47 @@ $(document).ready(function () {
         }
     });
 
-    deleteTeacherModel.on('show.bs.modal', function (e) {
+    inactiveTeacherModel.on('show.bs.modal', function (e) {
         var selectedNum = $('#table-teacher tbody>tr.active').size();
         if (selectedNum !== 0) {
-            $(this).find('#delete-teacher-info').html('使选中的教师记录失效？（共&nbsp;' + selectedNum + '&nbsp;条）');
+            $(this).find('#inactive-teacher-count').html(selectedNum);
         } else {
             notyFacade('您没有选中任何记录', 'information');
             return false;
         }
     });
 
-    deleteTeacherModel.keypress(function (e) {
-        if (e.which === 13) {
-            deleteTeacherModel.find('#submit').click();
+    inactiveTeacherModel.find('#submit').click(function () {
+        var post = {
+                _id: []
+            },
+            data = tableTeacher.DataTable().rows('.active').data();
+
+        for (var i = 0, j = data.length; i < j; i++) {
+            post._id.push(data[i]._id);
+        }
+        $.ajax({
+            type: "POST",
+            url: encodeURI("/api/post/user?action=inactive"),
+            data: post,
+            success: function () {
+                inactiveTeacherModel.modal('hide');
+                tableTeacher.DataTable().ajax.reload(null, false);
+                notyFacade('操作成功', 'success');
+            },
+            error: function () {
+                notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
+            }
+        });
+    });
+
+    deleteTeacherModel.on('show.bs.modal', function (e) {
+        var selectedNum = $('#table-teacher tbody>tr.active').size();
+        if (selectedNum !== 0) {
+            $(this).find('#delete-teacher-count').html(selectedNum);
+        } else {
+            notyFacade('您没有选中任何记录', 'information');
+            return false;
         }
     });
 
@@ -232,15 +260,7 @@ $(document).ready(function () {
     });
 
     //init table student
-    $('#table-student').on('init.dt', function () {
-        var studentReg = $(this).DataTable().data(),
-            studentLength = studentReg.length,
-            studentActive = 0;
-        for (i = 0; i < studentLength; i++)
-            if (studentReg[i].active) studentActive++;
-        $('#student-reg').html(studentLength);
-        $('#student-active').html(studentActive);
-    }).dataTable({
+    $('#table-student').dataTable({
         "ajax": {
             'url': encodeURI('/api/get/user?type=同学'),
             'dataSrc': '',
@@ -439,6 +459,39 @@ $(document).ready(function () {
         }
     });
 
+    inactiveStudentModel.on('show.bs.modal', function (e) {
+        var selectedNum = $('#table-student tbody>tr.active').size();
+        if (selectedNum !== 0) {
+            $(this).find('#inactive-student-count').html(selectedNum);
+        } else {
+            notyFacade('您没有选中任何记录', 'information');
+            return false;
+        }
+    });
+
+    inactiveStudentModel.find('#submit').click(function () {
+        var post = {
+                _id: []
+            },
+            data = tableStudent.DataTable().rows('.active').data();
+        for (var i = 0, j = data.length; i < j; i++) {
+            post._id.push(data[i]._id);
+        }
+        $.ajax({
+            type: "POST",
+            url: encodeURI("/api/post/user?action=inactive"),
+            data: post,
+            success: function () {
+                inactiveStudentModel.modal('hide');
+                tableStudent.DataTable().ajax.reload(null, false);
+                notyFacade('操作成功', 'success');
+            },
+            error: function () {
+                notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
+            }
+        });
+    });
+
     deleteStudentModel.on('show.bs.modal', function (e) {
         var selectedNum = $('#table-student tbody>tr.active').size();
         if (selectedNum !== 0) {
@@ -449,17 +502,12 @@ $(document).ready(function () {
         }
     });
 
-    deleteStudentModel.keypress(function (e) {
-        if (e.which === 13) {
-            deleteStudentModel.find('#submit').click();
-        }
-    });
-
     deleteStudentModel.find('#submit').click(function () {
         var post = {
                 _id: []
             },
             data = tableStudent.DataTable().rows('.active').data();
+
         for (var i = 0, j = data.length; i < j; i++) {
             post._id.push(data[i]._id);
         }

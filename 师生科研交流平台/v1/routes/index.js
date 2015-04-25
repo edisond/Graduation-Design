@@ -2,7 +2,25 @@ var express = require('express'),
     router = express.Router(),
     session = require('express-session'),
     moment = require('moment'),
-    model = require('../model/model');
+    model = require('../model/model'),
+    captchapng = require('captchapng');
+
+function genCap() {
+    var num = "";
+    for (var i = 0; i < 4; i++) {
+        var tmp = Math.floor(Math.random() * 10);
+        if (tmp === 0) tmp++;
+        num += tmp.toString();
+    }
+    num = parseInt(num);
+    var result = {},
+        p = new captchapng(50, 25, num);
+    p.color(0, 0, 0, 0);
+    p.color(0, 93, 108);
+    result.src = 'data:image/png;base64,' + p.getBase64();
+    result.num = num;
+    return result;
+}
 
 router.get('/', function (req, res) {
     model.User.count({
@@ -31,15 +49,29 @@ router.get('/', function (req, res) {
 })
 
 router.get('/register', function (req, res) {
-    res.render('register', {
-        user: req.session.user
-    });
+    if (req.session.user) {
+        res.redirect('/center');
+    } else {
+        var cap = genCap();
+        req.session.cap = cap.num;
+        res.render('register', {
+            user: req.session.user,
+            capSrc: cap.src
+        });
+    }
 })
 
 router.get('/login', function (req, res) {
-    res.render('login', {
-        user: req.session.user
-    });
+    if (req.session.user) {
+        res.redirect('/center');
+    } else {
+        var cap = genCap();
+        req.session.cap = cap.num;
+        res.render('login', {
+            user: req.session.user,
+            capSrc: cap.src
+        });
+    }
 })
 
 router.get('/search', function (req, res) {
@@ -75,6 +107,8 @@ router.get('/project/:id', function (req, res, next) {
             docs.dateUpdate = moment(docs.dateUpdate).fromNow();
             docs.dateStart = moment(docs.dateStart).format('l');
             docs.dateEnd = moment(docs.dateEnd).format('l');
+            var cap = genCap();
+            req.session.cap = cap.num;
             if (docs.type === '开放实验项目') {
                 if (req.session.user) {
                     var isSelected = false,
@@ -91,12 +125,14 @@ router.get('/project/:id', function (req, res, next) {
                             project: docs,
                             user: req.session.user,
                             isSelected: isSelected,
-                            isApplied: isApplied
+                            isApplied: isApplied,
+                            capSrc: cap.src
                         })
                     })
                 } else {
                     res.render('projectView', {
-                        project: docs
+                        project: docs,
+                        capSrc: cap.src
                     })
                 }
             } else {
@@ -107,7 +143,8 @@ router.get('/project/:id', function (req, res, next) {
                     res.render('projectView', {
                         project: docs,
                         user: req.session.user,
-                        team: doc && doc.team ? doc.team : undefined
+                        team: doc && doc.team ? doc.team : undefined,
+                        capSrc: cap.src
                     })
                 })
             }

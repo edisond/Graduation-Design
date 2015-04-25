@@ -33,7 +33,6 @@ app.use(session({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/', routes);
 app.use('/api/get', apiGet);
 app.use('/api/post', apiPost);

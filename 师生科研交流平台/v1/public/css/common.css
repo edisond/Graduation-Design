@@ -286,6 +286,13 @@ img.head.head-sm {
     margin: 0 5px;
 }
 
+.captcha {
+    max-width: 50px;
+    width: 50px;
+    height: 25px;
+    cursor: pointer;
+}
+
 @media (max-width: 767px) {
     .aside.aside-left,
     .aside.aside-right {

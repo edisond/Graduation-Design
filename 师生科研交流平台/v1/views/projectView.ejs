@@ -159,18 +159,26 @@
 
                                                 <div class="panel panel-default mt20">
                                                     <div class="panel-heading">
-                                                        <h4 class="m0"><b>说点什么</b></h4>
+                                                        <h4 class="m0"><b>说点什么</b><small id="reply-object" class="text-info ml20"></small></h4>
                                                     </div>
                                                     <div class="panel-body">
                                                         <form id="form-comment">
                                                             <div class="form-group">
                                                                 <div class="form-control wysiwyg-textarea wysiwyg-textarea-sm" id="input-comment"></div>
                                                             </div>
-                                                            <div class="form-group">
-                                                                <span id="reply-object" class="text-info"></span>
-                                                                <span id="reply-info" class="ml10"></span>
-                                                                <button type="submit" class="pull-right btn btn-primary" id="input-submit">发布评论</button>
-                                                                <button type="button" class="pull-right btn btn-default mr10" id="input-cancel">取消</button>
+                                                            <div class="form-group mb0">
+                                                                <div class="row">
+                                                                    <div class="col-xs-12 col-sm-6">
+                                                                        <div class="input-group maxw400 mb10">
+                                                                            <span class="input-group-addon pt0 pb0"><img data-toggle="tooltip" title="点击更换" class="captcha" src="<%=capSrc%>"/></span>
+                                                                            <input id="input-cap" type="text" class="form-control" required="" maxlength="4" placeholder="验证码">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-xs-12 col-sm-6">
+                                                                        <button type="submit" class="pull-right btn btn-primary" id="input-submit">发布评论</button>
+                                                                        <button type="button" class="pull-right btn btn-default mr10" id="input-cancel">取消</button>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -179,150 +187,138 @@
                         <div class="col-sm-3 col-xs-12">
                             <div class="aside aside-right">
                                 <%if(project.type==='开放实验项目' ){ if(typeof user!=='undefined' ){%>
-
                                     <button type="button" class="btn btn-block btn-primary <%=user.type==='同学'&&isSelected?'':'dhidden'%>" id="btn-submit-report"><i class="fa fa-folder-open"></i>&nbsp;提交实验报告</button>
                                     <button type="button" class="btn btn-block btn-warning <%=user.type==='同学'&&isApplied?'':'dhidden'%>" id="btn-cancel-select"><i class="fa fa-times"></i>&nbsp;取消申请</button>
                                     <button type="button" class="btn btn-block btn-success <%=(user.type==='同学'&&!isApplied&&!isSelected)?'':'dhidden'%>" id="btn-apply"><i class="fa fa-check"></i>&nbsp;我要选课</button>
-                                    <button type="button" class="btn btn-block btn-primary <%=(user._id.toString()===project.creator._id.toString())?'':'dhidden'%>" id="btn-update-content" data-toggle="modal" data-target="#edit-project"><i class="fa fa-edit"></i>&nbsp;更新实验</button>
+                                    <button type="button" class="btn btn-block btn-primary <%=user._id.toString()===project.creator._id.toString()?'':'dhidden'%>" id="btn-update-content" data-toggle="modal" data-target="#edit-project"><i class="fa fa-edit"></i>&nbsp;更新项目</button>
+                                    <button type="button" class="btn btn-block btn-danger <%=user._id.toString()===project.creator._id.toString()?'':'dhidden'%>" data-toggle="modal" data-target="#delete-project"><i class="fa fa-trash"></i>&nbsp;删除项目</button>
                                     <button type="button" class="btn btn-block btn-default" data-action="ask"><i class="fa fa-comments"></i>&nbsp;参与讨论</button>
-                                    <%}else{%>
-                                        <p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;您目前尚未登录，登录后可以：</p>
-                                        <ul class="text-info">
-                                            <li>参与选课</li>
-                                            <li>参与讨论</li>
-                                        </ul>
-                                        <%}%>
-                                            <hr/>
-                                            <h4 class="text-theme"><b>选课情况&nbsp;(
+                                    <hr/>
+                                    <%}%>
+                                        <h4 class="text-theme"><b>选课情况&nbsp;(
                                                 <span id="project-selects-num">-</span>/
                                                 <%=project.openExperimentAttr.capacity%>)
 
                                             </b></h4>
-                                            <p id="project-selects" class="mt10">
-                                                <span class="text-muted">加载中</span>
-                                            </p>
-                                            <br/>
-                                            <h4 class="text-theme"><b>所属学院</b></h4>
-                                            <p>
-                                                <%=project.college%>
-                                            </p>
-                                            <br/>
-                                            <h4 class="text-theme"><b>面向专业</b></h4>
-                                            <p>
-                                                <%=project.openExperimentAttr.object%>
-                                            </p>
-                                            <br/>
-                                            <h4 class="text-theme"><b>实验室</b></h4>
-                                            <p>
-                                                <%=project.openExperimentAttr.lab%>
-                                            </p>
-                                            <br/>
-                                            <h4 class="text-theme"><b>项目来源</b></h4>
-                                            <p>
-                                                <%=project.openExperimentAttr.source%>
-                                            </p>
-                                            <br/>
-                                            <h4 class="text-theme"><b>结题形式</b></h4>
-                                            <p>
-                                                <%=project.openExperimentAttr.result%>
-                                            </p>
-                                            <br/>
-                                            <h4 class="text-theme"><b>开始时间</b></h4>
-                                            <p>
-                                                <%=project.dateStart%>
-                                            </p>
-                                            <br/>
-                                            <h4 class="text-theme"><b>结束时间</b></h4>
-                                            <p>
-                                                <%=project.dateEnd%>
-                                            </p>
-                                            <br/>
-                                            <h4 class="text-theme"><b>需要学时</b></h4>
-                                            <p>
-                                                <%=project.openExperimentAttr.effort%>
-                                            </p>
-                                            <br/>
-                                            <h4 class="text-theme"><b>教师信息</b></h4>
-                                            <p><i class="fa fa-street-view minw25"></i>
-                                                <%=project.teacher.name%>
-                                            </p>
-                                            <p><i class="fa fa-institution minw25"></i>
-                                                <%=project.teacher.department%>
-                                            </p>
-                                            <p><i class="fa fa-envelope minw25"></i>
-                                                <a href="mailto:<%=project.teacher.email%>">
-                                                    <%=project.teacher.email%>
-                                                </a>
-                                            </p>
-                                            <p><i class="fa fa-phone minw25"></i>
-                                                <%=project.teacher.phone%>
-                                            </p>
-                                            <%} else if(project.type==='挑战杯项目' || project.type==='科技创新工程项目' ){ if(typeof user!=='undefined' ){%>
-                                                <button type="button" class="btn btn-block btn-primary <%=user._id.toString()===project.creator._id.toString() ?'':'dhidden'%>" id="btn-update-content" data-toggle="modal" data-target="#edit-project"><i class="fa fa-edit"></i>&nbsp;更新项目</button>
-                                                <button type="button" class="btn btn-block btn-success <%=(user.type==='老师'&&!project.teacher)?'':'dhidden'%>" id="btn-teacher-apply" data-toggle="modal" data-target="#guide-project"><i class="fa fa-child"></i>&nbsp;指导项目</button>
-                                                <button type="button" class="btn btn-block btn-success <%=user.type==='同学'&&project.teacher&&!team?'':'dhidden'%>" id="btn-team-apply" data-toggle="modal" data-target="#select-team"><i class="fa fa-check"></i>&nbsp;加入项目</button>
-                                                <button type="button" class="btn btn-block btn-default" data-action="ask"><i class="fa fa-comments"></i>&nbsp;参与讨论</button>
-                                                <%}else{%>
-                                                    <p class="text-info"><i class="fa fa-info-circle"></i>&nbsp;您目前尚未登录，登录后可以：</p>
-                                                    <ul class="text-info">
-                                                        <li>参与选课</li>
-                                                        <li>参与讨论</li>
-                                                    </ul>
-
-                                                    <%}%>
-                                                        <hr/>
-                                                        <h4 class="text-theme"><b>参与团队</b></h4>
-                                                        <%if(team){%>
+                                        <p id="project-selects" class="mt10">
+                                            <span class="text-muted">加载中</span>
+                                        </p>
+                                        <br/>
+                                        <h4 class="text-theme"><b>所属学院</b></h4>
+                                        <p>
+                                            <%=project.college%>
+                                        </p>
+                                        <br/>
+                                        <h4 class="text-theme"><b>面向专业</b></h4>
+                                        <p>
+                                            <%=project.openExperimentAttr.object%>
+                                        </p>
+                                        <br/>
+                                        <h4 class="text-theme"><b>实验室</b></h4>
+                                        <p>
+                                            <%=project.openExperimentAttr.lab%>
+                                        </p>
+                                        <br/>
+                                        <h4 class="text-theme"><b>项目来源</b></h4>
+                                        <p>
+                                            <%=project.openExperimentAttr.source%>
+                                        </p>
+                                        <br/>
+                                        <h4 class="text-theme"><b>结题形式</b></h4>
+                                        <p>
+                                            <%=project.openExperimentAttr.result%>
+                                        </p>
+                                        <br/>
+                                        <h4 class="text-theme"><b>开始时间</b></h4>
+                                        <p>
+                                            <%=project.dateStart%>
+                                        </p>
+                                        <br/>
+                                        <h4 class="text-theme"><b>结束时间</b></h4>
+                                        <p>
+                                            <%=project.dateEnd%>
+                                        </p>
+                                        <br/>
+                                        <h4 class="text-theme"><b>需要学时</b></h4>
+                                        <p>
+                                            <%=project.openExperimentAttr.effort%>
+                                        </p>
+                                        <br/>
+                                        <h4 class="text-theme"><b>教师信息</b></h4>
+                                        <p><i class="fa fa-street-view minw25"></i>
+                                            <%=project.teacher.name%>
+                                        </p>
+                                        <p><i class="fa fa-institution minw25"></i>
+                                            <%=project.teacher.department%>
+                                        </p>
+                                        <p><i class="fa fa-envelope minw25"></i>
+                                            <a href="mailto:<%=project.teacher.email%>">
+                                                <%=project.teacher.email%>
+                                            </a>
+                                        </p>
+                                        <p><i class="fa fa-phone minw25"></i>
+                                            <%=project.teacher.phone%>
+                                        </p>
+                                        <%} else if(project.type==='挑战杯项目' || project.type==='科技创新工程项目' ){ if(typeof user!=='undefined' ){%>
+                                            <button type="button" class="btn btn-block btn-primary <%=user._id.toString()===project.creator._id.toString()?'':'dhidden'%>" id="btn-update-content" data-toggle="modal" data-target="#edit-project"><i class="fa fa-edit"></i>&nbsp;更新项目</button>
+                                            <button type="button" class="btn btn-block btn-danger <%=user._id.toString()===project.creator._id.toString()?'':'dhidden'%>" data-toggle="modal" data-target="#delete-project"><i class="fa fa-trash"></i>&nbsp;删除项目</button>
+                                            <button type="button" class="btn btn-block btn-success <%=(user.type==='老师'&&!project.teacher)?'':'dhidden'%>" id="btn-teacher-apply" data-toggle="modal" data-target="#guide-project"><i class="fa fa-child"></i>&nbsp;指导项目</button>
+                                            <button type="button" class="btn btn-block btn-success <%=user.type==='同学'&&project.teacher&&!team?'':'dhidden'%>" id="btn-team-apply" data-toggle="modal" data-target="#select-team"><i class="fa fa-check"></i>&nbsp;加入项目</button>
+                                            <button type="button" class="btn btn-block btn-default" data-action="ask"><i class="fa fa-comments"></i>&nbsp;参与讨论</button>
+                                            <hr/>
+                                            <%}%>
+                                                <h4 class="text-theme"><b>参与团队</b></h4>
+                                                <%if(team){%>
+                                                    <p>
+                                                        <a target="_blank" href="/team/<%=team._id%>">
+                                                            <%=team.name%>
+                                                        </a>
+                                                    </p>
+                                                    <%} else {%>
+                                                        <p class="text-muted">暂无团队</p>
+                                                        <%}%>
+                                                            <br/>
+                                                            <h4 class="text-theme"><b>所属学院</b></h4>
                                                             <p>
-                                                                <a target="_blank" href="/team/<%=team._id%>">
-                                                                    <%=team.name%>
-                                                                </a>
+                                                                <%=project.college%>
                                                             </p>
-                                                            <%} else {%>
-                                                                <p class="text-muted">暂无团队</p>
+                                                            <br/>
+                                                            <%if(project.type==='挑战杯项目' ){%>
+                                                                <h4 class="text-theme"><b>项目类型</b></h4>
+                                                                <p>
+                                                                    <%=project.challengeCupAttr.ccType%>
+                                                                </p>
+                                                                <br/>
                                                                 <%}%>
-                                                                    <br/>
-                                                                    <h4 class="text-theme"><b>所属学院</b></h4>
+                                                                    <h4 class="text-theme"><b>开始时间</b></h4>
                                                                     <p>
-                                                                        <%=project.college%>
+                                                                        <%=project.dateStart%>
                                                                     </p>
                                                                     <br/>
-                                                                    <%if(project.type==='挑战杯项目' ){%>
-                                                                        <h4 class="text-theme"><b>项目类型</b></h4>
-                                                                        <p>
-                                                                            <%=project.challengeCupAttr.ccType%>
+                                                                    <h4 class="text-theme"><b>结束时间</b></h4>
+                                                                    <p>
+                                                                        <%=project.dateEnd%>
+                                                                    </p>
+                                                                    <br/>
+                                                                    <h4 class="text-theme"><b>教师信息</b></h4>
+                                                                    <%if(project.teacher){%>
+                                                                        <p><i class="fa fa-street-view minw25"></i>
+                                                                            <%=project.teacher.name%>
                                                                         </p>
-                                                                        <br/>
-                                                                        <%}%>
-                                                                            <h4 class="text-theme"><b>开始时间</b></h4>
-                                                                            <p>
-                                                                                <%=project.dateStart%>
-                                                                            </p>
-                                                                            <br/>
-                                                                            <h4 class="text-theme"><b>结束时间</b></h4>
-                                                                            <p>
-                                                                                <%=project.dateEnd%>
-                                                                            </p>
-                                                                            <br/>
-                                                                            <h4 class="text-theme"><b>教师信息</b></h4>
-                                                                            <%if(project.teacher){%>
-                                                                                <p><i class="fa fa-street-view minw25"></i>
-                                                                                    <%=project.teacher.name%>
-                                                                                </p>
-                                                                                <p><i class="fa fa-institution minw25"></i>
-                                                                                    <%=project.teacher.department%>
-                                                                                </p>
-                                                                                <p><i class="fa fa-envelope minw25"></i>
-                                                                                    <a href="mailto:<%=project.teacher.email%>">
-                                                                                        <%=project.teacher.email%>
-                                                                                    </a>
-                                                                                </p>
-                                                                                <p><i class="fa fa-phone minw25"></i>
-                                                                                    <%=project.teacher.phone%>
-                                                                                </p>
-                                                                                <%} else {%>
-                                                                                    <p>暂无指导教师</p>
-                                                                                    <%}}%>
+                                                                        <p><i class="fa fa-institution minw25"></i>
+                                                                            <%=project.teacher.department%>
+                                                                        </p>
+                                                                        <p><i class="fa fa-envelope minw25"></i>
+                                                                            <a href="mailto:<%=project.teacher.email%>">
+                                                                                <%=project.teacher.email%>
+                                                                            </a>
+                                                                        </p>
+                                                                        <p><i class="fa fa-phone minw25"></i>
+                                                                            <%=project.teacher.phone%>
+                                                                        </p>
+                                                                        <%} else {%>
+                                                                            <p>暂无指导教师</p>
+                                                                            <%}}%>
                             </div>
                         </div>
                     </div>
@@ -791,7 +787,32 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <%}}%>
+                                                <%} if(user._id.toString()===project.creator._id.toString()){%>
+                                                    <div class="modal fade" id="delete-project" tabindex="-1" role="dialog" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                    <h4 class="modal-title">删除项目</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <h5><b>点击“确定”后，本项目将被删除</b></h5>
+                                                                    <p><i class="fa fa-exclamation-triangle text-danger"></i>&nbsp;注意：</p>
+                                                                    <ol>
+                                                                        <li>所有与本项目相关的选课、评论等信息将被删除</li>
+                                                                        <li>本操作不可逆</li>
+                                                                    </ol>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                                                    <button type="button" class="btn btn-danger" id="submit">确定</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <%}}%>
         </div>
         <% include parts/footer.html %>
     </div>
