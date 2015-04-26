@@ -65,11 +65,8 @@ router.get('/login', function (req, res) {
     if (req.session.user) {
         res.redirect('/center');
     } else {
-        var cap = genCap();
-        req.session.cap = cap.num;
         res.render('login', {
-            user: req.session.user,
-            capSrc: cap.src
+            user: req.session.user
         });
     }
 })

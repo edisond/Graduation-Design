@@ -7,10 +7,227 @@ $(document).ready(function () {
         inactiveTeacherModel = $('#inactive-teacher'),
         deleteStudentModel = $('#delete-student'),
         deleteTeacherModel = $('#delete-teacher'),
+        deleteProjectModel = $('#delete-project'),
+        deleteCommentModel = $('#delete-comment'),
         tableTeacher = $('#table-teacher'),
+        tableComment = $('#table-comment'),
+        tableProject = $('#table-project'),
         tableStudent = $('#table-student');
+
+    tableProject.dataTable({
+        "ajax": {
+            'url': encodeURI('/api/get/project'),
+            'dataSrc': '',
+        },
+        "columns": [
+            {
+                "data": "_id",
+                "searchable": false,
+                "orderable": false,
+                "width": '1px',
+                'className': "text-center",
+                'render': function (data, type, row) {
+                    return '<input type="checkbox" data-action="select" data-id="' + data + '"/>';
+                }
+            },
+            {
+                data: 'name'
+            },
+            {
+                data: 'type'
+            },
+            {
+                data: 'college'
+            },
+            {
+                data: 'creator.name'
+            },
+            {
+                data: 'dateUpdate',
+                render: function (data, type, row) {
+                    return moment(data).fromNow()
+                }
+            },
+            {
+                "data": "_id",
+                "searchable": false,
+                "orderable": false,
+                "width": '50px',
+                'className': "text-center",
+                'render': function (data, type, row) {
+                    return '<a target="_blank" href="/project/' + data + '"><i class="fa fa-eye"></i>&nbsp;查看</a>';
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页显示 _MENU_ 条记录",
+            "zeroRecords": "无记录",
+            "info": "正在显示第 _PAGE_ 页，共 _PAGES_ 页",
+            "infoEmpty": "无记录",
+            "sSearch": "搜索",
+            "infoFiltered": "(正从 _MAX_ 条记录中过滤)",
+            "paginate": {
+                "previous": '<i class="fa fa-chevron-left"></i>',
+                "next": '<i class="fa fa-chevron-right"></i>'
+            }
+        }
+    });
+
+    tableProject.delegate('tbody  input[data-action=select]', 'click', function () {
+        $($(this).parents('tr')[0]).toggleClass('active');
+    });
+
+    $('#select-all-project').click(function () {
+        tableProject.find('tbody  input[data-action=select]').not(':checked').click();
+    });
+
+    $('#deselect-all-project').click(function () {
+        tableProject.find('tbody  input[data-action=select]:checked').click();
+    });
+
+    deleteProjectModel.on('show.bs.modal', function (e) {
+        var selectedNum = tableProject.find('tbody>tr.active').size();
+        if (selectedNum !== 0) {
+            $(this).find('#delete-project-count').html(selectedNum);
+        } else {
+            notyFacade('您没有选中任何记录', 'information');
+            return false;
+        }
+    });
+
+    deleteProjectModel.find('#submit').click(function () {
+        var post = {
+                _id: []
+            },
+            data = tableProject.DataTable().rows('.active').data();
+
+        for (var i = 0, j = data.length; i < j; i++) {
+            post._id.push(data[i]._id);
+        }
+        $.ajax({
+            type: "POST",
+            url: encodeURI("/api/post/project?action=delete"),
+            data: post,
+            success: function () {
+                deleteProjectModel.modal('hide');
+                tableProject.DataTable().ajax.reload(null, false);
+                notyFacade('操作成功', 'success');
+            },
+            error: function () {
+                notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
+            }
+        });
+    });
+
+    tableComment.dataTable({
+        "ajax": {
+            'url': encodeURI('/api/get/comment'),
+            'dataSrc': '',
+        },
+        "columns": [
+            {
+                "data": "_id",
+                "searchable": false,
+                "orderable": false,
+                "width": '1px',
+                'className': "text-center",
+                'render': function (data, type, row) {
+                    return '<input type="checkbox" data-action="select" data-id="' + data + '"/>';
+                }
+            },
+            {
+                data: 'from.name'
+            },
+            {
+                data: 'to.name',
+                render: function (data, type, row) {
+                    return data ? data : ''
+                }
+            },
+            {
+                data: 'project.name'
+            },
+            {
+                data: 'body'
+            },
+            {
+                data: 'date',
+                render: function (data, type, row) {
+                    return moment(data).fromNow()
+                }
+            },
+            {
+                "data": "project._id",
+                "searchable": false,
+                "orderable": false,
+                "width": '50px',
+                'className': "text-center",
+                'render': function (data, type, row) {
+                    return '<a target="_blank" href="/project/' + data + '#comments"><i class="fa fa-eye"></i>&nbsp;查看</a>';
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页显示 _MENU_ 条记录",
+            "zeroRecords": "无记录",
+            "info": "正在显示第 _PAGE_ 页，共 _PAGES_ 页",
+            "infoEmpty": "无记录",
+            "sSearch": "搜索",
+            "infoFiltered": "(正从 _MAX_ 条记录中过滤)",
+            "paginate": {
+                "previous": '<i class="fa fa-chevron-left"></i>',
+                "next": '<i class="fa fa-chevron-right"></i>'
+            }
+        }
+    });
+
+    tableComment.delegate('tbody  input[data-action=select]', 'click', function () {
+        $($(this).parents('tr')[0]).toggleClass('active');
+    });
+
+    $('#select-all-comment').click(function () {
+        tableComment.find('tbody  input[data-action=select]').not(':checked').click();
+    });
+
+    $('#deselect-all-comment').click(function () {
+        tableComment.find('tbody  input[data-action=select]:checked').click();
+    });
+
+    deleteCommentModel.on('show.bs.modal', function (e) {
+        var selectedNum = tableComment.find('tbody>tr.active').size();
+        if (selectedNum !== 0) {
+            $(this).find('#delete-comment-count').html(selectedNum);
+        } else {
+            notyFacade('您没有选中任何记录', 'information');
+            return false;
+        }
+    });
+
+    deleteCommentModel.find('#submit').click(function () {
+        var post = {
+                _id: []
+            },
+            data = tableComment.DataTable().rows('.active').data();
+
+        for (var i = 0, j = data.length; i < j; i++) {
+            post._id.push(data[i]._id);
+        }
+        $.ajax({
+            type: "POST",
+            url: encodeURI("/api/post/comment?action=delete"),
+            data: post,
+            success: function () {
+                deleteCommentModel.modal('hide');
+                tableComment.DataTable().ajax.reload(null, false);
+                notyFacade('操作成功', 'success');
+            },
+            error: function () {
+                notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error');
+            }
+        });
+    });
     //init table teacher
-    $('#table-teacher').dataTable({
+    tableTeacher.dataTable({
         "ajax": {
             'url': encodeURI('/api/get/user?type=老师'),
             'dataSrc': '',
@@ -260,7 +477,7 @@ $(document).ready(function () {
     });
 
     //init table student
-    $('#table-student').dataTable({
+    tableStudent.dataTable({
         "ajax": {
             'url': encodeURI('/api/get/user?type=同学'),
             'dataSrc': '',

@@ -341,7 +341,7 @@ $(document).ready(function () {
                         sMajorSelected = sMajor.attr('selectedItem');
 
                     function college() {
-                        var html = '<option></option>';
+                        var html = '<option value="">-- 请选择学院 --</option>';
                         for (var i = 0, j = data.length; i < j; i++) {
                             html += ('<option ' + (sCollegeSelected === data[i].name ? 'selected' : '') + '>' + data[i].name + '</option>');
                         }
@@ -351,7 +351,7 @@ $(document).ready(function () {
 
                     function major() {
                         if (sMajor.length) {
-                            var html = '<option></option>';
+                            var html = '<option value="">-- 请选择专业 --</option>';
                             var n = sCollege[0].selectedIndex - 1;
                             if (n >= 0) {
                                 for (var i = 0, j = data[n].majors.length; i < j; i++) {

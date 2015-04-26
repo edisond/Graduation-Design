@@ -81,9 +81,45 @@
                                     </div>
                                     <div role="tabpanel" class="tab-pane fade" id="tab-project">
                                         <br/>
+                                        <button type="button" class="btn btn-default" id="select-all-project">全部选择</button>
+                                        <button type="button" class="btn btn-default ml10" id="deselect-all-project">取消全选</button>
+                                        <button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#delete-project"><i class="fa fa-trash"></i>&nbsp;删除</button>
+                                        <br/>
+                                        <br/>
+                                        <table class="table table-bordered table-hover" id="table-project" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>项目名</th>
+                                                    <th>类型</th>
+                                                    <th>学院</th>
+                                                    <th>创建者</th>
+                                                    <th>更新日期</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
                                     </div>
                                     <div role="tabpanel" class="tab-pane fade" id="tab-comment">
                                         <br/>
+                                        <button type="button" class="btn btn-default" id="select-all-comment">全部选择</button>
+                                        <button type="button" class="btn btn-default ml10" id="deselect-all-comment">取消全选</button>
+                                        <button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#delete-comment"><i class="fa fa-trash"></i>&nbsp;删除</button>
+                                        <br/>
+                                        <br/>
+                                        <table class="table table-bordered table-hover" id="table-comment" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>来自</th>
+                                                    <th>回复</th>
+                                                    <th>项目名</th>
+                                                    <th>内容</th>
+                                                    <th>日期</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
                                     </div>
                                     <div role="tabpanel" class="tab-pane fade" id="tab-settings">
                                         <br/>
@@ -541,6 +577,47 @@
                                 <p><b>删除选中的学生记录（共&nbsp;<span id="delete-student-count"></span>&nbsp;条）</b>
                                 </p>
                                 <p><i class="fa fa-exclamation-triangle text-danger"></i>&nbsp;将删除所有与本账号有关的项目、选课、团队、评论等信息</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-danger" id="submit">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="delete-project" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title">删除记录</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p><b>删除选中的项目（共&nbsp;<span id="delete-project-count"></span>&nbsp;条）</b>
+                                </p>
+                                <p><i class="fa fa-exclamation-triangle text-danger"></i>&nbsp;将删除所有与本项目有关的选课、评论等信息</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-danger" id="submit">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="delete-comment" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title">删除记录</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p><b>删除选中的评论（共&nbsp;<span id="delete-comment-count"></span>&nbsp;条）</b>
+                                </p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>

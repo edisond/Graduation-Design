@@ -32,4 +32,12 @@ $(document).ready(function () {
             }
         })
     })
+
+    register.find('#show-password').mouseenter(function () {
+        register.find('#input-password').attr('type', 'text')
+    })
+
+    register.find('#show-password').mouseleave(function () {
+        register.find('#input-password').attr('type', 'password')
+    })
 })

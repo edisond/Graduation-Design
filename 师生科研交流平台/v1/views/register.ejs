@@ -29,21 +29,23 @@
                                     </div>
                                     <div class="form-group form-group-lg mt30">
                                         <label for="input-password">密码</label>
-                                        <input type="password" class="form-control" id="input-password" required maxlength="20">
+                                        <div class="input-group input-group-lg">
+                                            <input type="password" class="form-control" id="input-password" required maxlength="20">
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-default" id="show-password" data-toggle="tooltip" title="显示密码"><i class="fa fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group form-group-lg mt30">
-                                        <div class="row">
-                                            <div class="col-xs-12 col-sm-6">
-                                                <label for="input-type">我是</label>
-                                            </div>
-                                            <div class="col-xs-12 col-sm-6">
-                                                <label class="radio-inline">
-                                                    <input checked type="radio" name="input-type" id="input-type-student"> 同学
-                                                </label>
-                                                <label class="radio-inline">
-                                                    <input type="radio" name="input-type" id="input-type-teacher"> 老师
-                                                </label>
-                                            </div>
+                                        <label>我是</label>
+                                        <div class="btn-group btn-group-lg btn-group-justified" data-toggle="buttons">
+                                            <label class="btn btn-default active">
+                                                <input type="radio" name="input-type" id="input-type-student" autocomplete="off" checked>同学
+                                            </label>
+                                            <label class="btn btn-default">
+                                                <input type="radio" name="input-type" id="input-type-teacher" autocomplete="off">老师
+                                            </label>
                                         </div>
                                     </div>
                                     <div class="form-group mt30">

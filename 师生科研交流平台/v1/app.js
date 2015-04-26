@@ -7,9 +7,6 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     moment = require('moment'),
-    routes = require('./routes/index'),
-    apiGet = require('./routes/api/get'),
-    apiPost = require('./routes/api/post'),
     app = express();
 
 
@@ -33,9 +30,12 @@ app.use(session({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', routes);
-app.use('/api/get', apiGet);
-app.use('/api/post', apiPost);
+
+
+app.use('/', require('./routes/index'));
+app.use('/api/get', require('./routes/api/get'));
+app.use('/api/post', require('./routes/api/post'));
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');

@@ -110,30 +110,26 @@ router.post('/signin', function (req, res) {
             }
         });
     } else {
-        if (req.session.cap && req.body.cap && req.body.cap.toString() === req.session.cap.toString()) {
-            var condition = {};
-            if (req.body.id) condition.id = req.body.id;
-            if (req.body._id) condition._id = req.body._id;
-            model.User.findOne(condition).lean().exec(function (err, doc) {
-                if (err || !doc) {
-                    res.sendStatus(401);
+        var condition = {};
+        if (req.body.id) condition.id = req.body.id;
+        if (req.body._id) condition._id = req.body._id;
+        model.User.findOne(condition).lean().exec(function (err, doc) {
+            if (err || !doc) {
+                res.sendStatus(401);
+            } else {
+                if (md5(req.body.password + doc.key) === doc.password) {
+                    if (doc.active) {
+                        delete doc.password;
+                        delete doc.key;
+                        delete doc.__v;
+                        req.session.user = doc;
+                        res.sendStatus(200);
+                    } else res.sendStatus(403);
                 } else {
-                    if (md5(req.body.password + doc.key) === doc.password) {
-                        if (doc.active) {
-                            delete doc.password;
-                            delete doc.key;
-                            delete doc.__v;
-                            req.session.user = doc;
-                            res.sendStatus(200);
-                        } else res.sendStatus(403);
-                    } else {
-                        res.sendStatus(401);
-                    }
+                    res.sendStatus(401);
                 }
-            })
-        } else {
-            res.sendStatus(406)
-        }
+            }
+        })
     }
 })
 
@@ -285,7 +281,25 @@ router.post('/project', function (req, res) {
     } else if (!req.session.user) {
         res.sendStatus(401)
     } else {
-        if (req.query.action === 'delete') {
+        if (req.query.action === "delete" && req.session.user.type === '管理员') {
+            model.Select.remove({
+                project: {
+                    $in: req.body._id
+                }
+            }).exec();
+            model.Comment.remove({
+                project: {
+                    $in: req.body._id
+                }
+            }).exec();
+            model.Project.remove({
+                _id: {
+                    $in: req.body._id
+                }
+            }, function (err) {
+                res.sendStatus(err ? 500 : 200)
+            })
+        } else if (req.query.action === 'delete') {
             model.Project.findById(req.body._id, function (err, doc) {
                 if (err || !doc) {
                     res.sendStatus(500)
@@ -362,6 +376,14 @@ router.post('/comment', function (req, res) {
             } else {
                 res.sendStatus(406)
             }
+        } else if (req.query.action === "delete" && req.session.user.type === '管理员') {
+            model.Comment.remove({
+                _id: {
+                    $in: req.body._id
+                }
+            }, function (err) {
+                res.sendStatus(err ? 500 : 200)
+            })
         } else {
             res.sendStatus(404);
         }
