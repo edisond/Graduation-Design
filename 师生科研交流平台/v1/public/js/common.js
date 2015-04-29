@@ -74,11 +74,6 @@ var DOMCreator = {
         var node = $('<div class="project">');
         var title = $('<h4>').appendTo(node);
         $('<a>').attr('href', '/project/' + project._id).html('<b>' + project.name + '</b>').appendTo(title);
-        if (!project.teacher) {
-            $('<small class="ml20">').html('暂无指导教师').appendTo(title);
-        } else {
-            $('<small class="ml20">').html('指导教师：' + project.teacher.name).appendTo(title);
-        }
         var tag = $('<span class="label ml10">').appendTo(title),
             dateStart = new Date(project.dateStart),
             dateEnd = new Date(project.dateEnd);
@@ -92,13 +87,13 @@ var DOMCreator = {
             tag.addClass('label-default').html('已结束');
         }
         $('<p class="text-muted">').html(project.description).appendTo(node);
-        $('<h6><small><i class="fa fa-clock-o"></i>&nbsp;更新于' + moment(project.dateUpdate).fromNow() + '</small></h6>').appendTo(node);
+        $('<h6 class="mt20 text-muted"><i class="fa fa-street-view"></i>&nbsp;' + (project.teacher ? project.teacher.name : '暂无指导教师') + '<i class="fa fa-clock-o ml20"></i>&nbsp;更新于' + moment(project.dateUpdate).fromNow() + '</h6>').appendTo(node);
         return node;
     },
 
     myProject: function (select) {
         var div = $('<div class="project">');
-        var title = $('<h4><a href="/project/' + select.project._id + '"><b>' + select.project.name + '</b></a><small class="ml20">' + select.project.type + '</small></h4>').appendTo(div);
+        var title = $('<h4><a href="/project/' + select.project._id + '"><b>' + select.project.name + '</b></a></h4>').appendTo(div);
         var tag = $('<span class="label ml10">').appendTo(title);
         if (select.active) {
             if (new Date(select.project.dateStart) > Date.now()) {
@@ -111,13 +106,13 @@ var DOMCreator = {
         } else {
             tag.addClass('label-warning').html('申请中');
         }
-        $('<h6><small><i class="fa fa-clock-o"></i>&nbsp;更新于' + moment(select.project.dateUpdate).fromNow() + '</small></h6>').appendTo(div);
+        $('<h6 class="mt20 text-muted"><i class="fa fa-tag"></i>&nbsp;' + select.project.type + '<i class="fa fa-clock-o ml20"></i>&nbsp;更新于' + moment(select.project.dateUpdate).fromNow() + '</h6>').appendTo(div);
         return div
     },
 
     myProjectT: function (project) {
         var div = $('<div class="project">');
-        var title = $('<h4><a href="/project/' + project._id + '"><b>' + project.name + '</b></a><small class="ml20">' + project.type + '</small></h4>').appendTo(div);
+        var title = $('<h4><a href="/project/' + project._id + '"><b>' + project.name + '</b></a></h4>').appendTo(div);
         var tag = $('<span class="label ml10">').appendTo(title);
         if (new Date(project.dateStart) > Date.now()) {
             tag.addClass('label-success').html('未开始');
@@ -126,7 +121,7 @@ var DOMCreator = {
         } else if (new Date(project.dateEnd) < Date.now()) {
             tag.addClass('label-default').html('已结束');
         }
-        $('<h6><small><i class="fa fa-clock-o"></i>&nbsp;更新于' + moment(project.dateUpdate).fromNow() + '</small></h6>').appendTo(div);
+        $('<h6 class="mt20 text-muted"><i class="fa fa-tag"></i>&nbsp;' + project.type + '<i class="fa fa-clock-o ml20"></i>&nbsp;更新于' + moment(project.dateUpdate).fromNow() + '</h6>').appendTo(div);
         return div
     },
 
@@ -178,9 +173,8 @@ var DOMCreator = {
 
     team: function (team) {
         var div = $('<div class="project">');
-        var title = $('<h4><a href="/team/' + team._id + '"><b>' + team.name + '</b></a><small class="ml20">负责人：' + team.leader.name + '</small></h4>').appendTo(div);
-        $('<small class="text-muted">' + team.desc + '</small>').appendTo(div);
-        $('<h6><small><i class="fa fa-clock-o"></i>&nbsp;创建于' + moment(team.dateCreate).fromNow() + '</small></h6>').appendTo(div);
+        var title = $('<h4><a href="/team/' + team._id + '"><b>' + team.name + '</b></a></h4>').appendTo(div);
+        $('<h6 class="mt20 text-muted"><i class="fa fa-user"></i>&nbsp;' + team.leader.name + '<i class="fa fa-clock-o ml20"></i>&nbsp;创建于' + moment(team.dateCreate).fromNow() + '</h6>').appendTo(div);
         return div
     },
 
@@ -197,8 +191,7 @@ var DOMCreator = {
         } else {
             tag.addClass('label-warning').html('申请中');
         }
-        $('<small class="text-muted">' + apply.team.desc + '</small>').appendTo(div);
-        $('<h6><small><i class="fa fa-clock-o"></i>&nbsp;创建于' + moment(apply.team.dateCreate).fromNow() + '</small></h6>').appendTo(div);
+        $('<h6 class="mt20 text-muted"><i class="fa fa-clock-o"></i>&nbsp;创建于' + moment(apply.team.dateCreate).fromNow() + '</h6>').appendTo(div);
         return div
     }
 }
@@ -308,7 +301,7 @@ $(document).ready(function () {
     })
 
     function initBackToTop() {
-        var btt = $('<a data-toggle="tooltip" title="返回顶部" class="back-to-top"><i class="fa fa-chevron-up"></i></a>"');
+        var btt = $('<a data-toggle="tooltip" title="返回顶部" id="back-to-top"><i class="fa fa-chevron-up"></i></a>"');
         btt.appendTo($('body')).click(function () {
             $('html,body').animate({
                 scrollTop: 0
@@ -317,9 +310,9 @@ $(document).ready(function () {
 
         $(window).scroll(function () {
             if ($(this).scrollTop() > 300) {
-                btt.fadeIn(500);
+                btt.addClass('showme');
             } else {
-                btt.fadeOut(500);
+                btt.removeClass('showme');
             }
         })
     }

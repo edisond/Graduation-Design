@@ -152,14 +152,14 @@
                                             </p>
                                             <br/>
                                             <%}%>
-                                                <h4 class="comment-header"><i class="fa fa-comments mr10"></i>评论（<em id="comment-num"></em>条评论）</h4>
+                                                <h4 class="comment-header">评论（<em id="comment-num"></em>条评论）</h4>
                                                 <div id="comments" class="mt20">
                                                     <p class="text-muted" id="comments-state">讨论加载中</p>
                                                 </div>
 
                                                 <div class="panel panel-default mt20">
                                                     <div class="panel-heading">
-                                                        <h4 class="m0"><b>说点什么</b><small id="reply-object" class="text-info ml20"></small></h4>
+                                                        <h4 class="m0">说点什么<small id="reply-object" class="text-theme ml20"></small></h4>
                                                     </div>
                                                     <div class="panel-body">
                                                         <form id="form-comment">
@@ -192,7 +192,7 @@
                                     <button type="button" class="btn btn-block btn-success <%=(user.type==='同学'&&!isApplied&&!isSelected)?'':'dhidden'%>" id="btn-apply"><i class="fa fa-check"></i>&nbsp;我要选课</button>
                                     <button type="button" class="btn btn-block btn-primary <%=user._id.toString()===project.creator._id.toString()?'':'dhidden'%>" id="btn-update-content" data-toggle="modal" data-target="#edit-project"><i class="fa fa-edit"></i>&nbsp;更新项目</button>
                                     <button type="button" class="btn btn-block btn-danger <%=user._id.toString()===project.creator._id.toString()?'':'dhidden'%>" data-toggle="modal" data-target="#delete-project"><i class="fa fa-trash"></i>&nbsp;删除项目</button>
-                                    <button type="button" class="btn btn-block btn-default" data-action="ask"><i class="fa fa-comments"></i>&nbsp;参与讨论</button>
+                                    <a class="btn btn-block btn-default" href="#input-comment"><i class="fa fa-comments"></i>&nbsp;参与讨论</a>
                                     <hr/>
                                     <%}%>
                                         <h4 class="text-theme"><b>选课情况&nbsp;(
@@ -264,7 +264,7 @@
                                             <button type="button" class="btn btn-block btn-danger <%=user._id.toString()===project.creator._id.toString()?'':'dhidden'%>" data-toggle="modal" data-target="#delete-project"><i class="fa fa-trash"></i>&nbsp;删除项目</button>
                                             <button type="button" class="btn btn-block btn-success <%=(user.type==='老师'&&!project.teacher)?'':'dhidden'%>" id="btn-teacher-apply" data-toggle="modal" data-target="#guide-project"><i class="fa fa-child"></i>&nbsp;指导项目</button>
                                             <button type="button" class="btn btn-block btn-success <%=user.type==='同学'&&project.teacher&&!team?'':'dhidden'%>" id="btn-team-apply" data-toggle="modal" data-target="#select-team"><i class="fa fa-check"></i>&nbsp;加入项目</button>
-                                            <button type="button" class="btn btn-block btn-default" data-action="ask"><i class="fa fa-comments"></i>&nbsp;参与讨论</button>
+                                            <a class="btn btn-block btn-default" href="#input-comment"><i class="fa fa-comments"></i>&nbsp;参与讨论</a>
                                             <hr/>
                                             <%}%>
                                                 <h4 class="text-theme"><b>参与团队</b></h4>
@@ -275,7 +275,7 @@
                                                         </a>
                                                     </p>
                                                     <%} else {%>
-                                                        <p class="text-muted">暂无团队</p>
+                                                        <p>暂无团队</p>
                                                         <%}%>
                                                             <br/>
                                                             <h4 class="text-theme"><b>所属学院</b></h4>

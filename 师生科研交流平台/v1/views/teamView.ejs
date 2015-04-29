@@ -17,7 +17,7 @@
                 <div class="container mt20">
                     <div class="row">
                         <div class="col-xs-12">
-                            <h2><%-team.name %></h2>
+                            <h2><%=team.name %></h2>
                             <p class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;创建于
                                 <%=team.dateCreate %><i class="fa fa-user ml20"></i>&nbsp;负责人：
                                     <%=team.leader.name %>
@@ -66,7 +66,7 @@
     </div>
     <%if(typeof user!=='undefined' &&isSelected){%>
         <div class="modal fade" id="exit-team" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
@@ -74,7 +74,7 @@
                         <h4 class="modal-title">退出团队</h4>
                     </div>
                     <div class="modal-body">
-                        <h5>点击“确定”后，将退出本团队。</h5>
+                        <h5>退出<%=team.name %>？</h5>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -86,7 +86,7 @@
         <%}%>
             <%if(typeof user!=='undefined' &&team.leader._id.toString()===user._id.toString() ){%>
                 <div class="modal fade" id="delete-team" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog modal-sm">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
@@ -94,13 +94,12 @@
                                 <h4 class="modal-title">解散团队</h4>
                             </div>
                             <div class="modal-body">
-                                <h5><b>点击“确定”后，本团队将被解散</b></h5>
+                                <h5><b>解散<%=team.name %>？</b></h5>
                                 <p><i class="fa fa-exclamation-triangle text-danger"></i>&nbsp;注意：</p>
                                 <ol>
                                     <li>团队的所有选课将丢失</li>
                                     <li>团队成员将失去团队关系</li>
                                 </ol>
-                                <p>因此，请同学在<b>确认解散团队前务必完成已选项目任务</b>，执行此操作</p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -110,7 +109,7 @@
                     </div>
                 </div>
                 <div class="modal fade" id="update-team" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
@@ -120,18 +119,14 @@
                             <form>
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <label for="input-orign-password">负责人</label>
-                                        <input type="text" class="form-control" id="input-leader" required value="<%=user.name+' ('+user.id+')'%>" readonly>
-                                    </div>
-                                    <div class="form-group">
                                         <label for="input-orign-password">名称</label>
                                         <input type="text" class="form-control" id="input-name" required maxlength="20" value="<%=team.name%>">
                                     </div>
                                     <div class="form-group">
                                         <label for="input-orign-password">描述</label>
-                                        <textarea class="form-control" id="input-desc" required maxlength="500" rows="3">
-                                            <%=team.desc%>
-                                        </textarea>
+                                        <div class="form-control wysiwyg-textarea" id="input-desc">
+                                            <%-team.desc%>
+                                        </div>
                                     </div>
 
                                 </div>

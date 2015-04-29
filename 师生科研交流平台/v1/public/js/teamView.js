@@ -36,6 +36,7 @@ $(document).ready(function () {
     }
 
     fetchTeamMembers();
+    $('.wysiwyg-textarea').Wysiwyg()
 
     $('#btn-apply').click(function () {
         var post = {
@@ -102,7 +103,7 @@ $(document).ready(function () {
             var $this = $(this);
             var post = {
                 name: $this.find('#input-name').val(),
-                desc: $this.find('#input-desc').val(),
+                desc: $this.find('#input-desc').html(),
                 _id: teamId
             };
             $.ajax({

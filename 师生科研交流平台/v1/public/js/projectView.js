@@ -18,7 +18,7 @@ $(document).ready(function () {
         $.get(encodeURI('/api/get/comment?project=' + projectId), function (data) {
             $('#comment-num').html(data.length);
             if (data.length === 0) {
-                loadstate.html('对项目有任何疑问都可以在这里与老师或同学交流。')
+                loadstate.html('对项目有任何疑问都可以在这里与老师或同学交流')
             } else {
                 commentList.empty().hide();
                 data.sort(function (a, b) {
@@ -34,7 +34,7 @@ $(document).ready(function () {
 
     function fetchSelector() {
         projectSelects.empty();
-        var loadstate = $('<span class="text-muted" id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</span>').appendTo(projectSelects)
+        var loadstate = $('<p id="load-state"><i class="fa fa-spinner fa-spin"></i>&nbsp;加载中</p>').appendTo(projectSelects)
         $.get(encodeURI('/api/get/select?project=' + projectId + '&active=true'), function (data) {
             $('#project-selects-num').html(data.length);
             if (data.length === 0) {
@@ -56,7 +56,7 @@ $(document).ready(function () {
     commentList.delegate('a[href="#input-comment"]', 'click', function (e) {
         if (USER) {
             var $this = $(this);
-            $('#reply-object').html('<i class="fa fa-info-circle"></i>&nbsp;正在回复' + $this.attr('data-name') + $this.attr('data-type'));
+            $('#reply-object').html('<i class="fa fa-at"></i>' + $this.attr('data-name') + $this.attr('data-type'));
             commentBox.attr({
                 'data-id': $this.attr('data-id'),
                 'data-name': $this.attr('data-name'),
@@ -127,12 +127,6 @@ $(document).ready(function () {
             });
         })
     }
-
-
-
-    $('button[data-action=ask]').click(function () {
-        commentBox.focus();
-    });
 
     $('#form-comment').html5Validate(function () {
         var $this = $(this);
@@ -375,4 +369,5 @@ $(document).ready(function () {
 
         })
     }
+
 });

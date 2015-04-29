@@ -51,6 +51,7 @@ $(document).ready(function () {
     }
 
     fetchTeams();
+    $('.wysiwyg-textarea').Wysiwyg()
 
     $('#input-search-in-result').keydown(function (e) {
         if (e.which === 13) {
@@ -91,7 +92,7 @@ $(document).ready(function () {
         var $this = $(this);
         var post = {
             name: $this.find('#input-name').val(),
-            desc: $this.find('#input-desc').val()
+            desc: $this.find('#input-desc').html()
         }
         $.ajax({
             url: encodeURI('/api/post/team?action=new'),
