@@ -227,27 +227,13 @@ router.post('/user', function (req, res) {
                 res.sendStatus(404);
             }
         } else {
-            user._id = req.session.user._id;
-            user.id = req.session.user.id;
-            if (req.query.action === "pwd" && req.body.op && req.body.np) {
-                model.User.findById(user._id, function (err, doc) {
-                    if (err || !doc) {
-                        res.sendStatus(500);
-                    } else {
-                        if (md5(req.body.op + doc.key) === doc.password) {
-                            user.key = md5(new Date());
-                            user.password = md5(req.body.np + user.key);
-                            model.User.findByIdAndUpdate(user._id, user, function (err) {
-                                res.sendStatus(err ? 500 : 200);
-                            })
-                        } else {
-                            res.sendStatus(401);
-                        }
-                    }
-                });
-            } else if (req.query.action === "update") {
+            if (req.query.action === "update") {
                 xssUser(user);
-                model.User.findByIdAndUpdate(user._id, user, function (err, docs) {
+                if (user.password && user.password !== '') {
+                    user.key = md5(new Date());
+                    user.password = md5(user.password + user.key);
+                }
+                model.User.findByIdAndUpdate(req.session.user._id, user, function (err, docs) {
                     res.sendStatus(err ? 500 : 200);
                 })
             } else {

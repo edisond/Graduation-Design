@@ -359,35 +359,23 @@ $(document).ready(function () {
     })
 
     setPasswordForm.html5Validate(function () {
+        var $this = $(this);
         var post = {
-            op: setPasswordForm.find('#input-orign-password').val(),
-            np: setPasswordForm.find('#input-new-password').val(),
-            cp: setPasswordForm.find('#input-confirm-password').val()
+            password: md5($this.find('#input-password').val())
         };
-        if (post.np !== post.cp) {
-            notyFacade('新密码与确认密码不一致', 'warning')
-        } else {
-            delete post.cp;
-            post.op = md5(post.op);
-            post.np = md5(post.np);
-            $.ajax({
-                url: encodeURI('/api/post/user?action=pwd'),
-                data: post,
-                type: 'POST',
-                success: function () {
-                    $('a[href=#password-setting]').click();
-                    setPasswordForm[0].reset();
-                    notyFacade('修改成功', 'success')
-                },
-                error: function (XMLHttpRequest) {
-                    if (XMLHttpRequest.status === 401) {
-                        notyFacade('原密码错误', 'error')
-                    } else {
-                        notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error')
-                    }
-                }
-            })
-        }
+        $.ajax({
+            url: encodeURI('/api/post/user?action=update'),
+            data: post,
+            type: 'POST',
+            success: function () {
+                $('a[href=#password-setting]').click();
+                $this[0].reset();
+                notyFacade('修改成功', 'success')
+            },
+            error: function () {
+                notyFacade('抱歉，系统产生了一个错误，请重试或刷新后重试', 'error')
+            }
+        })
     })
 
     $.get(encodeURI('/api/get/user?self=true'), function (data) {
@@ -452,6 +440,14 @@ $(document).ready(function () {
                 notyFacade('该学号/工号已被使用', 'error')
             }
         })
+    })
+
+    setPasswordForm.find('#show-password').mouseenter(function () {
+        setPasswordForm.find('#input-password').attr('type', 'text')
+    })
+
+    setPasswordForm.find('#show-password').mouseleave(function () {
+        setPasswordForm.find('#input-password').attr('type', 'password')
     })
 
 })

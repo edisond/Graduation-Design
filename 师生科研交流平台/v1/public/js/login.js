@@ -22,7 +22,9 @@ $(document).ready(function () {
         });
     });
 
-    $('#admin-login').find('form').html5Validate(function () {
+    $('#admin-login').on('shown.bs.modal', function () {
+        $(this).find('#input-admin-password').focus();
+    }).find('form').html5Validate(function () {
         var password = $(this).find('#input-admin-password').val();
         if (password !== '') {
             $.ajax({
@@ -41,5 +43,5 @@ $(document).ready(function () {
         } else {
             return false;
         }
-    });
+    })
 });
