@@ -18,12 +18,13 @@ $(document).ready(function () {
         searchInfo = $('#search-info');
     if (request) {
         if (request.q && request.q !== '') {
-            var q = decodeURI(request.q);
-            searchInfo.html('<i class="fa fa-spinner fa-spin"></i>')
+            var q = decodeURI(request.q),
+                timestamp = Date.now();
+            searchInfo.html('<i class="fa fa-spinner fa-spin"></i>');
             list.empty();
             var loadstate = $('<span class="text-muted" id="load-state">加载中</span>').appendTo(list)
             $.get(encodeURI('/api/get/project?q=' + q), function (data) {
-                searchInfo.html('搜索<span class="text-theme">“' + q + '”</span>获得' + data.length + '个结果');
+                searchInfo.html('搜索<span class="text-theme">“' + q + '”</span>获得' + data.length + '个结果，耗时' + (Date.now() - timestamp) / 1000 + '秒');
                 list.empty().hide();
                 data.sort(function (a, b) {
                     return new Date(a.dateUpdate) < new Date(b.dateUpdate);
