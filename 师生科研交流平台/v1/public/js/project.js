@@ -157,6 +157,7 @@ $(document).ready(function () {
                 teacher: USER._id,
                 dateStart: new Date(formOE.find('#input-dateStart').val()),
                 dateEnd: new Date(formOE.find('#input-dateEnd').val()),
+                dateUpdate: Date.now(),
                 type: '开放实验项目'
             };
 
